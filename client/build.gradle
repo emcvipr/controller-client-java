@@ -1,3 +1,5 @@
+apply plugin: 'github-pages'
+
 archivesBaseName = 'vipr-controller-client'
 
 dependencies {
@@ -16,3 +18,13 @@ task docs(type: Javadoc, dependsOn: ":models:compileJava") {
     options.quiet()
 }
 assemble.dependsOn(docs)
+
+githubPages {
+    repoUri = 'git@github.com:emcvipr/controller-client-java.git'
+    pages {
+        from("${buildDir}/docs/javadoc") {
+            into 'javadoc'
+        }
+    }
+}
+
