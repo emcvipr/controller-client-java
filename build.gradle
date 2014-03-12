@@ -1,0 +1,92 @@
+allprojects {
+    apply plugin: 'idea'
+    apply plugin: 'eclipse'
+    group = 'com.emc.vipr'
+    version = '1.1.0.1'
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    apply plugin: 'signing'
+
+    repositories {
+        mavenCentral()
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from 'build/docs/javadoc'
+    }
+
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    artifacts {
+        archives jar
+
+        archives javadocJar
+        archives sourcesJar
+    }
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                    authentication(userName: sonatypeUsername, password: sonatypePassword)
+                }
+
+                pom.project {
+                    name 'controller-client'
+                    packaging 'jar'
+                    description 'ViPR Controller Java Client'
+                    url 'https://github.com/emcvipr/controller-client-java'
+
+                    scm {
+                        url 'scm:git@github.com:emcvipr/controller-client-java'
+                        connection 'scm:git@github.com:emcvipr/controller-client-java'
+                        developerConnection 'scm:git@github.com:emcvipr/controller-client-java'
+                    }
+
+                    licenses {
+                        license {
+                            name 'The Apache Software License, Version 2.0'
+                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            distribution 'repo'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+task prepareZip(type: Copy, dependsOn: ":client:docs") {
+    into ("${buildDir}/dist")
+    from (project(":client").configurations.archives.allArtifacts.files) {
+        exclude "*javadoc*"
+    }
+    from (project(":models").configurations.archives.allArtifacts.files) {
+        exclude "*javadoc*"
+    }
+    into ("javadoc") {
+        from project(":client").file("build/docs/javadoc")
+    }
+    into ("lib") {
+        from (project(":client").configurations.compile) {
+            exclude "*models*"
+        }
+        from project(":models").configurations.compile
+    }
+}
+
+task assemble(type: Zip, dependsOn: prepareZip) {
+    baseName = "vipr-controller-client"
+    classifier = "dist"
+    destinationDir = buildDir
+    from "${buildDir}/dist"
+}

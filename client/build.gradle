@@ -1,0 +1,18 @@
+archivesBaseName = 'vipr-controller-client'
+
+dependencies {
+    compile project(":models")
+}
+
+task docs(type: Javadoc, dependsOn: ":models:compileJava") {
+    source = [sourceSets.main.allJava, project(":models").sourceSets.main.allJava]
+    classpath = sourceSets.main.compileClasspath
+
+    // Exclude impl directory that only contains internal tools
+    exclude '**/impl/**'
+
+    // Only include public methods in the generated docs
+    options.memberLevel = JavadocMemberLevel.PUBLIC
+    options.quiet()
+}
+assemble.dependsOn(docs)

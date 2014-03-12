@@ -1,0 +1,10 @@
+archivesBaseName = 'vipr-controller-models'
+
+dependencies {
+    compile "org.slf4j:slf4j-api:1.6.4",
+        "org.codehaus.jackson:jackson-jaxrs:1.9.2",
+        "com.sun.jersey:jersey-client:1.12",
+        "com.sun.jersey:jersey-core:1.12",
+        "com.sun.jersey:jersey-json:1.12",
+        "com.google.code.gson:gson:2.1"
+}

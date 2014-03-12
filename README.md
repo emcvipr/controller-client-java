@@ -1,4 +1,4 @@
 controller-client-java
 ======================
 
-ViPR Controller Java Client
+Java Client for the ViPR Controller APIs. Includes API, System, Object Control and Service Catalog APIs.
