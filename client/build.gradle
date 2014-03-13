@@ -20,11 +20,12 @@ task docs(type: Javadoc, dependsOn: ":models:compileJava") {
 assemble.dependsOn(docs)
 
 githubPages {
-    repoUri = 'git@github.com:emcvipr/controller-client-java.git'
+    repoUri = 'https://github.com/emcvipr/controller-client-java.git'
     pages {
+        from 'src/main/gh-pages'
         from("${buildDir}/docs/javadoc") {
             into 'javadoc'
         }
     }
 }
-
+processGhPages.dependsOn(docs)
