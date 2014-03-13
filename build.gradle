@@ -74,6 +74,13 @@ subprojects {
                             distribution 'repo'
                         }
                     }
+
+                    developers {
+                        developer {
+                            id 'chrisdail'
+                            name 'Christopher Dail'
+                        }
+                    }
                 }
             }
         }
