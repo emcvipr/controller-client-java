@@ -48,13 +48,21 @@ public class AuthClient {
     }
 
     public void logout() {
-        ClientResponse response = client.resource("/logout").get(ClientResponse.class);
-        response.close();
+        if (isLoggedIn()) {
+            ClientResponse response = client.resource("/logout").get(ClientResponse.class);
+            response.close();
+        }
     }
 
     public void forceLogout() {
-        URI uri = client.uriBuilder("/logout").queryParam("force", "true").build();
-        ClientResponse response = client.resource(uri).get(ClientResponse.class);
-        response.close();
+        if (isLoggedIn()) {
+            URI uri = client.uriBuilder("/logout").queryParam("force", "true").build();
+            ClientResponse response = client.resource(uri).get(ClientResponse.class);
+            response.close();
+        }
+    }
+    
+    public boolean isLoggedIn() {
+        return (client.getAuthToken() != null) && !("".equals(client.getAuthToken()));
     }
 }

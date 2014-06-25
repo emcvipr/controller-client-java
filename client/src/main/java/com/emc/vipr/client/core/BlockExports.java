@@ -42,6 +42,11 @@ public class BlockExports extends ProjectResources<ExportGroupRestRep> implement
     }
 
     @Override
+    public BlockExports withInternal(boolean internal) {
+        return (BlockExports) super.withInternal(internal);
+    }
+
+    @Override
     protected List<ExportGroupRestRep> getBulkResources(BulkIdParam input) {
         ExportGroupBulkRep response = client.post(ExportGroupBulkRep.class, input, getBulkUrl());
         return defaultList(response.getExports());

@@ -12,6 +12,8 @@ import com.emc.storageos.model.host.vcenter.VcenterDataCenterCreate;
 import com.emc.storageos.model.host.vcenter.VcenterDataCenterList;
 import com.emc.storageos.model.host.vcenter.VcenterDataCenterRestRep;
 import com.emc.storageos.model.host.vcenter.VcenterDataCenterUpdate;
+import com.emc.storageos.model.host.vcenter.VcenterRestRep;
+import com.emc.vipr.client.Task;
 import com.emc.vipr.client.ViPRCoreClient;
 import com.emc.vipr.client.core.impl.PathConstants;
 import com.emc.vipr.client.impl.RestClient;
@@ -30,6 +32,11 @@ public class VcenterDataCenters extends AbstractBulkResources<VcenterDataCenterR
     @Override
     public VcenterDataCenters withInactive(boolean inactive) {
         return (VcenterDataCenters) super.withInactive(inactive);
+    }
+
+    @Override
+    public VcenterDataCenters withInternal(boolean internal) {
+        return (VcenterDataCenters) super.withInternal(internal);
     }
 
     @Override
@@ -103,8 +110,38 @@ public class VcenterDataCenters extends AbstractBulkResources<VcenterDataCenterR
      * 
      * @param id
      *        the ID of the datacenter to deactivate.
+     * @return a task for monitoring the progress of the operation.
      */
-    public void deactivate(URI id) {
-        doDeactivate(id);
+    public Task<VcenterDataCenterRestRep> deactivate(URI id) {
+        return doDeactivateWithTask(id);
+    }
+    
+    /**
+     * Deactivates a data center.
+     * <p>
+     * API Call: <tt>POST /compute/vcenter-data-centers/{id}/deactivate?detach-storage={detachStorage}</tt>
+     * 
+     * @param id
+     *        the ID of the data center to deactivate.
+     * @param detachStorage
+     *        if true, will first detach storage.
+     * @return a task for monitoring the progress of the operation.
+     */
+    public Task<VcenterDataCenterRestRep> deactivate(URI id, boolean detachStorage) {
+        URI deactivateUri = client.uriBuilder(getDeactivateUrl()).queryParam("detach-storage", detachStorage).build(id);
+        return postTaskURI(deactivateUri);
+    }
+    
+    /**
+     * Detaches storage from a data center.
+     * <p>
+     * API Call: <tt>POST /compute/vcenter-data-centers/{id}/detach-storage</tt>
+     * 
+     * @param id
+     *        the ID of the data center.
+     * @return a task for monitoring the progress of the operation.
+     */
+    public Task<VcenterDataCenterRestRep> detachStorage(URI id) {
+        return postTask(PathConstants.DATACENTER_DETACH_STORAGE_URL, id);
     }
 }

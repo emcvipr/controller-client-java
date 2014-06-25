@@ -22,29 +22,51 @@ import com.emc.storageos.model.DataObjectRestRep;
 @XmlRootElement(name = "varray")
 @XmlAccessorType(XmlAccessType.PROPERTY)
 public class VirtualArrayRestRep extends DataObjectRestRep {
-    private Boolean autoSanZoning;    
-    
+    private BlockSettings blockSettings;
+    private ObjectSettings objectSettings;
+
     public VirtualArrayRestRep() {}
-    
-    public VirtualArrayRestRep(Boolean autoSanZoning) {
-        this.autoSanZoning = autoSanZoning;
+
+    @XmlElement(name="block_settings")
+    public BlockSettings getBlockSettings() {
+        return blockSettings;
+    }
+    public void setBlockSettings(BlockSettings blockSettings) {
+        this.blockSettings = blockSettings;
+    }
+
+    @XmlElement(name="object_settings")
+    public ObjectSettings getObjectSettings() {
+        return objectSettings;
+    }
+    public void setObjectSettings(ObjectSettings objectSettings) {
+        this.objectSettings = objectSettings;
     }
 
     /**
      * ViPR creates the required zones in the SAN fabric
-     * when a request to export a volume is made in this 
+     * when a request to export a volume is made in this
      * virtualstorage array. This will allow the exported
      * volume to be visible on the specified hosts.
-     * 
+     *
      * @valid true
      * @valid false
      */
     @XmlElement(name="auto_san_zoning")
+    @Deprecated
     public Boolean getAutoSanZoning() {
-        return autoSanZoning;
+        if (blockSettings != null) {
+            return blockSettings.getAutoSanZoning();
+        } else {
+            return null;
+        }
     }
 
+    @Deprecated
     public void setAutoSanZoning(Boolean autoSanZoning) {
-        this.autoSanZoning = autoSanZoning;
+        if (blockSettings == null) {
+            blockSettings = new BlockSettings();
+        }
+        blockSettings.setAutoSanZoning(autoSanZoning);
     }
 }

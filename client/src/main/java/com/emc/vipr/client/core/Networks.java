@@ -37,6 +37,11 @@ public class Networks extends AbstractBulkResources<NetworkRestRep> implements T
     }
 
     @Override
+    public Networks withInternal(boolean internal) {
+        return (Networks) super.withInternal(internal);
+    }
+
+    @Override
     protected List<NetworkRestRep> getBulkResources(BulkIdParam input) {
         NetworkBulkRep response = client.post(NetworkBulkRep.class, input, getBulkUrl());
         return defaultList(response.getNetworks());

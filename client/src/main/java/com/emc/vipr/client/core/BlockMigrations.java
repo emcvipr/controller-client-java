@@ -36,6 +36,11 @@ public class BlockMigrations extends AbstractBulkResources<MigrationRestRep> imp
     }
 
     @Override
+    public BlockMigrations withInternal(boolean internal) {
+        return (BlockMigrations) super.withInternal(internal);
+    }
+
+    @Override
     protected List<MigrationRestRep> getBulkResources(BulkIdParam input) {
         BlockMigrationBulkRep response = client.post(BlockMigrationBulkRep.class, input, getBulkUrl());
         return defaultList(response.getMigrations());

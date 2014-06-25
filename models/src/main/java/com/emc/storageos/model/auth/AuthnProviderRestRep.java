@@ -14,7 +14,11 @@ package com.emc.storageos.model.auth;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.emc.storageos.model.DataObjectRestRep;
 
@@ -40,7 +44,6 @@ public class AuthnProviderRestRep extends DataObjectRestRep {
     private Boolean disable;
     private String description;
     private Integer maxPageSize;
-    private Boolean validateCertificates;
 
     /**
      * Description of the provider
@@ -243,19 +246,5 @@ public class AuthnProviderRestRep extends DataObjectRestRep {
 
     public void setServerUrls(Set<String> serverUrls) {
         this.serverUrls = serverUrls;
-    }
-
-    /**
-     * Whether or not to validate certificates when ldaps is used.
-     * @valid true
-     * @valid false
-     */
-    @XmlElement(name = "validate_certificates")
-    public Boolean getValidateCertificates() {
-        return validateCertificates;
-    }
-
-    public void setValidateCertificates(Boolean validateCertificates) {
-        this.validateCertificates = validateCertificates;
     }
 }

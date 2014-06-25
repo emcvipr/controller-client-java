@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012 EMC Corporation
+ *  Copyright (c) 2014 EMC Corporation
  * All Rights Reserved
  *
  * This software contains the intellectual property of EMC Corporation
@@ -8,29 +8,21 @@
  * limited to the terms and conditions of the License Agreement under which
  * it is provided by or on behalf of EMC.
  */
-
-package com.emc.vipr.model.object.namespace;
+package com.emc.vipr.model.keystore;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- * Object services namespace information for a tenant's VDC instance
- */
-@XmlRootElement(name = "namespace_zone")
-public class NamespaceVDCRestRep {
-    private String tenant;
+@XmlRootElement(name = "certificate_chain")
+public class CertificateChain {
+    private String chain;
 
-    /**
-     * the tenant for the vdc
-     */
-    @XmlElement
-    public String getTenant() {
-        return tenant;
+    @XmlElement(name = "chain")
+    public String getChain() {
+        return chain;
     }
 
-    public void setTenant(String tenant) {
-        this.tenant = tenant;
+    public void setChain(String chain) {
+        this.chain = chain;
     }
 }
-

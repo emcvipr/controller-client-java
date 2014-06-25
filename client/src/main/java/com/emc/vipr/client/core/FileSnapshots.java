@@ -28,7 +28,7 @@ import com.emc.vipr.client.impl.RestClient;
  * <p>
  * Base URL: <tt>/file/snapshots</tt>
  */
-public class FileSnapshots extends AbstractBulkResources<FileSnapshotRestRep> implements
+public class FileSnapshots extends ProjectResources<FileSnapshotRestRep> implements
         TaskResources<FileSnapshotRestRep> {
     public FileSnapshots(ViPRCoreClient parent, RestClient client) {
         super(parent, client, FileSnapshotRestRep.class, PathConstants.FILE_SNAPSHOT_URL);
@@ -36,7 +36,12 @@ public class FileSnapshots extends AbstractBulkResources<FileSnapshotRestRep> im
 
     @Override
     public FileSnapshots withInactive(boolean inactive) {
-        return (FileSnapshots) super.withInactive(inactive);
+        return (FileSnapshots) super.withInactive(inactive); 
+    }
+
+    @Override
+    public FileSnapshots withInternal(boolean internal) {
+        return (FileSnapshots) super.withInternal(internal);
     }
 
     /**

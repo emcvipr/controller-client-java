@@ -1,16 +1,13 @@
 package com.emc.vipr.client.system;
 
-import static com.emc.vipr.client.system.impl.PathConstants.TARGET_VERSION_URL;
-import static com.emc.vipr.client.system.impl.PathConstants.IMAGE_INSTALL_URL;
-import static com.emc.vipr.client.system.impl.PathConstants.IMAGE_REMOVE_URL;
-import static com.emc.vipr.client.system.impl.PathConstants.CLUSTER_STATE_URL;
-
 import static com.emc.vipr.client.impl.jersey.ClientUtils.addQueryParam;
+import static com.emc.vipr.client.system.impl.PathConstants.*;
 
 import javax.ws.rs.core.UriBuilder;
 
 import com.emc.vipr.client.impl.RestClient;
 import com.emc.vipr.model.sys.ClusterInfo;
+import com.emc.vipr.model.sys.DownloadProgress;
 import com.emc.vipr.model.sys.TargetVersionResponse;
 
 public class Upgrade {
@@ -45,8 +42,30 @@ public class Upgrade {
     	}
 		return client.postURI(ClusterInfo.class, builder.build());		
 	}
-	
-	/**
+
+    /**
+     * Cancels download of an image
+     * <p>
+     * API Call: POST /upgrade/install/cancel
+     *
+     * @return The new state of the cluster
+     */
+    public ClusterInfo cancelInstallImage() {
+        UriBuilder builder = client.uriBuilder(IMAGE_INSTALL_CANCEL_URL);
+        return client.postURI(ClusterInfo.class, builder.build());
+    }
+
+    /**
+     * Provides progress information when an image download is in progress
+     * <p>
+     * API Call: POST /upgrade/image/download/progress
+     *
+     * @return The Download Progress information
+     */
+    public DownloadProgress getDownloadProgress() {
+        return client.get(DownloadProgress.class, IMAGE_DOWNLOAD_PROGRESS_URL);
+    }
+    /**
 	 * Remove an image. Image can be removed only if the number of installed images 
 	 * are greater than MAX_SOFTWARE_VERSIONS.
      * <p>
@@ -154,5 +173,5 @@ public class Upgrade {
     public String getClusterState() {
     	return getClusterInfo(false).getCurrentState();
     }
-    
+
 }

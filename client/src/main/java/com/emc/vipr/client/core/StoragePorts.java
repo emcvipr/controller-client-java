@@ -33,6 +33,11 @@ public class StoragePorts extends AbstractBulkResources<StoragePortRestRep> impl
         return (StoragePorts) super.withInactive(inactive);
     }
 
+    @Override
+    public StoragePorts withInternal(boolean internal) {
+        return (StoragePorts) super.withInternal(internal);
+    }
+
     /**
      * Gets the URL for de-registering a port.
      * 

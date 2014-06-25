@@ -27,7 +27,7 @@ public class NfsExportPointsDataStoreRestRep extends DataStoreRestRep {
     private String mountPoint;
 
     /**
-     * Mount point associated with this data store. This is relevant only for object pool hosted on pre-provisioned
+     * Mount point associated with this data store. This is relevant only for data store hosted on pre-provisioned
      * servers
      * @valid None
      * @return Mount point

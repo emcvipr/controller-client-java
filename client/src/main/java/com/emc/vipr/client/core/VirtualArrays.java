@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.ws.rs.core.UriBuilder;
+
 import com.emc.storageos.model.BulkIdParam;
 import com.emc.storageos.model.NamedRelatedResourceRep;
 import com.emc.storageos.model.RelatedResourceRep;
@@ -52,6 +54,11 @@ public class VirtualArrays extends AbstractBulkResources<VirtualArrayRestRep> im
     }
 
     @Override
+    public VirtualArrays withInternal(boolean internal) {
+        return (VirtualArrays) super.withInternal(internal);
+    }
+
+    @Override
     protected List<VirtualArrayRestRep> getBulkResources(BulkIdParam input) {
         VirtualArrayBulkRep response = client.post(VirtualArrayBulkRep.class, input, getBulkUrl());
         return defaultList(response.getVirtualArrays());
@@ -70,6 +77,20 @@ public class VirtualArrays extends AbstractBulkResources<VirtualArrayRestRep> im
         return ResourceUtils.defaultList(response.getVirtualArrays());
     }
 
+    /**
+     * Lists all virtual arrays in a virtual data center
+     * <p>
+     * API Call: <tt>GET /vdc/varrays</tt>
+     * 
+     * @return the list of virtual array references in a virtual data centers
+     */
+    public List<NamedRelatedResourceRep> listByVDC(String shortVdcId) {
+        UriBuilder builder = client.uriBuilder(baseUrl);
+        builder.queryParam(SearchConstants.VDC_ID_PARAM, shortVdcId);
+        VirtualArrayList response =  client.getURI(VirtualArrayList.class, builder.build());
+        return ResourceUtils.defaultList(response.getVirtualArrays());
+    }    
+    
     /**
      * Gets the list of all virtual arrays. This is a convenience method for: <tt>getByRefs(list())</tt>.
      * 

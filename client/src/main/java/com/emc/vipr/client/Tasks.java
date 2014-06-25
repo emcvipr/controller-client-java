@@ -5,6 +5,8 @@ import com.emc.vipr.client.exceptions.ViPRException;
 import com.emc.vipr.client.impl.RestClient;
 import com.emc.vipr.client.core.impl.TaskUtil;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -41,6 +43,22 @@ public class Tasks<R> {
     public Task<R> firstTask() {
         if (tasks.size() > 0) {
             return tasks.get(0);
+        }
+        return null;
+    }
+    
+    /**
+     * Retrieves the latest task in the list that has finished processing.
+     *
+     * @return The latest task or null if there are no tasks in the list.
+     */
+    public Task<R> latestFinishedTask() {
+        if (tasks.size() > 0) {
+            Collections.sort(tasks, new LatestFinishedTaskComparator());
+            Task<R> latestTask = tasks.get(0);
+            if(latestTask.getEndTime() != null) {
+                return latestTask;
+            }
         }
         return null;
     }
@@ -110,5 +128,22 @@ public class Tasks<R> {
             resources.add(task.doGetResource());
         }
         return resources;
+    }
+    
+    protected static class LatestFinishedTaskComparator implements Comparator<Task> {
+        public int compare(Task task1, Task task2) {
+            if (task1.getEndTime() == null && task2.getEndTime() == null) {
+                return 0;
+            }
+            else if (task1.getEndTime() == null) {
+                return 1;
+            }
+            else if (task2.getEndTime() == null) {
+                return -1;
+            }
+            else {
+                return task2.getEndTime().compareTo(task1.getEndTime());
+            }
+        }
     }
 }

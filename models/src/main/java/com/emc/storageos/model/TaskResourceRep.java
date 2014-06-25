@@ -14,6 +14,7 @@ package com.emc.storageos.model;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -21,8 +22,8 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.emc.storageos.model.errorhandling.ServiceErrorRestRep;
 import com.emc.storageos.model.adapters.CalendarAdapter;
+import com.emc.storageos.model.errorhandling.ServiceErrorRestRep;
 
 @XmlAccessorType(XmlAccessType.PROPERTY)
 @XmlRootElement(name = "task")
@@ -33,6 +34,7 @@ public class TaskResourceRep {
     private NamedRelatedResourceRep resource;
     private List<NamedRelatedResourceRep> associatedResources;
     private String message;
+    private String name;
     private String state;
     private String description;
     private Calendar startTime;
@@ -155,6 +157,19 @@ public class TaskResourceRep {
         this.description = description;
     }
 
+    /** 
+     * The name of the task (the resource operation type)
+     * @valid none
+     */
+    @XmlElement (name = "name")
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     /** 
      * The service error code when a problem was encountered while processing a request
      * @valid none

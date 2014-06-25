@@ -27,6 +27,5 @@ public class PropertyConstants {
     public static final String ENCRYPTEDSTRING                 = "encryptedstring";
     // text is for multi-line, whereas string is for single line 
     public static final String TEXT                            = "text";
-    public static final String PEMTEXT                         = "pemtext";
     public static final String ENCRYPTEDTEXT                   = "encryptedtext";
 }

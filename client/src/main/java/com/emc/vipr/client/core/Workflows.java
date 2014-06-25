@@ -29,6 +29,11 @@ public class Workflows extends AbstractResources<WorkflowRestRep> {
         return (Workflows) super.withInactive(inactive);
     }
 
+    @Override
+    public Workflows withInternal(boolean internal) {
+        return (Workflows) super.withInternal(internal);
+    }
+
     /**
      * Gets a list of workflows from the given path.
      * 

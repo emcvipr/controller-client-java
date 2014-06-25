@@ -11,13 +11,15 @@ public class BaseInitiatorParam {
     private String protocol;
     private String node;
     private String port;
+    private String name;
     
     public BaseInitiatorParam() {}
     
-    public BaseInitiatorParam(String protocol, String node, String port) {
+    public BaseInitiatorParam(String protocol, String node, String port, String name) {
         this.protocol = protocol;
         this.node = node;
         this.port = port;
+        this.name = name;
     }
 
     /** The protocols supported by the initiator which should be FC or iSCSI 
@@ -58,6 +60,18 @@ public class BaseInitiatorParam {
 
     public void setPort(String port) {
         this.port = port;
+    }
+    
+    /** The label of the initiator
+     * @valid none
+     */
+    @XmlElement()
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
     
 }

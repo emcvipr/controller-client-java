@@ -25,8 +25,13 @@ public class RestClient {
     public RestClient(URI baseUri, ClientConfig config) {
         this.apiBaseUri = baseUri;
         this.config = config;
+        if (config.getSocketFactory() != null) {
+            SSLUtil.setSSLSocketFactory(config.getSocketFactory());
+        } else {
+            SSLUtil.trustAllSSLCertificates();
+        }
+        //do we want to do this when we're validating certs?
         SSLUtil.trustAllHostnames();
-        SSLUtil.trustAllSSLCertificates();
     }
 
     public ClientConfig getConfig() {

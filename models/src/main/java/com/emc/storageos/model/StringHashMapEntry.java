@@ -46,4 +46,21 @@ public class StringHashMapEntry {
     public void setValue(String value) {
         this.value = value;
     }
+    
+    @Override
+    public int hashCode() {
+    	int h = this.getName().hashCode() + 31*this.getValue().hashCode();
+		return h;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+    boolean result = false;
+    if (object instanceof StringHashMapEntry)
+    {
+    	StringHashMapEntry otherobject = (StringHashMapEntry) object;
+    	if (this.name.equals(otherobject.getName()) && this.value.equals(otherobject.getValue())) result = true;
+    }
+    return result;
+    }
 }

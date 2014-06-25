@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import com.emc.storageos.model.RelatedResourceRep;
+import com.emc.storageos.model.VirtualArrayRelatedResourceRep;
 
 @XmlAccessorType(XmlAccessType.PROPERTY)
 @XmlRootElement(name = "volume")
@@ -39,10 +40,12 @@ public class VolumeRestRep extends BlockObjectRestRep {
     private RelatedResourceRep autoTierPolicyUri;
     private List<RelatedResourceRep> haVolumes;
     private ProtectionRestRep protection;
-
+    private String accessState;
+    private String linkStatus;
+    
     // Fields in a Volume that are specific to RecoverPoint
     public static class RecoverPointRestRep {
-        private List<RelatedResourceRep> rpTargets;
+        private List<VirtualArrayRelatedResourceRep> rpTargets;
         private RelatedResourceRep protectionSet;
         private RelatedResourceRep protectionSystem;
         private String internalSiteName;
@@ -62,22 +65,22 @@ public class VolumeRestRep extends BlockObjectRestRep {
          * @valid none
          */
         @XmlElement(name = "target")
-        public List<RelatedResourceRep> getRpTargets() {
+        public List<VirtualArrayRelatedResourceRep> getRpTargets() {
             if (rpTargets == null) {
-                rpTargets = new ArrayList<RelatedResourceRep>();
+                rpTargets = new ArrayList<VirtualArrayRelatedResourceRep>();
             }
             return rpTargets;
         }
 
-        public void setRpTargets(List<RelatedResourceRep> rpTargets) {
+        public void setRpTargets(List<VirtualArrayRelatedResourceRep> rpTargets) {
             this.rpTargets = rpTargets;
         }
 
-                /**
-                 * This volume's RecoverPoint (RP) consistency group
-                 *
-                 * @valid none
-                 */
+        /**
+         * This volume's RecoverPoint (RP) consistency group
+         *
+         * @valid none
+         */
         @XmlElement(name = "protection_set")
         public RelatedResourceRep getProtectionSet() {
             return protectionSet;
@@ -87,11 +90,11 @@ public class VolumeRestRep extends BlockObjectRestRep {
             this.protectionSet = protectionSet;
         }
 
-            /**
-             * This volume's RecoverPoint appliance (RPA)
-             *
-             * @valid none
-             */
+        /**
+         * This volume's RecoverPoint appliance (RPA)
+         *
+         * @valid none
+         */
         @XmlElement(name = "protection_system")
         public RelatedResourceRep getProtectionSystem() {
             return protectionSystem;
@@ -101,11 +104,11 @@ public class VolumeRestRep extends BlockObjectRestRep {
             this.protectionSystem = protectionSystem;
         }
 
-            /**
-             * A label that can be used to denote the physical location of the volume
-             *
-             * @valid none
-             */
+        /**
+         * A label that can be used to denote the physical location of the volume
+         *
+         * @valid none
+         */
         @XmlElement(name = "site_name")
         public String getInternalSiteName() {
             return internalSiteName;
@@ -115,13 +118,13 @@ public class VolumeRestRep extends BlockObjectRestRep {
             this.internalSiteName = internalSiteName;
         }
 
-            /**
-             * The volume's RecoverPoint (RP) copy name. In this context, a
-             * production volume is a  copy  that is used as a  source  for
-             * replication.
-             *
-             * @valid none
-             */
+        /**
+         * The volume's RecoverPoint (RP) copy name. In this context, a
+         * production volume is a  copy  that is used as a  source  for
+         * replication.
+         *
+         * @valid none
+         */
         @XmlElement(name = "copy_name")
         public String getCopyName() {
             return copyName;
@@ -131,13 +134,13 @@ public class VolumeRestRep extends BlockObjectRestRep {
             this.copyName = copyName;
         }
 
-            /**
-             * The name of this volume's  RecoverPoint  (RP)  replication set. A
-             * replication set consists of a production volume and that volume's
-             * target copies.
-             *
-             * @valid none
-             */
+        /**
+         * The name of this volume's  RecoverPoint  (RP)  replication set. A
+         * replication set consists of a production volume and that volume's
+         * target copies.
+         *
+         * @valid none
+         */
         @XmlElement(name = "replicationset_name")
         public String getRsetName() {
             return rsetName;
@@ -147,13 +150,13 @@ public class VolumeRestRep extends BlockObjectRestRep {
             this.rsetName = rsetName;
         }
 
-            /**
-             * How this volume is used with respect to replication
-             *
-             * @valid SOURCE   = A production volume
-             * @valid TARGET   = A copy of a production volume
-             * @valid METADATA = A volume that stores meta-data for replication. Example: A RecoverPoint journal volume
-             */
+        /**
+         * How this volume is used with respect to replication
+         *
+         * @valid SOURCE   = A production volume
+         * @valid TARGET   = A copy of a production volume
+         * @valid METADATA = A volume that stores meta-data for replication. Example: A RecoverPoint journal volume
+         */
         @XmlElement(name = "personality")
         public String getPersonality() {
             return personality;
@@ -166,7 +169,7 @@ public class VolumeRestRep extends BlockObjectRestRep {
 
     // Fields in a volume that are specific to native mirrors
     public static class MirrorRestRep {
-        private List<RelatedResourceRep> mirrors;
+        private List<VirtualArrayRelatedResourceRep> mirrors;
 
         @XmlElementWrapper(name = "native_mirrors")
         
@@ -175,14 +178,14 @@ public class VolumeRestRep extends BlockObjectRestRep {
          * @valid none
          */
         @XmlElement(name = "native_mirror")
-        public List<RelatedResourceRep> getMirrors() {
+        public List<VirtualArrayRelatedResourceRep> getMirrors() {
             if (mirrors == null) {
-                mirrors = new ArrayList<RelatedResourceRep>();
+                mirrors = new ArrayList<VirtualArrayRelatedResourceRep>();
             }
             return mirrors;
         }
 
-        public void setMirrors(List<RelatedResourceRep> mirrors) {
+        public void setMirrors(List<VirtualArrayRelatedResourceRep> mirrors) {
             this.mirrors = mirrors;
         }
     }
@@ -190,7 +193,7 @@ public class VolumeRestRep extends BlockObjectRestRep {
     // Fields in a volume that are specific to full copies of another volume
     public static class FullCopyRestRep {
         private RelatedResourceRep associatedSourceVolume;
-        private List<RelatedResourceRep> fullCopyVolumes;
+        private List<VirtualArrayRelatedResourceRep> fullCopyVolumes;
         private Boolean isSyncActive;
         private Integer percentSynced;
 
@@ -205,14 +208,14 @@ public class VolumeRestRep extends BlockObjectRestRep {
 
         @XmlElementWrapper(name = "volumes")
         @XmlElement(name = "volume")
-        public List<RelatedResourceRep> getFullCopyVolumes() {
+        public List<VirtualArrayRelatedResourceRep> getFullCopyVolumes() {
             if (fullCopyVolumes == null) {
-                fullCopyVolumes = new ArrayList<RelatedResourceRep>();
+                fullCopyVolumes = new ArrayList<VirtualArrayRelatedResourceRep>();
             }
             return fullCopyVolumes;
         }
 
-        public void setFullCopyVolumes(List<RelatedResourceRep> fullCopyVolumes) {
+        public void setFullCopyVolumes(List<VirtualArrayRelatedResourceRep> fullCopyVolumes) {
             this.fullCopyVolumes = fullCopyVolumes;
         }
 
@@ -238,7 +241,8 @@ public class VolumeRestRep extends BlockObjectRestRep {
     // Fields in a volume that are specific to SRDF Copies
     public static class SRDFRestRep {
         private RelatedResourceRep associatedSourceVolume;
-        private List<RelatedResourceRep> targetVolumes;
+        private List<VirtualArrayRelatedResourceRep> targetVolumes;
+        private String personality;
 
         @XmlElement(name = "associated_source_volume")
         public RelatedResourceRep getAssociatedSourceVolume() {
@@ -251,15 +255,31 @@ public class VolumeRestRep extends BlockObjectRestRep {
 
         @XmlElementWrapper(name = "volumes")
         @XmlElement(name = "volume")
-        public List<RelatedResourceRep> getSRDFTargetVolumes() {
+        public List<VirtualArrayRelatedResourceRep> getSRDFTargetVolumes() {
             if (targetVolumes == null) {
-                targetVolumes = new ArrayList<RelatedResourceRep>();
+                targetVolumes = new ArrayList<VirtualArrayRelatedResourceRep>();
             }
             return targetVolumes;
         }
 
-        public void setSRDFTargetVolumes(List<RelatedResourceRep> targetVolumes) {
+        public void setSRDFTargetVolumes(List<VirtualArrayRelatedResourceRep> targetVolumes) {
             this.targetVolumes = targetVolumes;
+        }
+
+        /**
+         * How this volume is used with respect to replication
+         *
+         * @valid SOURCE   = A production volume
+         * @valid TARGET   = A copy of a production volume
+         * @valid METADATA = A volume that stores meta-data for replication. Example: A RecoverPoint journal volume
+         */
+        @XmlElement(name = "personality")
+        public String getPersonality() {
+        	return personality;
+        }
+
+        public void setPersonality(String personality) {
+        	this.personality = personality;
         }
     }
 
@@ -502,6 +522,32 @@ public class VolumeRestRep extends BlockObjectRestRep {
 
     public void setProtection(ProtectionRestRep protection) {
         this.protection = protection;
+    }    
+
+    /**
+     * The volume's access state
+     * @valid none
+     */
+    @XmlElement(name = "access_state")
+    public String getAccessState() {
+        return accessState;
+    }
+
+    public void setAccessState(String accessState) {
+        this.accessState = accessState;
+    }
+
+    /**
+     * The volume's link status
+     * @valid none
+     */
+    @XmlElement(name = "link_status")
+    public String getLinkStatus() {
+        return linkStatus;
+    }
+
+    public void setLinkStatus(String linkStatus) {
+        this.linkStatus = linkStatus;
     }
 
 }

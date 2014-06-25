@@ -252,6 +252,17 @@ public class ResourceUtils {
     }
 
     /**
+     * Determines if the item is not internal.
+     *
+     * @param value
+     *        the item.
+     * @return true if the item is active (inactive is not set, or is set to FALSE)
+     */
+    public static boolean isNotInternal(DataObjectRestRep value) {
+        return (value != null) && !Boolean.TRUE.equals(value.getInternal());
+    }
+
+    /**
      * Maps a collection of resources by their IDs.
      * 
      * @param resources
@@ -402,6 +413,17 @@ public class ResourceUtils {
      * @return true if the ID is null.
      */
     public static boolean isNull(URI id) {
-        return id == null || NULL_URI.equals(id);
+        return (id == null) || NULL_URI.equals(id);
+    }
+
+    /**
+     * Creates a named reference to the resource. The reference will have no selfLink set.
+     * 
+     * @param resource
+     *        the resource.
+     * @return the named reference to the resource.
+     */
+    public static NamedRelatedResourceRep createNamedRef(DataObjectRestRep resource) {
+        return (resource != null) ? new NamedRelatedResourceRep(id(resource), null, name(resource)) : null;
     }
 }

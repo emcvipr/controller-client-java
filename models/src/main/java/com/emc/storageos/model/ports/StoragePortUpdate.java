@@ -26,6 +26,8 @@ public class StoragePortUpdate extends VirtualArrayResourceUpdateParam {
 
     private URI network;
 
+    private String portNetworkId;
+
     public StoragePortUpdate() {}
     
     public StoragePortUpdate(URI network) {
@@ -50,5 +52,24 @@ public class StoragePortUpdate extends VirtualArrayResourceUpdateParam {
 
     public void setNetwork(URI network) {
         this.network = network;
+    }
+
+    /**
+     * Storage port network identifier.
+     * 
+     * This is only applicable to Cinder storage system
+     * as currently there is no API to discover it from Cinder.
+     * 
+     * This is only applicable to FC type of storage ports.
+     *
+     * @valid example: FC - port wwn
+     */
+    @XmlElement(name = "port_network_id", nillable = true)
+    public String getPortNetworkId() {
+        return portNetworkId;
+    }
+
+    public void setPortNetworkId(String portNetworkId) {
+        this.portNetworkId = portNetworkId;
     }
 }

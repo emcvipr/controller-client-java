@@ -11,17 +11,19 @@
 
 package com.emc.storageos.model.block;
 
-import com.emc.storageos.model.DataObjectRestRep;
-import com.emc.storageos.model.RelatedResourceRep;
-import org.codehaus.jackson.annotate.JsonProperty;
+import java.net.URI;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
-import java.net.URI;
-import java.util.HashSet;
-import java.util.Set;
+
+import org.codehaus.jackson.annotate.JsonProperty;
+
+import com.emc.storageos.model.DataObjectRestRep;
+import com.emc.storageos.model.RelatedResourceRep;
 
 @XmlAccessorType(XmlAccessType.PROPERTY)
 public abstract class BlockObjectRestRep extends DataObjectRestRep {

@@ -37,6 +37,11 @@ public class Vcenters extends AbstractBulkResources<VcenterRestRep> implements T
     }
 
     @Override
+    public Vcenters withInternal(boolean internal) {
+        return (Vcenters) super.withInternal(internal);
+    }
+
+    @Override
     protected List<VcenterRestRep> getBulkResources(BulkIdParam input) {
         VcenterBulkRep response = client.post(VcenterBulkRep.class, input, getBulkUrl());
         return defaultList(response.getVcenters());
@@ -143,8 +148,51 @@ public class Vcenters extends AbstractBulkResources<VcenterRestRep> implements T
      * 
      * @param id
      *        the ID of the vCenter to deactivate.
+     * @return a task for monitoring the progress of the operation.
      */
-    public void deactivate(URI id) {
-        doDeactivate(id);
+    public Task<VcenterRestRep> deactivate(URI id) {
+        return doDeactivateWithTask(id);
+    }
+    
+    /**
+     * Deactivates a vCenter.
+     * <p>
+     * API Call: <tt>POST /compute/vcenters/{id}/deactivate?detach-storage={detachStorage}</tt>
+     * 
+     * @param id
+     *        the ID of the vCenter to deactivate.
+     * @param detachStorage
+     *        if true, will first detach storage.
+     * @return a task for monitoring the progress of the operation.
+     */
+    public Task<VcenterRestRep> deactivate(URI id, boolean detachStorage) {
+        URI deactivateUri = client.uriBuilder(getDeactivateUrl()).queryParam("detach-storage", detachStorage).build(id);
+        return postTaskURI(deactivateUri);
+    }
+    
+    /**
+     * Detaches storage from a vCenter.
+     * <p>
+     * API Call: <tt>POST /compute/vcenters/{id}/detach-storage</tt>
+     * 
+     * @param id
+     *        the ID of the host.
+     * @return a task for monitoring the progress of the operation.
+     */
+    public Task<VcenterRestRep> detachStorage(URI id) {
+        return postTask(PathConstants.VCENTER_DETACH_STORAGE_URL, id);
+    }
+    
+    /**
+     * Begins discovery of the given vCenter by ID.
+     * <p>
+     * API Call: <tt>POST /compute/vcenters/{id}/discover</tt>
+     * 
+     * @param id
+     *        the ID of the vCenter to discover.
+     * @return a task for monitoring the progress of the operation.
+     */
+    public Task<VcenterRestRep> discover(URI id) {
+        return postTask(getIdUrl() + "/discover", id);
     }
 }

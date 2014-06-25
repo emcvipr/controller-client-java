@@ -14,14 +14,16 @@ public abstract class IpInterfaceParam {
     private Integer netmask;
     private Integer prefixLength;
     private String scopeId;
+    private String name;
     
     public IpInterfaceParam() {}
     
     public IpInterfaceParam(Integer netmask, Integer prefixLength,
-            String scopeId) {
+            String scopeId, String name) {
         this.netmask = netmask;
         this.prefixLength = prefixLength;
         this.scopeId = scopeId;
+        this.name = name;
     }
     
     /** The netmask of an IPv4 address expressed as the 
@@ -63,6 +65,18 @@ public abstract class IpInterfaceParam {
     
     public void setScopeId(String scopeId) {
         this.scopeId = scopeId;
+    }
+    
+    /** The name of the IpInterface
+     * @valid none
+     */
+    @XmlElement()
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
     }
     
     /** Gets the ip interface address */

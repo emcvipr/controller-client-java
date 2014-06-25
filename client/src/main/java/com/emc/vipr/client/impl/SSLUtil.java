@@ -15,13 +15,17 @@ public class SSLUtil {
     private static SSLContext trustAllContext;
     private static NullHostNameVerifier hostnameVerifier;
 
+    public static void setSSLSocketFactory(SSLSocketFactory factory) {
+        HttpsURLConnection.setDefaultSSLSocketFactory(factory);
+    }
+
     public static void trustAllSSLCertificates() {
         if (trustAllEnabled) {
             return;
         }
 
         SSLContext sc = getTrustAllContext();
-        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+        setSSLSocketFactory(sc.getSocketFactory());
         trustAllEnabled = true;
     }
 

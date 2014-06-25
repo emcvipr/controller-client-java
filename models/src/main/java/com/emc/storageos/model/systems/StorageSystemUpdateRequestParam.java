@@ -100,6 +100,8 @@ public class StorageSystemUpdateRequestParam {
 
     /**
      * IP Address of SMIS Provider
+     * This field is applicable for storage systems of type 'vnxfile'.
+     * It is ignored for other storage system types and can be null.
      * 
      * @valid none
      */
@@ -114,6 +116,8 @@ public class StorageSystemUpdateRequestParam {
 
     /**
      * Port number of SMIS Provider to connect to
+     * This field is applicable for storage systems of type 'vnxfile'.
+     * It is ignored for other storage system types and can be null.
      * 
      * @valid none
      */
@@ -128,6 +132,8 @@ public class StorageSystemUpdateRequestParam {
 
     /**
      * Username to connect to SMIS Provider
+     * This field is applicable for storage systems of type 'vnxfile'.
+     * It is ignored for other storage system types and can be null.
      * 
      * @valid none
      */
@@ -142,6 +148,8 @@ public class StorageSystemUpdateRequestParam {
 
     /**
      * Password to connect to SMIS Provider
+     * This field is applicable for storage systems of type 'vnxfile'.
+     * It is ignored for other storage system types and can be null.
      * 
      * @valid none
      */
@@ -156,7 +164,9 @@ public class StorageSystemUpdateRequestParam {
 
     /**
      * Determines the protocol used for connection purposes.
-     * If HTTPS, then set true ,else false
+     * If HTTPS, then set true, else false.
+     * This field is applicable for storage systems of type 'vnxfile'.
+     * It is ignored for other storage system types and can be null.
      * 
      *  @valid true
      *  @valid false

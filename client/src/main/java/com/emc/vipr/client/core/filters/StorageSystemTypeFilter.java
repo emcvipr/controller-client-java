@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class StorageSystemTypeFilter extends DefaultResourceFilter<StorageSystemRestRep> {
-    public static final StorageSystemTypeFilter BLOCK = new StorageSystemTypeFilter("vnxblock", "vmax", "vplex");
+    public static final StorageSystemTypeFilter BLOCK = new StorageSystemTypeFilter("vnxblock", "vmax", "vplex", "hds");
     public static final StorageSystemTypeFilter FILE = new StorageSystemTypeFilter("isilon", "vnxfile", "netapp");
 
     private Set<String> types;

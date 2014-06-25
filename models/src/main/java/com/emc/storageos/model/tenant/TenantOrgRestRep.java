@@ -29,6 +29,7 @@ public class TenantOrgRestRep extends DataObjectRestRep {
     private RelatedResourceRep parentTenant;
     private String description;
     private List<UserMappingParam> userMappings;
+    private String namespace;
     
     public TenantOrgRestRep() {}
     
@@ -94,4 +95,20 @@ public class TenantOrgRestRep extends DataObjectRestRep {
     public void setUserMappings(List<UserMappingParam> userMappings) {
         this.userMappings = userMappings;
     }
+
+    /**
+     * 
+     * Namespace mapped to the Tenant
+     * 
+     * @valid none
+     */
+    @XmlElement
+    public String getNamespace() {
+        return namespace;
+    }
+
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
 }

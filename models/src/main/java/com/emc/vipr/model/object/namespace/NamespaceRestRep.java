@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.net.URI;
 import java.util.HashMap;
 
 /**
@@ -24,20 +25,46 @@ import java.util.HashMap;
 @XmlRootElement(name = "namespace")
 @XmlAccessorType(XmlAccessType.PROPERTY)
 public class NamespaceRestRep extends DataObjectRestRep {
-    private HashMap<String,NamespaceVDCRestRep> zoneMap;
+    private URI tenant;
+    private URI tenantDefaultProject;
+    private URI tenantDefaultVpool;
 
     /**
-     * Namespace to vdc mappings
-     * @valid None
-     * @return Namespace to vdc mappings
+     * the tenant for the vdc
      */
-    @XmlElement(name = "vdcs")
-    public HashMap<String,NamespaceVDCRestRep> getZones() {
-        return zoneMap;
+    @XmlElement
+    public URI getTenant() {
+        return tenant;
     }
 
-    public void setZones(HashMap<String, NamespaceVDCRestRep> zoneMap) {
-        this.zoneMap = zoneMap;
+    public void setTenant(final URI tenant) {
+        this.tenant = tenant;
+    }
+
+    /**
+     * Default project id for this tenant when creating buckets
+     * @valid None
+     */
+    @XmlElement(required = false, name = "default_object_project")
+    public URI getTenantDefaultProject() {
+        return tenantDefaultProject;
+    }
+
+    public void setTenantDefaultProject(final URI tenantDefaultProject) {
+        this.tenantDefaultProject = tenantDefaultProject;
+    }
+
+    /**
+     * Default data services vpool identifier for this tenant when creating buckets
+     * @valid None
+     */
+    @XmlElement(required = false, name = "default_data_services_vpool")
+    public URI getTenantDefaultVpool() {
+        return tenantDefaultVpool;
+    }
+
+    public void setTenantDefaultVpool(final URI tenantDefaultVpool) {
+        this.tenantDefaultVpool = tenantDefaultVpool;
     }
 }
 

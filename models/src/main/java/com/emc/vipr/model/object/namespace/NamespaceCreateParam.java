@@ -2,6 +2,7 @@ package com.emc.vipr.model.object.namespace;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,12 +12,18 @@ import java.util.List;
 @XmlRootElement(name = "namespace_create")
 public class NamespaceCreateParam {
     private String namespace;
-    private List<NamespaceVDCParam> vdcs;
+    private URI tenant;
+    private URI tenantDefaultProject;
+    private URI tenantDefaultVpool;
 
-    public NamespaceCreateParam() { }
-    public NamespaceCreateParam(String namespace, List<NamespaceVDCParam> vdcs) {
+    public NamespaceCreateParam() {
+    }
+
+    public NamespaceCreateParam(final String namespace, final URI tenant, final URI tenantDefaultProject, final URI tenantDefaultVpool) {
         this.namespace = namespace;
-        this.vdcs = vdcs;
+        this.tenant = tenant;
+        this.tenantDefaultProject = tenantDefaultProject;
+        this.tenantDefaultVpool = tenantDefaultVpool;
     }
 
     /**
@@ -30,23 +37,46 @@ public class NamespaceCreateParam {
         return namespace;
     }
 
-    public void setNamespace(String namespace) {
+    public void setNamespace(final String namespace) {
         this.namespace = namespace;
     }
 
     /**
-     * List of vdcs associated with this namespace. Each vdc has an associated tenant.
+     * ID of tenant associated with this namespace
      * @valid None
      */
-    @XmlElement(name = "vdcs")
-    public List<NamespaceVDCParam> getVDCs() {
-        if (vdcs == null) {
-            vdcs = new ArrayList<NamespaceVDCParam>();
-        }
-        return vdcs;
+    @XmlElement(required = true)
+    public URI getTenant() {
+        return tenant;
     }
 
-    public void setVDCs(List<NamespaceVDCParam> vdcs) {
-        this.vdcs = vdcs;
+    public void setTenant(final URI tenant) {
+        this.tenant = tenant;
+    }
+
+    /**
+     * Default project id for this tenant when creating buckets
+     * @valid None
+     */
+    @XmlElement(required = false, name = "default_object_project")
+    public URI getTenantDefaultProject() {
+        return tenantDefaultProject;
+    }
+
+    public void setTenantDefaultProject(final URI tenantDefaultProject) {
+        this.tenantDefaultProject = tenantDefaultProject;
+    }
+
+    /**
+     * Default data services vpool identifier for this tenant when creating buckets
+     * @valid None
+     */
+    @XmlElement(required = false, name = "default_data_services_vpool")
+    public URI getTenantDefaultVpool() {
+        return tenantDefaultVpool;
+    }
+
+    public void setTenantDefaultVpool(final URI tenantDefaultVpool) {
+        this.tenantDefaultVpool = tenantDefaultVpool;
     }
 }

@@ -25,6 +25,7 @@ public class FileShareRestRep extends FileObjectRestRep {
     private RelatedResourceRep project;
     private RelatedResourceRep tenant;
     private String capacity;
+    private String usedCapacity;
     private RelatedResourceRep vpool;
     private RelatedResourceRep varray;
     private Set<String> protocols;
@@ -59,6 +60,19 @@ public class FileShareRestRep extends FileObjectRestRep {
 
     public void setCapacity(String capacity) {
         this.capacity = capacity;
+    }
+
+    /**
+     * Used capacity of the file system in GB
+     * @valid none 
+     */
+    @XmlElement(name = "used_capacity_gb")
+    public String getUsedCapacity() {
+        return usedCapacity;
+    }
+
+    public void setUsedCapacity(String usedCapacity) {
+        this.usedCapacity = usedCapacity;
     }
 
     /**

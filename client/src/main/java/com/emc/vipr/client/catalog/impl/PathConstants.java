@@ -12,8 +12,6 @@ public class PathConstants {
     public static final String REJECT_URL = APPROVALS_URL + "{id}/reject";
 
     public static final String EXECUTION_WINDOWS_URL = "/admin/api/executionwindows";
-    public static final String HOST_DISCOVER_URL = "/admin/api/hosts/{id}/discover";
-    public static final String VCENTER_DISCOVER_URL = "/admin/api/vcenters/{id}/discover";
 
     public static final String ASSET_OPTIONS_URL = "/api/options/{asset}";
     public static final String ASSET_DEPS_URL = "/api/options/{asset}/dependencies";

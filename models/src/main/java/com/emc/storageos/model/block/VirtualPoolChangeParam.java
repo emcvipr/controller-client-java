@@ -27,7 +27,8 @@ public class VirtualPoolChangeParam {
 
     private URI virtualPool;
     private BlockVirtualPoolProtectionParam protection;
-
+    private URI consistencyGroup;
+    
     public VirtualPoolChangeParam() {}
     
     public VirtualPoolChangeParam(URI virtualPool,
@@ -62,6 +63,20 @@ public class VirtualPoolChangeParam {
 
     public void setProtection(BlockVirtualPoolProtectionParam protection) {
         this.protection = protection;
+    }
+
+    /**
+     * The ViPR consistency group to associate the volume with for
+     * the creation of the RecoverPoint consistency group. 
+     * @return
+     */
+    @XmlElement(name = "consistency_group")
+    public URI getConsistencyGroup() {
+        return consistencyGroup;
+    }
+
+    public void setConsistencyGroup(URI consistencyGroup) {
+        this.consistencyGroup = consistencyGroup;
     }
     
 }

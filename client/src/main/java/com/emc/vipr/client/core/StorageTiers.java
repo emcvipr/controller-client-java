@@ -33,6 +33,11 @@ public class StorageTiers extends AbstractBulkResources<StorageTierRestRep> impl
     }
 
     @Override
+    public StorageTiers withInternal(boolean internal) {
+        return (StorageTiers) super.withInternal(internal);
+    }
+
+    @Override
     protected List<StorageTierRestRep> getBulkResources(BulkIdParam input) {
         StorageTierBulkRep response = client.post(StorageTierBulkRep.class, input, getBulkUrl());
         return defaultList(response.getStorageTiers());

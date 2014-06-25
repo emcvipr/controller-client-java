@@ -38,9 +38,13 @@ public abstract class AbstractResources<T extends DataObjectRestRep> implements 
     protected final RestClient client;
     protected final Class<T> resourceClass;
     protected final String baseUrl;
+
     /** Whether to include inactive resources in fetch operations, defaults to false. */
-    protected boolean inactive;
-    
+    private boolean includeInactive;
+
+    /** Whether to include internal resources in fetch operations, defaults to false. */
+    private boolean includeInternal;
+
     public AbstractResources(ViPRCoreClient parent, RestClient client, Class<T> resourceClass, String baseUrl) {
         this.parent = parent;
         this.client = client;
@@ -56,7 +60,19 @@ public abstract class AbstractResources<T extends DataObjectRestRep> implements 
      * @return this AbstractResources.
      */
     public AbstractResources<T> withInactive(boolean inactive) {
-        this.inactive = inactive;
+        this.includeInactive = inactive;
+        return this;
+    }
+
+    /**
+     * Configures the fetch operations to include internal resources.
+     *
+     * @param internal
+     *        whether to include internal resources.
+     * @return this AbstractResources.
+     */
+    public AbstractResources<T> withInternal(boolean internal) {
+        this.includeInternal = internal;
         return this;
     }
     
@@ -215,6 +231,18 @@ public abstract class AbstractResources<T extends DataObjectRestRep> implements 
         return postTask(getDeactivateUrl(), id);
     }
 
+    /**
+     * Deactivates a resource by ID and returns the deactivate tasks. Some resource types return tasks when
+     * deactivating.
+     * 
+     * @param id
+     *        the ID of the resource to deactivate.
+     * @return the deactivate tasks.
+     */
+    protected Tasks<T> doDeactivateWithTasks(URI id) {
+        return postTasks(getDeactivateUrl(), id);
+    }
+    
     /**
      * Gets the tasks associated with a resource by ID (when supported).
      * <p>
@@ -476,7 +504,11 @@ public abstract class AbstractResources<T extends DataObjectRestRep> implements 
      */
     protected <V extends DataObjectRestRep> boolean accept(V item, ResourceFilter<V> filter) {
         // Filter inactive
-        if (!inactive && !ResourceUtils.isActive(item)) {
+        if (!includeInactive && !ResourceUtils.isActive(item)) {
+            return false;
+        }
+        // Filter internal
+        if (!includeInternal && !ResourceUtils.isNotInternal(item)) {
             return false;
         }
         if (filter != null) {

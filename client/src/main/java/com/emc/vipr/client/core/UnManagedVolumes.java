@@ -35,6 +35,11 @@ public class UnManagedVolumes extends AbstractBulkResources<UnManagedVolumeRestR
     }
 
     @Override
+    public UnManagedVolumes withInternal(boolean internal) {
+        return (UnManagedVolumes) super.withInternal(internal);
+    }
+
+    @Override
     protected List<UnManagedVolumeRestRep> getBulkResources(BulkIdParam input) {
         UnManagedBulkRep response = client.post(UnManagedBulkRep.class, input, getBulkUrl());
         return defaultList(response.getUnManagedVolumes());

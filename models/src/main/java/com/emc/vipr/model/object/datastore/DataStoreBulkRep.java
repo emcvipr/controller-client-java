@@ -14,7 +14,7 @@ public class DataStoreBulkRep extends BulkRestRep {
 
     @SuppressWarnings("unchecked")
     @XmlElement(name = "data_store")
-    public List<DataStoreRestRep> getObjectPools() {
+    public List<DataStoreRestRep> getDataStores() {
         if (pools == null) {
             pools = new ArrayList<DataStoreRestRep>();
         }

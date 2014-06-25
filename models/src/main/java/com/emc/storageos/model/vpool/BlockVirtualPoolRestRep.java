@@ -25,6 +25,7 @@ public class BlockVirtualPoolRestRep extends VirtualPoolCommonRestRep {
     private String autoTieringPolicyName;
     private String driveType;
     private Boolean expandable;
+    public  Boolean fastExpansion;
     private Boolean multiVolumeConsistent;
     private Integer thinVolumePreAllocationPercentage;
     private BlockVirtualPoolProtectionParam protection;
@@ -66,17 +67,30 @@ public class BlockVirtualPoolRestRep extends VirtualPoolCommonRestRep {
     }
 
     /**
-     * Specifies whether or not volumes can be expanded in a non-destructive
-     * manner.
+     * Specifies whether or not volumes can be expanded.
      * 
      * @valid true
      * @valid false
      * 
-     * @return true if volumes are non-disruptively expandable, false otherwise.
+     * @return true if volumes are expandable, false otherwise.
      */
     @XmlElement(name = "expandable")
     public Boolean getExpandable() {
         return expandable;
+    }
+    /**
+     * Indicates that virtual pool volumes should use concatenated meta volumes,
+     * not striped.
+     * @valid true
+     * @valid false
+     */
+    @XmlElement(name = "fast_expansion")
+    public Boolean getFastExpansion() {
+        return fastExpansion;
+    }
+
+    public void setFastExpansion(Boolean fastExpansion) {
+        this.fastExpansion = fastExpansion;
     }
 
     /**

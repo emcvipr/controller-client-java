@@ -27,6 +27,7 @@ public class BlockVirtualPoolUpdateParam extends VirtualPoolUpdateParam {
     private String driveType;
     private Boolean multiVolumeConsistency;
     private Boolean expandable;
+    private Boolean fastExpansion;
     private BlockVirtualPoolProtectionUpdateParam protection;
     private VirtualPoolHighAvailabilityParam highAvailability;
     private Boolean uniquePolicyNames ;
@@ -172,7 +173,7 @@ public class BlockVirtualPoolUpdateParam extends VirtualPoolUpdateParam {
     }
 
     /**
-     * Specifies whether or not the virtual pool supports non-disruptive volume
+     * Specifies whether or not the virtual pool supports volume
      * expansion.
      * 
      * @valid true
@@ -185,6 +186,20 @@ public class BlockVirtualPoolUpdateParam extends VirtualPoolUpdateParam {
 
     public void setExpandable(Boolean expandable) {
         this.expandable = expandable;
+    }
+    /**
+     * Indicates that virtual pool volumes should use concatenated meta volumes,
+     * not striped.
+     * @valid true
+     * @valid false
+     */
+    @XmlElement(name = "fast_expansion")
+    public Boolean getFastExpansion() {
+        return fastExpansion;
+    }
+
+    public void setFastExpansion(Boolean fastExpansion) {
+        this.fastExpansion = fastExpansion;
     }
 
     /**

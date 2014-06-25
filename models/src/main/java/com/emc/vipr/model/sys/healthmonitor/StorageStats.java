@@ -23,19 +23,13 @@ public class StorageStats {
     }
 
     public StorageStats(ControllerStorageStats controllerStorageStats,
-                        DataServiceStorageStats objectStorageStats,
-                        DataServiceStorageStats HDFSStorageStats,
-                        DataServiceStorageStats objectHDFSStorageStats) {
+                        DataServiceStorageStats objectStorageStats) {
         this.controllerStorageStats = controllerStorageStats;
         this.objectStorageStats = objectStorageStats;
-        this.HDFSStorageStats = HDFSStorageStats;
-        this.objectHDFSStorageStats = objectHDFSStorageStats;
     }
 
     private ControllerStorageStats controllerStorageStats;
     private DataServiceStorageStats objectStorageStats;
-    private DataServiceStorageStats HDFSStorageStats;
-    private DataServiceStorageStats objectHDFSStorageStats;
 
     public static class ControllerStorageStats {
         private double fileCapacityKB;
@@ -116,25 +110,7 @@ public class StorageStats {
 
     public void setObjectStorageStats(DataServiceStorageStats objectStorageStats) {
         this.objectStorageStats = objectStorageStats;
-    }
-    
-    @XmlElement(name = "hdfs")
-    public DataServiceStorageStats getHDFSStorageStats() {
-        return HDFSStorageStats;
-    }
-
-    public void setHDFSStorageStats(DataServiceStorageStats HDFSStorageStats) {
-        this.HDFSStorageStats = HDFSStorageStats;
-    }
-    
-    @XmlElement(name = "objecthdfs")
-    public DataServiceStorageStats getObjectHDFSStorageStats() {
-        return objectHDFSStorageStats;        
-    }
-
-    public void setObjectHDFSStorageStats(DataServiceStorageStats objectHDFSStorageStats) {
-        this.objectHDFSStorageStats = objectHDFSStorageStats;
-    }
+    }    
 }
 
 

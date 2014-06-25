@@ -8,6 +8,8 @@ import static com.emc.vipr.client.core.util.VirtualPoolUtils.blockVpools;
 import java.net.URI;
 import java.util.List;
 
+import javax.ws.rs.core.UriBuilder;
+
 import com.emc.storageos.model.BulkIdParam;
 import com.emc.storageos.model.NamedRelatedResourceRep;
 import com.emc.storageos.model.auth.ACLAssignmentChanges;
@@ -16,10 +18,20 @@ import com.emc.storageos.model.pools.StoragePoolList;
 import com.emc.storageos.model.pools.StoragePoolRestRep;
 import com.emc.storageos.model.quota.QuotaInfo;
 import com.emc.storageos.model.quota.QuotaUpdateParam;
-import com.emc.storageos.model.vpool.*;
+import com.emc.storageos.model.vpool.BlockVirtualPoolBulkRep;
+import com.emc.storageos.model.vpool.BlockVirtualPoolParam;
+import com.emc.storageos.model.vpool.BlockVirtualPoolRestRep;
+import com.emc.storageos.model.vpool.BlockVirtualPoolUpdateParam;
+import com.emc.storageos.model.vpool.CapacityResponse;
+import com.emc.storageos.model.vpool.NamedRelatedVirtualPoolRep;
+import com.emc.storageos.model.vpool.VirtualPoolChangeList;
+import com.emc.storageos.model.vpool.VirtualPoolChangeRep;
+import com.emc.storageos.model.vpool.VirtualPoolList;
+import com.emc.storageos.model.vpool.VirtualPoolPoolUpdateParam;
 import com.emc.vipr.client.ViPRCoreClient;
 import com.emc.vipr.client.core.filters.ResourceFilter;
 import com.emc.vipr.client.core.impl.PathConstants;
+import com.emc.vipr.client.core.impl.SearchConstants;
 import com.emc.vipr.client.core.util.ResourceUtils;
 import com.emc.vipr.client.impl.RestClient;
 
@@ -37,6 +49,11 @@ public class BlockVirtualPools extends AbstractBulkResources<BlockVirtualPoolRes
     @Override
     public BlockVirtualPools withInactive(boolean inactive) {
         return (BlockVirtualPools) super.withInactive(inactive);
+    }
+
+    @Override
+    public BlockVirtualPools withInternal(boolean internal) {
+        return (BlockVirtualPools) super.withInternal(internal);
     }
 
     @Override
@@ -70,6 +87,21 @@ public class BlockVirtualPools extends AbstractBulkResources<BlockVirtualPoolRes
     public List<NamedRelatedVirtualPoolRep> list() {
         return getList(baseUrl);
     }
+    
+
+    /**
+     * Lists all virtual pools in a virtual data center
+     * <p>
+     * API Call: <tt>GET /block/vpools</tt>
+     * 
+     * @return the list of virtual pool references in a virtual data center
+     */
+    public List<NamedRelatedVirtualPoolRep> listByVDC(String shortVdcId) {
+        UriBuilder builder = client.uriBuilder(baseUrl);
+        builder.queryParam(SearchConstants.VDC_ID_PARAM, shortVdcId);
+        VirtualPoolList response =  client.getURI(VirtualPoolList.class, builder.build());
+        return ResourceUtils.defaultList(response.getVirtualPool());
+    }        
 
     /**
      * Gets all block virtual pools.
@@ -153,8 +185,8 @@ public class BlockVirtualPools extends AbstractBulkResources<BlockVirtualPoolRes
     public List<NamedRelatedVirtualPoolRep> listByVirtualArray(URI varrayId) {
         VirtualPoolList response = client.get(VirtualPoolList.class, String.format(ID_URL_FORMAT, VARRAY_URL) + "/vpools", varrayId);
         return defaultList(response.getVirtualPool());
-    }
-
+    }  
+    
     /**
      * Gets the storage pools that are associated with the given block virtual pool.
      * Convenience method for calling getByRefs(listByVirtualArray(varrayId)).
@@ -307,4 +339,19 @@ public class BlockVirtualPools extends AbstractBulkResources<BlockVirtualPoolRes
     public BlockVirtualPoolRestRep assignStoragePools(URI id, VirtualPoolPoolUpdateParam input) {
         return client.put(BlockVirtualPoolRestRep.class, input, getIdUrl() + "/assign-matched-pools", id);
     }
+     
+    /**
+     * Lists virtual pool change candidates for the given block virtual pool.
+     * <p>
+     * API Call: <tt>GET /block/vpools/{id}/vpool-change/vpool</tt>
+     * 
+     * @param id
+     *        the ID of the block virtual pool.
+     * @return the list of virtual pool candidates.
+     */
+    public List<VirtualPoolChangeRep> listVirtualPoolChangeCandidates(URI id, BulkIdParam input) {
+        VirtualPoolChangeList response = client.post(VirtualPoolChangeList.class, input, getIdUrl() + "/vpool-change/vpool", id);
+        return defaultList(response.getVirtualPools());
+    }
+    
 }

@@ -3,15 +3,18 @@ package com.emc.vipr.client.core;
 import static com.emc.vipr.client.core.util.ResourceUtils.defaultList;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.emc.storageos.model.BulkIdParam;
 import com.emc.storageos.model.NamedRelatedResourceRep;
 import com.emc.storageos.model.smis.SMISProviderBulkRep;
-import com.emc.storageos.model.smis.SMISProviderCreateParam;
-import com.emc.storageos.model.smis.SMISProviderList;
 import com.emc.storageos.model.smis.SMISProviderRestRep;
-import com.emc.storageos.model.smis.SMISProviderUpdateParam;
+import com.emc.storageos.model.smis.StorageProviderBulkRep;
+import com.emc.storageos.model.smis.StorageProviderCreateParam;
+import com.emc.storageos.model.smis.StorageProviderList;
+import com.emc.storageos.model.smis.StorageProviderRestRep;
+import com.emc.storageos.model.smis.StorageProviderUpdateParam;
 import com.emc.storageos.model.varray.DecommissionedResourceRep;
 import com.emc.storageos.model.varray.DecommissionedResources;
 import com.emc.vipr.client.Task;
@@ -19,52 +22,57 @@ import com.emc.vipr.client.Tasks;
 import com.emc.vipr.client.ViPRCoreClient;
 import com.emc.vipr.client.core.filters.ResourceFilter;
 import com.emc.vipr.client.core.impl.PathConstants;
-import com.emc.vipr.client.impl.RestClient;
 import com.emc.vipr.client.core.util.ResourceUtils;
+import com.emc.vipr.client.impl.RestClient;
 
 /**
  * SMI-S Providers resources.
  * <p>
- * Base URL: <tt>/vdc/smis-providers</tt>
+ * Base URL: <tt>/vdc/storage-providers</tt>
  */
-public class SMISProviders extends AbstractBulkResources<SMISProviderRestRep> implements
-        TopLevelResources<SMISProviderRestRep>, TaskResources<SMISProviderRestRep> {
-    public SMISProviders(ViPRCoreClient parent, RestClient client) {
-        super(parent, client, SMISProviderRestRep.class, PathConstants.SMIS_PROVIDER_URL);
+public class StorageProviders extends AbstractBulkResources<StorageProviderRestRep> implements
+        TopLevelResources<StorageProviderRestRep>, TaskResources<StorageProviderRestRep> {
+    public StorageProviders(ViPRCoreClient parent, RestClient client) {
+        super(parent, client, StorageProviderRestRep.class, PathConstants.STORAGE_PROVIDER_URL);
     }
 
     @Override
-    public SMISProviders withInactive(boolean inactive) {
-        return (SMISProviders) super.withInactive(inactive);
+    public StorageProviders withInactive(boolean inactive) {
+        return (StorageProviders) super.withInactive(inactive);
     }
 
     @Override
-    protected List<SMISProviderRestRep> getBulkResources(BulkIdParam input) {
-        SMISProviderBulkRep response = client.post(SMISProviderBulkRep.class, input, getBulkUrl());
-        return defaultList(response.getSmisProviders());
+    public StorageProviders withInternal(boolean internal) {
+        return (StorageProviders) super.withInternal(internal);
     }
 
     @Override
-    public Tasks<SMISProviderRestRep> getTasks(URI id) {
+    protected List<StorageProviderRestRep> getBulkResources(BulkIdParam input) {
+        StorageProviderBulkRep response = client.post(StorageProviderBulkRep.class, input, getBulkUrl());
+        return defaultList(response.getStorageProviders());
+    }
+
+    @Override
+    public Tasks<StorageProviderRestRep> getTasks(URI id) {
         return doGetTasks(id);
     }
 
     @Override
-    public Task<SMISProviderRestRep> getTask(URI id, URI taskId) {
+    public Task<StorageProviderRestRep> getTask(URI id, URI taskId) {
         return doGetTask(id, taskId);
     }
 
     /**
-     * Lists all SMI-S providers.
+     * Lists all Storage providers.
      * <p>
-     * API Call: <tt>GET /vdc/smis-providers</tt>
+     * API Call: <tt>GET /vdc/storage-providers</tt>
      * 
-     * @return the list of SMI-S provider references.
+     * @return the list of Storage provider references.
      */
     @Override
     public List<NamedRelatedResourceRep> list() {
-        SMISProviderList response = client.get(SMISProviderList.class, baseUrl);
-        return ResourceUtils.defaultList(response.getSmisProviders());
+        StorageProviderList response = client.get(StorageProviderList.class, baseUrl);
+        return ResourceUtils.defaultList(response.getStorageProviders());
     }
 
     /**
@@ -73,7 +81,7 @@ public class SMISProviders extends AbstractBulkResources<SMISProviderRestRep> im
      * @return the list of SMI-S providers.
      */
     @Override
-    public List<SMISProviderRestRep> getAll() {
+    public List<StorageProviderRestRep> getAll() {
         return getAll(null);
     }
 
@@ -86,28 +94,28 @@ public class SMISProviders extends AbstractBulkResources<SMISProviderRestRep> im
      * @return the list of SMI-S providers.
      */
     @Override
-    public List<SMISProviderRestRep> getAll(ResourceFilter<SMISProviderRestRep> filter) {
+    public List<StorageProviderRestRep> getAll(ResourceFilter<StorageProviderRestRep> filter) {
         List<NamedRelatedResourceRep> refs = list();
         return getByRefs(refs, filter);
     }
 
     /**
-     * Begins creating a new SMI-S provider.
+     * Begins creating a new storage provider.
      * <p>
-     * API Call: <tt>POST /vdc/smis-providers</tt>
+     * API Call: <tt>POST /vdc/storage-providers</tt>
      * 
      * @param input
      *        the create configuration.
      * @return a task for monitoring the progress of the operation.
      */
-    public Task<SMISProviderRestRep> create(SMISProviderCreateParam input) {
+    public Task<StorageProviderRestRep> create(StorageProviderCreateParam input) {
         return postTask(input, baseUrl);
     }
 
     /**
-     * Updates the given SMI-S provider by ID.
+     * Updates the given storage provider by ID.
      * <p>
-     * API Call: <tt>PUT /vdc/smis-providers/{id}</tt>
+     * API Call: <tt>PUT /vdc/storage-providers/{id}</tt>
      * 
      * @param id
      *        the ID of the SMI-S provider.
@@ -115,14 +123,14 @@ public class SMISProviders extends AbstractBulkResources<SMISProviderRestRep> im
      *        the update configuration.
      * @return the updated SMI-S provider.
      */
-    public SMISProviderRestRep update(URI id, SMISProviderUpdateParam input) {
-        return client.put(SMISProviderRestRep.class, input, getIdUrl(), id);
+    public StorageProviderRestRep update(URI id, StorageProviderUpdateParam input) {
+        return client.put(StorageProviderRestRep.class, input, getIdUrl(), id);
     }
 
     /**
-     * Deactivates the given SMI-S provider by ID.
+     * Deactivates the given storage provider by ID.
      * <p>
-     * API Call: <tt>POST /vdc/smis-providers/{id}/deactivate</tt>
+     * API Call: <tt>POST /vdc/storage-providers/{id}/deactivate</tt>
      * 
      * @param id
      *        the ID of the SMI-S provider.
@@ -132,20 +140,20 @@ public class SMISProviders extends AbstractBulkResources<SMISProviderRestRep> im
     }
 
     /**
-     * Scans all SMI-S providers.
+     * Scans all storage providers.
      * <p>
-     * API Call: <tt>POST /vdc/smis-providers/scan</tt>
+     * API Call: <tt>POST /vdc/storage-providers/scan</tt>
      * 
      * @return tasks for monitoring the progress of the operation(s).
      */
-    public Tasks<SMISProviderRestRep> scanAll() {
+    public Tasks<StorageProviderRestRep> scanAll() {
         return postTasks(baseUrl + "/scan");
     }
 
     /**
      * Gets all deactivated systems.
      * <p>
-     * API Call: <tt>GET /vdc/smis-providers/deactivated-systems</tt>
+     * API Call: <tt>GET /vdc/storage-providers/deactivated-systems</tt>
      * 
      * @return the list of deactivates systems.
      */

@@ -7,6 +7,8 @@ import static com.emc.vipr.client.core.util.ResourceUtils.defaultList;
 import java.net.URI;
 import java.util.List;
 
+import javax.ws.rs.core.UriBuilder;
+
 import com.emc.storageos.model.BulkIdParam;
 import com.emc.storageos.model.NamedRelatedResourceRep;
 import com.emc.storageos.model.auth.ACLAssignmentChanges;
@@ -26,6 +28,7 @@ import com.emc.storageos.model.vpool.VirtualPoolPoolUpdateParam;
 import com.emc.vipr.client.ViPRCoreClient;
 import com.emc.vipr.client.core.filters.ResourceFilter;
 import com.emc.vipr.client.core.impl.PathConstants;
+import com.emc.vipr.client.core.impl.SearchConstants;
 import com.emc.vipr.client.core.util.ResourceUtils;
 import com.emc.vipr.client.impl.RestClient;
 
@@ -45,6 +48,11 @@ public class FileVirtualPools extends AbstractBulkResources<FileVirtualPoolRestR
     @Override
     public FileVirtualPools withInactive(boolean inactive) {
         return (FileVirtualPools) super.withInactive(inactive);
+    }
+
+    @Override
+    public FileVirtualPools withInternal(boolean internal) {
+        return (FileVirtualPools) super.withInternal(internal);
     }
 
     @Override
@@ -79,6 +87,20 @@ public class FileVirtualPools extends AbstractBulkResources<FileVirtualPoolRestR
         return getList(baseUrl);
     }
 
+    /**
+     * Lists all virtual pools in a virtual data center
+     * <p>
+     * API Call: <tt>GET /file/vpools</tt>
+     * 
+     * @return the list of virtual pool references in a virtual data center
+     */
+    public List<NamedRelatedVirtualPoolRep> listByVDC(String shortVdcId) {
+        UriBuilder builder = client.uriBuilder(baseUrl);
+        builder.queryParam(SearchConstants.VDC_ID_PARAM, shortVdcId);
+        VirtualPoolList response =  client.getURI(VirtualPoolList.class, builder.build());
+        return ResourceUtils.defaultList(response.getVirtualPool());
+    }        
+    
     /**
      * Gets a list of all file virtual pools.
      * <p>

@@ -11,6 +11,8 @@ import java.util.Set;
 
 import com.emc.storageos.model.BulkIdParam;
 import com.emc.storageos.model.NamedRelatedResourceRep;
+import com.emc.storageos.model.TaskList;
+import com.emc.storageos.model.TaskResourceRep;
 import com.emc.storageos.model.block.*;
 import com.emc.storageos.model.block.export.ExportBlockParam;
 import com.emc.storageos.model.block.export.ExportGroupRestRep;
@@ -33,6 +35,7 @@ import com.emc.vipr.client.impl.RestClient;
  * Base URL: <tt>/block/volumes</tt>
  */
 public class BlockVolumes extends ProjectResources<VolumeRestRep> implements TaskResources<VolumeRestRep> {
+
     public BlockVolumes(ViPRCoreClient parent, RestClient client) {
         super(parent, client, VolumeRestRep.class, PathConstants.BLOCK_VOLUMES_URL);
     }
@@ -40,6 +43,11 @@ public class BlockVolumes extends ProjectResources<VolumeRestRep> implements Tas
     @Override
     public BlockVolumes withInactive(boolean inactive) {
         return (BlockVolumes) super.withInactive(inactive);
+    }
+
+    @Override
+    public BlockVolumes withInternal(boolean internal) {
+        return (BlockVolumes) super.withInternal(internal);
     }
 
     @Override
@@ -87,27 +95,68 @@ public class BlockVolumes extends ProjectResources<VolumeRestRep> implements Tas
     /**
      * Begins deactivating a block volume by ID.
      * <p>
-     * API Call: <tt>POST /block/volumes/{id}/deactivate</tt>
+     * API Call: <tt>POST /block/volumes/{id}/deactivate?type=FULL</tt>
      * 
      * @param id
      *        the ID of the block volume to deactivate.
      * @return a task for monitoring the progress of the operation.
+     *
+     * @see #deactivate(List, VolumeDeleteTypeEnum)
      */
     public Task<VolumeRestRep> deactivate(URI id) {
-        return doDeactivateWithTask(id);
+        return deactivate(id, VolumeDeleteTypeEnum.FULL);
+    }
+
+    /**
+     * Begins deactivating a block volume by ID.
+     * <p>
+     * API Call: <tt>POST /block/volumes/{id}/deactivate?type={deletionType}</tt>
+     *
+     * @param id
+     *        the ID of the block volume to deactivate.
+     * @param deletionType
+     *        {@code FULL} or {@code VIPR_ONLY}
+     * @return a task for monitoring the progress of the operation.
+     *
+     * @see com.emc.storageos.model.block.VolumeDeleteTypeEnum
+     */
+    public Task<VolumeRestRep> deactivate(URI id, VolumeDeleteTypeEnum deletionType) {
+        URI uri = client.uriBuilder(getDeactivateUrl()).queryParam("type", deletionType).build(id);
+        TaskResourceRep task = client.postURI(TaskResourceRep.class, uri);
+        return new Task<>(client, task, resourceClass);
     }
 
     /**
      * Begins deactivating multiple block volumes by their IDs.
      * <p>
-     * API Call: <tt>POST /block/volumes/deactivate</tt>
+     * API Call: <tt>POST /block/volumes/deactivate?type=FULL</tt>
      * 
      * @param ids
      *        The IDs of the block volumes to deactivate.
      * @return tasks for monitoring the progress of the operations.
      */
     public Tasks<VolumeRestRep> deactivate(List<URI> ids) {
-        return postTasks(new BulkDeleteParam(ids), baseUrl + "/deactivate");
+        return deactivate(ids, VolumeDeleteTypeEnum.FULL);
+    }
+
+    /**
+     * Begins deactivating multiple block volumes by their IDs.
+     * <p>
+     * API Call: <tt>POST /block/volumes/deactivate?type={deletionType}</tt>
+     *
+     * @param ids
+     *        The IDs of the block volumes to deactivate.
+     * @param deletionType
+     *        {@code FULL} or {@code VIPR_ONLY}
+     * @return a task for monitoring the progress of the operation.
+     * @return tasks for monitoring the progress of the operations.
+     *
+     * @see com.emc.storageos.model.block.VolumeDeleteTypeEnum
+     */
+    public Tasks<VolumeRestRep> deactivate(List<URI> ids, VolumeDeleteTypeEnum deletionType) {
+        URI uri = client.uriBuilder(baseUrl + "/deactivate").queryParam("type", deletionType).build();
+        TaskList tasks = client.postURI(TaskList.class, new BulkDeleteParam(ids), uri);
+        return new Tasks<>(client, tasks.getTaskList(), resourceClass);
     }
 
     /**
@@ -149,7 +198,7 @@ public class BlockVolumes extends ProjectResources<VolumeRestRep> implements Tas
      */
     public List<VolumeRestRep> getByExportGroups(Collection<? extends ExportGroupRestRep> exportGroups,
             ResourceFilter<VolumeRestRep> filter) {
-        Set<URI> ids = new LinkedHashSet<URI>();
+        Set<URI> ids = new LinkedHashSet<>();
         for (ExportGroupRestRep exportGroup : exportGroups) {
             if (exportGroup.getVolumes() != null) {
                 for (ExportBlockParam volume : exportGroup.getVolumes()) {
@@ -244,6 +293,22 @@ public class BlockVolumes extends ProjectResources<VolumeRestRep> implements Tas
     }
 
     /**
+     * Request to reverse the replication direction, i.e. R1 and R2 are interchanged for the given block volume.
+     * <p>
+     * API Call: <tt>POST /block/volumes/{id}/protection/continuous-copies/swap</tt>
+     *
+     * @param id
+     *        the ID of the block volume.
+     * @param input
+     *        the copy configurations.
+     * @return tasks for monitoring the progress of the operations.
+     */
+    public Tasks<VolumeRestRep> swapContinuousCopies(URI id, CopiesParam input) {
+        return postTasks(input, getContinuousCopiesUrl() + "/swap", id);
+    }
+
+
+    /**
      * Lists the continuous copies for the given volume.
      * <p>
      * API Call: <tt>GET /block/volumes/{id}/protection/continuous-copies</tt>
@@ -303,7 +368,7 @@ public class BlockVolumes extends ProjectResources<VolumeRestRep> implements Tas
      * @return the list of continuous copies.
      */
     public List<BlockMirrorRestRep> getContinuousCopies(URI id, ResourceFilter<BlockMirrorRestRep> filter) {
-        List<BlockMirrorRestRep> continuousCopies = new ArrayList<BlockMirrorRestRep>();
+        List<BlockMirrorRestRep> continuousCopies = new ArrayList<>();
         for (NamedRelatedResourceRep ref : listContinuousCopies(id)) {
             if (acceptId(ref.getId(), filter)) {
                 BlockMirrorRestRep continuousCopy = getContinuousCopy(id, ref.getId());
@@ -473,7 +538,10 @@ public class BlockVolumes extends ProjectResources<VolumeRestRep> implements Tas
      * @param input
      *        the input configuration.
      * @return a task for monitoring the progress of the operation.
+     * 
+     * @deprecated failover-test is being replaced by failover.
      */
+    @Deprecated
     public Tasks<VolumeRestRep> failoverTest(URI id, CopiesParam input) {
         return postTasks(input, getContinuousCopiesUrl() + "/failover-test", id);
     }
@@ -490,7 +558,11 @@ public class BlockVolumes extends ProjectResources<VolumeRestRep> implements Tas
      * @return a task for monitoring the progress of the operation.
      * 
      * @see #failoverTest(java.net.URI, boolean)
+     * 
+     * @deprecated failover-test-cancel needs to be replaced by failover-cancel.
+     *             TO-DO: Add client support for failover-cancel.
      */
+    @Deprecated
     public Tasks<VolumeRestRep> failoverTestCancel(URI id, CopiesParam input) {
         return postTasks(input, getContinuousCopiesUrl() + "/failover-test-cancel", id);
     }
@@ -562,7 +634,7 @@ public class BlockVolumes extends ProjectResources<VolumeRestRep> implements Tas
      * @return the list of allowed virtual pool change candidates.
      */
     public List<VirtualPoolChangeRep> listAllowedVirtualPoolChangeCandidates(URI id) {
-        List<VirtualPoolChangeRep> candidates = new ArrayList<VirtualPoolChangeRep>();
+        List<VirtualPoolChangeRep> candidates = new ArrayList<>();
         for (VirtualPoolChangeRep candidate : listVirtualPoolChangeCandidates(id)) {
             if (Boolean.TRUE.equals(candidate.getAllowed())) {
                 candidates.add(candidate);

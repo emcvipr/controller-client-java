@@ -35,6 +35,11 @@ public class BlockConsistencyGroups extends ProjectResources<BlockConsistencyGro
     }
 
     @Override
+    public BlockConsistencyGroups withInternal(boolean internal) {
+        return (BlockConsistencyGroups) super.withInternal(internal);
+    }
+
+    @Override
     protected List<BlockConsistencyGroupRestRep> getBulkResources(BulkIdParam input) {
         BlockConsistencyGroupBulkRep response = client.post(BlockConsistencyGroupBulkRep.class, input, getBulkUrl());
         return defaultList(response.getConsistencyGroups());

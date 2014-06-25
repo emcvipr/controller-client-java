@@ -4,6 +4,8 @@ public class PathConstants {
     public static final String ID_URL_FORMAT = "%s/{id}";
     public static final String DEACTIVATE_URL_FORMAT = ID_URL_FORMAT + "/deactivate";
     public static final String DEREGISTER_URL_FORMAT = ID_URL_FORMAT + "/deregister";
+    public static final String DISCONNECT_URL_FORMAT = ID_URL_FORMAT + "/disconnect";
+    public static final String RECONNECT_URL_FORMAT = ID_URL_FORMAT + "/reconnect";
     public static final String TAGS_URL_FORMAT = ID_URL_FORMAT + "/tags";
     public static final String ACL_URL_FORMAT = ID_URL_FORMAT + "/acl";
     public static final String ROLE_ASSIGNMENT_PATH = "/role-assignments";
@@ -13,6 +15,7 @@ public class PathConstants {
 
     public static final String VDC_URL = "/vdc";
     public static final String VDC_CAPACITIES_URL = "/vdc/capacities";
+    public static final String VDC_SECRET_KEY_URL = "/vdc/secret-key";
     public static final String AUDIT_LOGS_URL = "/audit/logs";
     public static final String MONITORING_EVENTS_URL = "/monitoring/events";
     public static final String METERING_STATS_URL = "/metering/stats";
@@ -61,24 +64,28 @@ public class PathConstants {
     public static final String INITIATORS_BY_NETWORK_URL = NETWORK_URL + "/{id}/initiators";
     public static final String STORAGE_PORT_BY_NETWORK_URL = NETWORK_URL + "/{id}/storage-ports";
     public static final String EXPORT_GROUP_URL = "/block/exports";
-    public static final String SMIS_PROVIDER_URL = "/vdc/smis-providers";
-    public static final String STORAGE_SYSTEM_BY_SMIS_PROVIDER_URL = SMIS_PROVIDER_URL + "/{id}/storage-systems";
+    public static final String STORAGE_PROVIDER_URL = "/vdc/storage-providers";
+    public static final String STORAGE_SYSTEM_BY_PROVIDER_URL = STORAGE_PROVIDER_URL + "/{id}/storage-systems";
     public static final String NETWORK_SYSTEM_URL = "/vdc/network-systems";
     public static final String FC_PORT_CONNECTION_URL = "/vdc/fc-port-connections";
     public static final String AUTHN_PROVIDER_URL = "/vdc/admin/authnproviders";
     public static final String WORKFLOW_URL = "/vdc/workflows";
     public static final String WORKFLOW_STEP_URL = "/vdc/workflows/steps";
     public static final String HOST_URL = "/compute/hosts";
+    public static final String HOST_DETACH_STORAGE_URL = HOST_URL + "/{hostId}/detach-storage";
     public static final String INITIATOR_BY_HOST_URL = HOST_URL + "/{hostId}/initiators";
     public static final String IPINTERFACE_BY_HOST_URL = HOST_URL + "/{hostId}/ip-interfaces";
     public static final String VCENTER_URL = "/compute/vcenters";
+    public static final String VCENTER_DETACH_STORAGE_URL = VCENTER_URL + "/{vcenterId}/detach-storage";
     public static final String CLUSTER_BY_VCENTER_URL = VCENTER_URL + "/{vcenterId}/clusters";
     public static final String DATACENTER_BY_VCENTER = VCENTER_URL + "/{vcenterId}/vcenter-data-centers";
     public static final String CLUSTER_URL = "/compute/clusters";
+    public static final String CLUSTER_DETACH_STORAGE_URL = CLUSTER_URL + "/{clusterId}/detach-storage";
     public static final String HOST_BY_CLUSTER_URL = CLUSTER_URL + "/{clusterId}/hosts";
     public static final String INITIATOR_URL = "/compute/initiators";
     public static final String IPINTERFACE_URL = "/compute/ip-interfaces";
     public static final String DATACENTER_URL = "/compute/vcenter-data-centers";
+    public static final String DATACENTER_DETACH_STORAGE_URL = DATACENTER_URL + "/{dataCenterId}/detach-storage";
     public static final String HOST_BY_DATACENTER_URL = DATACENTER_URL + "/{dataCenterId}/hosts";
     public static final String CLUSTER_BY_DATACENTER_URL = DATACENTER_URL + "/{dataCenterId}/clusters";
     public static final String AUTO_TIERING_POLICY_URL = "/vdc/auto-tier-policies";
@@ -87,4 +94,8 @@ public class PathConstants {
     public static final String MIGRATION_URL = "/block/migrations";
     public static final String UNMANAGED_VOLUMES_URL = "/vdc/unmanaged/volumes";
     public static final String UNMANAGED_FILESYSTEMS_URL = "/vdc/unmanaged/filesystems";
+    public static final String KEYSTORE_URL = "/vdc/keystore";
+    public static final String TRUSTSTORE_URL = "/vdc/truststore";
+    public static final String TRUSTSTORE_SETTINGS_URL = "/vdc/truststore/settings";
+    public static final String PREPARE_VDC_URL = "/vdc/prepare-vdc";
 }

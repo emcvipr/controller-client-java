@@ -26,15 +26,17 @@ public class IpInterfaceRestRep extends HostInterfaceRestRep {
     private String netmask;
     private Integer prefixLength;
     private String scopeId;
+    private String name;
 
     public IpInterfaceRestRep() {}
     
     public IpInterfaceRestRep(String ipAddress, String netmask,
-            Integer prefixLength, String scopeId) {
+            Integer prefixLength, String scopeId, String name) {
         this.ipAddress = ipAddress;
         this.netmask = netmask;
         this.prefixLength = prefixLength;
         this.scopeId = scopeId;
+        this.name = name;
     }
 
     /** 
@@ -92,5 +94,19 @@ public class IpInterfaceRestRep extends HostInterfaceRestRep {
 
     public void setScopeId(String scopeId) {
         this.scopeId = scopeId;
+    }
+    
+    /**
+     * Gets the name of the interface
+     * @valid none
+     * @return the name of the interface
+     */
+    @XmlElement(name="name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
