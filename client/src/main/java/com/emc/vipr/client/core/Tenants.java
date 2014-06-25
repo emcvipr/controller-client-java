@@ -37,6 +37,11 @@ public class Tenants extends AbstractBulkResources<TenantOrgRestRep> implements 
     }
 
     @Override
+    public Tenants withInternal(boolean internal) {
+        return (Tenants) super.withInternal(internal);
+    }
+
+    @Override
     protected List<TenantOrgRestRep> getBulkResources(BulkIdParam input) {
         TenantOrgBulkRep response = client.post(TenantOrgBulkRep.class, input, getBulkUrl());
         return defaultList(response.getTenants());

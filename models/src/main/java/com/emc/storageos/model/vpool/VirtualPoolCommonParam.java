@@ -130,6 +130,7 @@ public class VirtualPoolCommonParam {
      * @valid NONE
      * @valid vnxblock (Block)
      * @valid vmax     (Block)
+     * @valid openstack (Block)
      * @valid vnxfile  (File)
      * @valid isilon   (File)
      * @valid netapp   (File)

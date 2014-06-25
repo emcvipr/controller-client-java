@@ -38,6 +38,7 @@ public class StorageSystemRestRep extends DiscoveredSystemObjectRestRep {
     private String smisProviderIP;
     private Integer smisPortNumber;
     private String smisUserName;
+    private String smisConnectionStatus;
     private Boolean smisUseSSL;
     private List<StringHashMapEntry> exportMasks;
     private Set<String> protocols;
@@ -68,6 +69,7 @@ public class StorageSystemRestRep extends DiscoveredSystemObjectRestRep {
         this.activeProvider = activeProvider;
     }
 
+    @Deprecated
     @XmlElementWrapper(name = "assocociated_systems")
     @XmlElement(name = "associated_system")
     public Set<String> getAssociatedSystems() {
@@ -77,6 +79,7 @@ public class StorageSystemRestRep extends DiscoveredSystemObjectRestRep {
         return associatedSystems;
     }
 
+    @Deprecated
     public void setAssociatedSystems(Set<String> associatedSystems) {
         this.associatedSystems = associatedSystems;
     }
@@ -269,6 +272,15 @@ public class StorageSystemRestRep extends DiscoveredSystemObjectRestRep {
 
     public void setSmisUserName(String smisUserName) {
         this.smisUserName = smisUserName;
+    }
+    
+    @XmlElement(name = "smis_connection_status")
+    public String getSmisConnectionStatus() {
+        return smisConnectionStatus;
+    }
+
+    public void setSmisConnectionStatus(String smisConnectionStatus) {
+        this.smisConnectionStatus = smisConnectionStatus;
     }
     
     @XmlElement(name = "max_resources")

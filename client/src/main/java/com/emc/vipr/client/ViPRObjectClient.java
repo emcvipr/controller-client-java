@@ -74,10 +74,6 @@ public class ViPRObjectClient {
         return new BaseUrls(client);
     }
 
-    public VirtualPools virtualPools() {
-        return new VirtualPools(client);
-    }
-
     public DataStores dataStores() {
         return new DataStores(client);
     }
@@ -112,5 +108,13 @@ public class ViPRObjectClient {
 
     public UserSecretKeys userSecretKeys() {
         return new UserSecretKeys(client);
+    }
+    
+    public ObjectDataServiceVpools objectVirtualPools() {
+    	return new ObjectDataServiceVpools(client);
+    }
+    
+    public CasHead casHead() {
+        return new CasHead(client);
     }
 }

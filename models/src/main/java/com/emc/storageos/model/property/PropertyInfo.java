@@ -10,28 +10,26 @@
  */
 package com.emc.storageos.model.property;
 
+
 import java.util.Map;
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 @XmlRootElement(name = "property_base_info")
 public class PropertyInfo {
 
     private Map<String, String> properties;
-
-    // property constants
-    public static final String ENCODING_SEPARATOR           = "\0";
-    public static final String ENCODING_EQUAL               = "=";
-    public static final String ENCODING_NEWLINE             = "\n";
-    public static final String TARGET_PROPERTY              = "upgradetargetproperty";
-    public static final String TARGET_PROPERTY_ID           = "global";
-    public static final String TARGET_INFO                  = "targetInfo";
+    
+    public static enum PropCategory { ALL,
+    	                              CONFIG, 
+    	                              OVF, 
+    	                              MUTATED, 
+    	                              OBSOLETE 
+    }   
 
     /**
      * Default constructor
@@ -47,9 +45,9 @@ public class PropertyInfo {
             for (Map.Entry<String, String> entry : properties.entrySet()) {
                 getProperties().put(entry.getKey(), entry.getValue());
             }
-        }
+        }  	
     }
-
+    
     @XmlElementWrapper(name = "properties")
     public Map<String, String> getProperties() {
         if (properties == null) {
@@ -57,7 +55,7 @@ public class PropertyInfo {
         }
         return properties;
     }
-
+    
     public void setProperties(Map<String, String> properties) {
         this.properties = properties;
     }
@@ -74,9 +72,18 @@ public class PropertyInfo {
     /**
      * Get all properties
      * @return  map containing key, value pair
+     *//**
+     * Get all properties
+     * @return  map containing key, value pair
+     *//**
+     * Get all properties
+     * @return  map containing key, value pair
+     *//**
+     * Get all properties
+     * @return  map containing key, value pair
      */
     public Map<String, String> getAllProperties() {
         return getProperties();
     }
-    
+     
 }

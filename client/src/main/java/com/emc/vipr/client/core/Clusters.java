@@ -12,6 +12,7 @@ import com.emc.storageos.model.host.cluster.ClusterCreateParam;
 import com.emc.storageos.model.host.cluster.ClusterList;
 import com.emc.storageos.model.host.cluster.ClusterRestRep;
 import com.emc.storageos.model.host.cluster.ClusterUpdateParam;
+import com.emc.vipr.client.Task;
 import com.emc.vipr.client.ViPRCoreClient;
 import com.emc.vipr.client.core.filters.ResourceFilter;
 import com.emc.vipr.client.core.impl.PathConstants;
@@ -30,6 +31,11 @@ public class Clusters extends AbstractBulkResources<ClusterRestRep> implements T
     @Override
     public Clusters withInactive(boolean inactive) {
         return (Clusters) super.withInactive(inactive);
+    }
+
+    @Override
+    public Clusters withInternal(boolean internal) {
+        return (Clusters) super.withInternal(internal);
     }
 
     @Override
@@ -181,7 +187,7 @@ public class Clusters extends AbstractBulkResources<ClusterRestRep> implements T
     public ClusterRestRep update(URI id, ClusterUpdateParam input) {
         return client.put(ClusterRestRep.class, input, getIdUrl(), id);
     }
-
+    
     /**
      * Deactivates a cluster by ID.
      * <p>
@@ -190,7 +196,34 @@ public class Clusters extends AbstractBulkResources<ClusterRestRep> implements T
      * @param id
      *        the ID of the cluster to deactivate.
      */
-    public void deactivate(URI id) {
-        doDeactivate(id);
+    public Task<ClusterRestRep> deactivate(URI id) {
+        return deactivate(id, false);
+    }
+    
+    /**
+     * Deactivates a cluster.
+     * <p>
+     * API Call: <tt>POST /compute/clusters/{id}/deactivate?detach-storage={detachStorage}</tt>
+     * 
+     * @param id
+     *        the ID of the cluster to deactivate.
+     * @param detachStorage
+     *        if true, will first detach storage.
+     */
+    public Task<ClusterRestRep> deactivate(URI id, boolean detachStorage) {
+        URI deactivateUri = client.uriBuilder(getDeactivateUrl()).queryParam("detach-storage", detachStorage).build(id);
+        return postTaskURI(deactivateUri);
+    }
+    
+    /**
+     * Detaches storage from a cluster.
+     * <p>
+     * API Call: <tt>POST /compute/clusters/{id}/detach-storage</tt>
+     * 
+     * @param id
+     *        the ID of the cluster.
+     */
+    public Task<ClusterRestRep> detachStorage(URI id) {
+        return postTask(PathConstants.CLUSTER_DETACH_STORAGE_URL, id);
     }
 }

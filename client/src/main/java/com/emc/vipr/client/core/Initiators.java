@@ -38,6 +38,11 @@ public class Initiators extends AbstractBulkResources<InitiatorRestRep> {
     }
 
     @Override
+    public Initiators withInternal(boolean internal) {
+        return (Initiators) super.withInternal(internal);
+    }
+
+    @Override
     protected List<InitiatorRestRep> getBulkResources(BulkIdParam input) {
         InitiatorBulkRep response = client.post(InitiatorBulkRep.class, input, getBulkUrl());
         return defaultList(response.getInitiators());

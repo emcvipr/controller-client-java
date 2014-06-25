@@ -32,6 +32,11 @@ public class AuthnProviders extends AbstractResources<AuthnProviderRestRep> impl
         return (AuthnProviders) super.withInactive(inactive);
     }
 
+    @Override
+    public AuthnProviders withInternal(boolean internal) {
+        return (AuthnProviders) super.withInternal(internal);
+    }
+
     /**
      * Lists all authentication providers.
      * <p>

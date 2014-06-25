@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlElement;
 public class VirtualPoolHighAvailabilityParam {
     
     private String type;
-    private VirtualArrayVirtualPoolMapEntry haVirtualArrayVirtualPool;
+    private VirtualArrayVirtualPoolMapEntry haVirtualArrayVirtualPool;     
     
     public VirtualPoolHighAvailabilityParam() {}
     
@@ -31,7 +31,7 @@ public class VirtualPoolHighAvailabilityParam {
         this.type = type;
         this.haVirtualArrayVirtualPool = haVirtualArrayVirtualPool;
     }
-
+    
     /**
      * The high availability type.
      * 
@@ -61,9 +61,9 @@ public class VirtualPoolHighAvailabilityParam {
     public void setHaVirtualArrayVirtualPool(
             VirtualArrayVirtualPoolMapEntry haVirtualArrayVirtualPool) {
         this.haVirtualArrayVirtualPool = haVirtualArrayVirtualPool;
-    }
+    }   
 
-    /**
+	/**
      *  The class provides the REST representation of an entry in a
      *  VirtualArray VirtualPool map.
      */
@@ -71,12 +71,19 @@ public class VirtualPoolHighAvailabilityParam {
  
         private URI virtualArray;
         private URI virtualPool;
-        
+        private Boolean useAsRecoverPointSource;
+               
         public VirtualArrayVirtualPoolMapEntry() {}
         
         public VirtualArrayVirtualPoolMapEntry(URI key, URI val) {
             virtualArray = key;
             virtualPool = val;
+        }
+        
+        public VirtualArrayVirtualPoolMapEntry(URI key, URI val, Boolean rp) {
+            virtualArray = key;
+            virtualPool = val;
+            useAsRecoverPointSource = rp;
         }
 
         /**
@@ -108,7 +115,22 @@ public class VirtualPoolHighAvailabilityParam {
         public void setVirtualPool(URI virtualPool) {
             this.virtualPool = virtualPool;
         }
-        
+
+        /**
+         * Indicates whether or not to use this varray/vpool as the
+         * RecoverPoint Source in an RP+VPLEX setup.
+         * 
+         * @valid true
+         * @valid false
+         */
+        @XmlElement(name = "useAsRecoverPointSource", required = false)
+        @JsonProperty("useAsRecoverPointSource")
+		public Boolean getUseAsRecoverPointSource() {
+			return useAsRecoverPointSource;
+		}
+
+		public void setUseAsRecoverPointSource(Boolean useAsRecoverPointSource) {
+			this.useAsRecoverPointSource = useAsRecoverPointSource;
+		}        
     }
-  
 }

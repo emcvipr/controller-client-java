@@ -1,12 +1,28 @@
 package com.emc.vipr.client.object;
 
-import com.emc.vipr.client.impl.RestClient;
-import com.emc.vipr.model.object.ObjectNamedRelatedResourceRep;
-import com.emc.vipr.model.object.namespace.*;
+import static com.emc.vipr.client.object.impl.PathConstants.DEACTIVATE_PATH;
+import static com.emc.vipr.client.object.impl.PathConstants.ID_PATH;
+import static com.emc.vipr.client.object.impl.PathConstants.NAMESPACES_URL;
+import static com.emc.vipr.client.object.impl.PathConstants.NAMESPACE_PATH;
+import static com.emc.vipr.client.object.impl.PathConstants.NAMESPACE_RETENTION_CLASS_URL;
+import static com.emc.vipr.client.object.impl.PathConstants.NAMESPACE_RETENTION_CLASSES_URL;
+import static com.emc.vipr.client.object.impl.PathConstants.TENANT_PATH;
+
 import java.net.URI;
 import java.util.List;
 
-import static com.emc.vipr.client.object.impl.PathConstants.*;
+import com.emc.vipr.client.core.util.ResourceUtils;
+import com.emc.vipr.client.impl.RestClient;
+import com.emc.vipr.model.object.ObjectNamedRelatedResourceRep;
+import com.emc.vipr.model.object.namespace.NamespaceCreateParam;
+import com.emc.vipr.model.object.namespace.NamespaceList;
+import com.emc.vipr.model.object.namespace.NamespaceRestRep;
+import com.emc.vipr.model.object.namespace.NamespaceUpdateParam;
+import com.emc.vipr.model.object.namespace.TenantNamespaceRestRep;
+import com.emc.vipr.model.object.retention.RetentionClassCreateParam;
+import com.emc.vipr.model.object.retention.RetentionClassInfoRep;
+import com.emc.vipr.model.object.retention.RetentionClassListRep;
+import com.emc.vipr.model.object.retention.RetentionClassUpdateParam;
 
 public class Namespaces {
     private RestClient client;
@@ -35,7 +51,7 @@ public class Namespaces {
      * @return Namespace object.
      */
     public NamespaceRestRep get(String namespace) {
-        return client.get(NamespaceRestRep.class, NAMESPACES_URL + ID_PATH, namespace);
+        return client.get(NamespaceRestRep.class, NAMESPACES_URL + NAMESPACE_PATH + ID_PATH, namespace);
     }
 
     /**
@@ -86,5 +102,69 @@ public class Namespaces {
      */
     public void deactivate(String namespace) {
         client.post(String.class, NAMESPACES_URL + NAMESPACE_PATH + ID_PATH + DEACTIVATE_PATH, new Object[] {namespace});
+    }
+    
+    /**
+     * Gets the retention classes for the given namespace.
+     * <p>
+     * API Call: <tt>GET /object/namespaces/namespace/{namespace}/retention</tt>
+     * </p>
+     * 
+     * @param namespace
+     *        the namespace ID.
+     * @return the list of retention classes.
+     */
+    public List<RetentionClassInfoRep> getRetentionClasses(String namespace) {
+        RetentionClassListRep list = client
+                .get(RetentionClassListRep.class, NAMESPACE_RETENTION_CLASSES_URL, namespace);
+        return ResourceUtils.defaultList(list != null ? list.getRetentionClasses() : null);
+    }
+
+    /**
+     * Gets a retention classes for the given namespace by name.
+     * <p>
+     * API Call: <tt>GET /object/namespaces/namespace/{namespace}/retention/{className}</tt>
+     * </p>
+     * 
+     * @param namespace
+     *        the namespace ID.
+     * @param className
+     *        the retention class name.
+     * @return the retention class.
+     */
+    public RetentionClassInfoRep getRetentionClass(String namespace, String className) {
+        return client.get(RetentionClassInfoRep.class, NAMESPACE_RETENTION_CLASS_URL, namespace, className);
+    }
+
+    /**
+     * Creates a retention class for the given namespace.
+     * <p>
+     * API Call: <tt>POST /object/namespaces/namespace/{namespace}/retention</tt>
+     * </p>
+     * 
+     * @param namespace
+     *        the namespace ID.
+     * @param create
+     *        the retention class configuration.
+     */
+    public void createRetentionClass(String namespace, RetentionClassCreateParam create) {
+        client.post(String.class, create, NAMESPACE_RETENTION_CLASSES_URL, namespace);
+    }
+
+    /**
+     * Updates a retention class for the given namespace.
+     * <p>
+     * API Call: <tt>PUT /object/namespaces/namespace/{namespace}/retention/{className}</tt>
+     * </p>
+     * 
+     * @param namespace
+     *        the namespace ID.
+     * @param className
+     *        the retention class name.
+     * @param update
+     *        the retention class configuration.
+     */
+    public void updateRetentionClass(String namespace, String className, RetentionClassUpdateParam update) {
+        client.put(String.class, update, NAMESPACE_RETENTION_CLASS_URL, namespace, className);
     }
 }

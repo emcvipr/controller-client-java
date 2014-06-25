@@ -2,6 +2,8 @@ package com.emc.vipr.client;
 
 import com.emc.vipr.client.exceptions.ViPRException;
 import com.emc.vipr.client.impl.RestClient;
+
+import javax.net.ssl.SSLSocketFactory;
 import javax.ws.rs.core.MediaType;
 import java.net.URI;
 
@@ -30,6 +32,7 @@ public class ClientConfig {
     private int portalPort = DEFAULT_PORTAL_PORT;
     private int bulkSize = DEFAULT_BULK_SIZE;
     private String host;
+    private SSLSocketFactory socketFactory;
 
     public boolean isRequestLoggingEnabled() {
         return requestLoggingEnabled;
@@ -223,6 +226,22 @@ public class ClientConfig {
     }
 
     /**
+     * provide an alternate socket factory for the clients
+     * @param socketFactory custom socket factory
+     */
+    public void setSocketFactory(SSLSocketFactory socketFactory) {
+        this.socketFactory = socketFactory;
+    }
+
+    /**
+     * Returns the provided SSLSocketFactory, or null
+     * @return The custom SSLSocketFactory
+     */
+    public SSLSocketFactory getSocketFactory() {
+        return socketFactory;
+    }
+
+    /**
      * Sets the bulk size and returns the updated configuration.
      *
      * @param bulkSize Number of items to retrieve per bulk request. Maximum is 4000.
@@ -384,6 +403,18 @@ public class ClientConfig {
      */
     public ClientConfig withPortalPort(int portalPort) {
         setPortalPort(port);
+        return this;
+    }
+
+    /**
+     * Sets the SSLSocketFactory and returns the updated configuration.
+     *
+     * @see #setSocketFactory(javax.net.ssl.SSLSocketFactory)
+     * @param factory The SSLSocketFactory to use
+     * @return the updated ClientConfig object
+     */
+    public ClientConfig withSocketFactory(SSLSocketFactory factory) {
+        setSocketFactory(factory);
         return this;
     }
 

@@ -37,6 +37,11 @@ public class Hosts extends AbstractBulkResources<HostRestRep> implements TenantR
     }
 
     @Override
+    public Hosts withInternal(boolean internal) {
+        return (Hosts) super.withInternal(internal);
+    }
+
+    @Override
     protected List<HostRestRep> getBulkResources(BulkIdParam input) {
         HostBulkRep response = client.post(HostBulkRep.class, input, getBulkUrl());
         return defaultList(response.getHosts());
@@ -207,8 +212,49 @@ public class Hosts extends AbstractBulkResources<HostRestRep> implements TenantR
      * 
      * @param id
      *        the ID of the host.
+     * @return 
      */
-    public void deactivate(URI id) {
-        doDeactivate(id);
+    public Task<HostRestRep> deactivate(URI id) {
+        return deactivate(id, false);
+    }
+    
+    /**
+     * Deactivates a host.
+     * <p>
+     * API Call: <tt>POST /compute/hosts/{id}/deactivate?detach-storage={detachStorage}</tt>
+     * 
+     * @param id
+     *        the ID of the host to deactivate.
+     * @param detachStorage
+     *        if true, will first detach storage.
+     */
+    public Task<HostRestRep> deactivate(URI id, boolean detachStorage) {
+        URI deactivateUri = client.uriBuilder(getDeactivateUrl()).queryParam("detach-storage", detachStorage).build(id);
+        return postTaskURI(deactivateUri);
+    }
+    
+    /**
+     * Detaches storage from a host.
+     * <p>
+     * API Call: <tt>POST /compute/hosts/{id}/detach-storage</tt>
+     * 
+     * @param id
+     *        the ID of the host.
+     */
+    public Task<HostRestRep> detachStorage(URI id) {
+        return postTask(PathConstants.HOST_DETACH_STORAGE_URL, id);
+    }
+
+    /**
+     * Begins discovery of the given host by ID.
+     * <p>
+     * API Call: <tt>POST /compute/hosts/{id}/discover</tt>
+     * 
+     * @param id
+     *        the ID of the host to discover.
+     * @return a task for monitoring the progress of the operation.
+     */
+    public Task<HostRestRep> discover(URI id) {
+        return postTask(getIdUrl() + "/discover", id);
     }
 }

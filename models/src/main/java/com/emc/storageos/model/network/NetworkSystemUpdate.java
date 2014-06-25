@@ -28,8 +28,9 @@ public class NetworkSystemUpdate {
     public NetworkSystemUpdate() {}
 
     /** 
-     * Name of the Network System; must be unique.
-     * @valid Must be unique within all existing network systems
+     * Name of the Network System
+     * 
+     * @valid none
      */
     @XmlElement
     @Length(min = 2, max = 128)
@@ -43,8 +44,9 @@ public class NetworkSystemUpdate {
 
     /**
      * IP address of the Network System for SSH communication.
-     * @valid IPv4
-     * @valid IPv6
+     * This field is applicable for network systems of type 'mds'.
+     * It is ignored for 'brocade' type network systems and can be null.
+     * 
      * @valid example: 10.247.12.99
      */
     @XmlElement(name = "ip_address")
@@ -58,7 +60,9 @@ public class NetworkSystemUpdate {
     }
 
     /**
-     * The integer TCP port number to be used for SSH communication.
+     * Port number of the Network System for SSH communication.
+     * This field is applicable for network systems of type 'mds'.
+     * It is ignored for 'brocade' type network systems and can be null.
      */
     @XmlElement(name = "port_number")
     @Range(min=1,max=65535)
@@ -72,7 +76,10 @@ public class NetworkSystemUpdate {
     }
 
     /**
-     * The SSH login to the network system.
+     * User name used for SSH login to the Network System.
+     * This field is applicable for network systems of type 'mds'.
+     * It is ignored for 'brocade' type network systems and can be null.
+     * 
      * @valid example: user1
      */
     @XmlElement(name = "user_name")
@@ -86,7 +93,10 @@ public class NetworkSystemUpdate {
     }
 
     /**
-     * The password credential used for SSH login.
+     * Password used for SSH login to the Network System.
+     * This field is applicable for network systems of type 'mds'.
+     * It is ignored for 'brocade' type network systems and can be null.
+     * 
      * @valid example: abc1
      */
     @XmlElement()
@@ -99,9 +109,10 @@ public class NetworkSystemUpdate {
     }
 
     /**
-     * The IP address used for communication with an SMI-S provider.
-     * @valid IPv4
-     * @valid IPv6
+     * IP Address of the SMIS Provider
+     * This field is applicable for network systems of type 'brocade'.
+     * It is ignored for 'mds' type network systems and can be null.
+     * 
      * @valid example: 10.247.12.100
      */
     @XmlElement(name = "smis_provider_ip")
@@ -115,7 +126,9 @@ public class NetworkSystemUpdate {
     }
 
     /**
-     * The integer TCP port number used for communication with an SMI-S provider.
+     * Port number of the SMIS Provider to connect to
+     * This field is applicable for network systems of type 'brocade'.
+     * It is ignored for 'mds' type network systems and can be null.
      */
     @XmlElement(name = "smis_port_number")
     @Range(min=1,max=65535)
@@ -129,7 +142,10 @@ public class NetworkSystemUpdate {
     }
 
     /**
-     * The user name credential used for communication with an SMI-S provider.
+     * User name to connect to the SMIS Provider
+     * This field is applicable for network systems of type 'brocade'.
+     * It is ignored for 'mds' type network systems and can be null.
+     * 
      * @valid example: smisuser1
      */
     @XmlElement(name = "smis_user_name")
@@ -143,7 +159,10 @@ public class NetworkSystemUpdate {
     }
 
     /**
-     * The password credential used for communication with an SMI-S provider.
+     * Password to connect to the SMIS provider
+     * This field is applicable for network systems of type 'brocade'.
+     * It is ignored for 'mds' type network systems and can be null.
+     * 
      * @valid example: smispassword1
      */
     @XmlElement(name = "smis_password")
@@ -157,9 +176,13 @@ public class NetworkSystemUpdate {
     }
 
     /**
-     * A boolean flag, that if true, will result in SSL being used for communication with an SMI-S provider.
-     * @valid true = use SSL
-     * @valid false = do not use SSL
+     * Determines the protocol used for connection purposes.
+     * If HTTPS, then set true, else false.
+     * This field is applicable for network systems of type 'brocade'.
+     * It is ignored for 'mds' type network systems and can be null.
+     * 
+     * @valid true
+     * @valid false
      */
     @XmlElement(name = "smis_use_ssl")
     @JsonProperty("smis_use_ssl")

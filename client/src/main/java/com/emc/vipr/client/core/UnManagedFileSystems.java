@@ -35,6 +35,11 @@ public class UnManagedFileSystems extends AbstractBulkResources<UnManagedFileSys
     }
 
     @Override
+    public UnManagedFileSystems withInternal(boolean internal) {
+        return (UnManagedFileSystems) super.withInternal(internal);
+    }
+
+    @Override
     protected List<UnManagedFileSystemRestRep> getBulkResources(BulkIdParam input) {
         UnManagedFileBulkRep response = client.post(UnManagedFileBulkRep.class, input, getBulkUrl());
         return defaultList(response.getUnManagedFileSystems());

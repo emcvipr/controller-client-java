@@ -34,10 +34,12 @@ public enum ResourceTypeEnum {
     FILE_SNAPSHOT     ("snapshot",      "/file/snapshots"),
     BLOCK_SNAPSHOT    ("block_snapshot","/block/snapshots"),
     BLOCK_MIRROR      ("block_mirror",  "/block/volumes/%1$s/protection/continuous-copies"),
+    VPLEX_MIRROR      ("block_mirror",  "/block/volumes/%1$s/protection/continuous-copies"), 
     BLOCK_CONSISTENCY_GROUP      ("block_consistency_group", "/block/consistency-groups"),
     NETWORK           ("network",       "/vdc/networks"),
     EXPORT_GROUP      ("block_export",  "/block/exports"),
     SMIS_PROVIDER     ("smis_provider", "/vdc/smis-providers"),
+    STORAGE_PROVIDER ("storage_provider", "/vdc/storage-providers"),
     NETWORK_SYSTEM    ("network_system","/vdc/network-systems"),
     FC_PORT_CONNECTION("fc_port_connection", "/vdc/fc-port-connections"),
     AUTHN_PROVIDER    ("authnprovider", "/vdc/admin/authnproviders"),
@@ -53,7 +55,9 @@ public enum ResourceTypeEnum {
     MIGRATION         ("migration", "/block/migrations"),
     UNMANAGED_VOLUMES ("unmanaged_volumes","/vdc/unmanaged/volumes"),
     UNMANAGED_FILESYSTEMS ("unmanaged_filesystems","/vdc/unmanaged/filesystems"),
-    OBJECT_POOL       ("object_pool", "/vdc/object-pools");
+    DATA_STORE       ("data_store", "/vdc/object-pools"),
+    ZONE              ("zone",         "/zone"),
+    VDC               ("virtual_data_center", "/vdc");
 
     private final String type;
     private final String service;

@@ -22,7 +22,7 @@ public class UserSecretKeys {
      * @return Secret keys for the user.
      */
     public SecretKeyRestRep get(URI userId) {
-        return client.get(SecretKeyRestRep.class, USER_SECRET_KEYS_URL);
+        return client.get(SecretKeyRestRep.class, USER_SECRET_KEYS_URL, userId);
     }
 
     /**
@@ -36,7 +36,7 @@ public class UserSecretKeys {
      * @return Secret keys for the user.
      */
     public SecretKeyInfoRep create(URI userId, UserSecretKeyCreateParam create) {
-        return client.post(SecretKeyInfoRep.class, create, SECRET_KEYS_URL);
+        return client.post(SecretKeyInfoRep.class, create, USER_SECRET_KEYS_URL, userId);
     }
 
     /**
@@ -49,6 +49,6 @@ public class UserSecretKeys {
      * @param param Parameters to deactivate the secret keys. If no keys are specified, will delete all keys.
      */
     public void deactivate(URI userId, UserSecretKeyDeleteParam param) {
-        client.post(String.class, param, SECRET_KEYS_URL + DEACTIVATE_PATH);
+        client.post(String.class, param, USER_SECRET_KEYS_URL + DEACTIVATE_PATH, userId);
     }
 }

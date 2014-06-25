@@ -7,10 +7,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.net.URI;
 
 /**
- * Object Pool creation parameters for object pools hosted on atmos devices
+ * Data Store creation parameters for data stores hosted on atmos devices
  */
 @XmlRootElement(name = "atmos_data_store_create")
-public class AtmosObjectPoolParam extends DataStoreParam {
+public class AtmosDataStoreParam extends DataStoreParam {
     private String namespace;
     private URI project;
     private String tenantName;
@@ -33,7 +33,7 @@ public class AtmosObjectPoolParam extends DataStoreParam {
     }
 
     /**
-     * keypools created on this objectpool will be associated with the project
+     * keypools created on this datastore will be associated with the project
      */
     @XmlElement(name = "project")
     public URI getProject() {

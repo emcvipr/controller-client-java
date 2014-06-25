@@ -38,6 +38,7 @@ public class NetworkRestRep extends DiscoveredDataObjectRestRep {
     private Set<String> networkSystems;
     private Set<String> assignedVArrays;
     private Set<String> connectedVArrays;
+    private Set<String> routedNetworks;
     private String registrationStatus;
 
     public NetworkRestRep() {}
@@ -202,4 +203,20 @@ public class NetworkRestRep extends DiscoveredDataObjectRestRep {
     public void setTransportType(String transportType) {
         this.transportType = transportType;
     }
+
+    /**
+     * A list of networks that are routed to this network
+     * @valid FC = None
+     * @return A list of networks that are routed to this network
+     */
+    @XmlElementWrapper(name = "routed_networks")
+    @XmlElement(name = "routed_network")
+    public Set<String> getRoutedNetworks() {
+        return routedNetworks;
+    }
+
+    public void setRoutedNetworks(Set<String> routedNetworks) {
+        this.routedNetworks = routedNetworks;
+    }
+
 }

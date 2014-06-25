@@ -42,6 +42,8 @@ public class LogRequestInfo extends LogRequestBase {
 
     // Response stream maximum byte size
     private long maxBytes = 0;
+    
+    private boolean dryRun = false;
 
     // Empty constructor
     public LogRequestInfo() {
@@ -126,5 +128,13 @@ public class LogRequestInfo extends LogRequestBase {
 
     public void setMaxBytes(long maxBytes) {
         this.maxBytes = maxBytes;
+    }
+
+    public boolean isDryRun() {
+        return dryRun;
+    }
+
+    public void setDryRun(boolean dryRun) {
+        this.dryRun = dryRun;
     }
 }

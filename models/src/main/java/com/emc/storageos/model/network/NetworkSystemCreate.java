@@ -29,8 +29,9 @@ public class NetworkSystemCreate {
     public NetworkSystemCreate() {}
     
     /** 
-     * Name of the Network System; must be unique.
-     * @valid Must be unique within all existing network systems
+     * Name of the Network System
+     * 
+     * @valid none
      */
     @Length(min = 2, max = 128)
     @XmlElement(required = true)
@@ -45,7 +46,8 @@ public class NetworkSystemCreate {
     /** 
      * IP address of the Network System for SSH communication.
      * This field is required for network systems of type 'mds'.
-     * It is ignored for 'brocade' type network systems and can be null for 'brocade' type.
+     * It is ignored for 'brocade' type network systems and can be null.
+     * 
      * @valid example: 10.247.12.99
      * @valid example: my.host.name
      */
@@ -60,7 +62,10 @@ public class NetworkSystemCreate {
     }
 
     /**
-     * The integer TCP port number to be used for SSH communication.
+     * Port number of the Network System for SSH communication.
+     * This field is required for network systems of type 'mds'.
+     * It is ignored for 'brocade' type network systems and can be null.
+     * 
      */
     @XmlElement(name = "port_number")
     @Range(min=1,max=65535)
@@ -74,7 +79,10 @@ public class NetworkSystemCreate {
     }
 
     /** 
-     * The user name credential used for SSH login.
+     * User name used for SSH login to the Network System.
+     * This field is required for network systems of type 'mds'.
+     * It is ignored for 'brocade' type network systems and can be null.
+     * 
      * @valid example: user1
      */
     @XmlElement(name = "user_name")
@@ -89,7 +97,10 @@ public class NetworkSystemCreate {
 
     
     /**
-     * The password credential used for SSH login.
+     * Password used for SSH login to the Network System.
+     * This field is required for network systems of type 'mds'.
+     * It is ignored for 'brocade' type network systems and can be null.
+     * 
      * @valid example: abc1
      */
     @XmlElement()
@@ -102,7 +113,8 @@ public class NetworkSystemCreate {
     }
 
     /**
-     * The NetworkSystem type.
+     * Type of the Network System
+     * 
      * @valid brocade
      * @valid mds
      */
@@ -118,9 +130,10 @@ public class NetworkSystemCreate {
     }
 
     /**
-     * The IP address used for communication with an SMI-S provider.
-     * This field is required for 'brocade' type network systems.
-     * It is ignored for 'mds' type network systems and can be null for 'mds' type.
+     * IP Address of the SMIS Provider
+     * This field is required for network systems of type 'brocade'.
+     * It is ignored for 'mds' type network systems and can be null.
+     * 
      * @valid example: 10.247.12.100
      * @valid example: my.host.name
      */
@@ -135,7 +148,9 @@ public class NetworkSystemCreate {
     }
 
     /**
-     * The integer TCP port number used for communication with an SMI-S provider.
+     * Port number of the SMIS Provider to connect to
+     * This field is required for network systems of type 'brocade'.
+     * It is ignored for 'mds' type network systems and can be null.
      */
     @XmlElement(name = "smis_port_number")
     @Range(min=1,max=65535)
@@ -149,7 +164,10 @@ public class NetworkSystemCreate {
     }
 
     /** 
-     * The user name credential used for communication with an SMI-S provider.
+     * User name to connect to the SMIS Provider
+     * This field is required for network systems of type 'brocade'.
+     * It is ignored for 'mds' type network systems and can be null.
+     * 
      * @valid example: smisuser1
      */
     @XmlElement(name = "smis_user_name")
@@ -163,7 +181,10 @@ public class NetworkSystemCreate {
     }
 
     /** 
-     * The password credential used for communication with an SMI-S provider. 
+     * Password to connect to the SMIS provider
+     * This field is required for network systems of type 'brocade'.
+     * It is ignored for 'mds' type network systems and can be null.
+     * 
      * @valid example: smispassword1
      */
     @XmlElement(name = "smis_password")
@@ -177,9 +198,13 @@ public class NetworkSystemCreate {
     }
 
     /**
-     * A boolean flag, that if true, will result in SSL being used for communication with an SMI-S provider.
-     * @valid true = use SSL
-     * @valid false = do not use SSL
+     * Determines the protocol used for connection purposes.
+     * If HTTPS, then set true, else false.
+     * This field is required for network systems of type 'brocade'.
+     * It is ignored for 'mds' type network systems and can be null.
+     * 
+     * @valid true
+     * @valid false
      */
     @XmlElement(name = "smis_use_ssl")
     @JsonProperty("smis_use_ssl")

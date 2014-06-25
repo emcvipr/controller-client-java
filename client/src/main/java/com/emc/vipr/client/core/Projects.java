@@ -36,6 +36,11 @@ public class Projects extends AbstractBulkResources<ProjectRestRep> implements A
     }
 
     @Override
+    public Projects withInternal(boolean internal) {
+        return (Projects) super.withInternal(internal);
+    }
+
+    @Override
     protected List<ProjectRestRep> getBulkResources(BulkIdParam input) {
         ProjectBulkRep response = client.post(ProjectBulkRep.class, input, getBulkUrl());
         return defaultList(response.getProjects());

@@ -232,12 +232,14 @@ public abstract class AuthnProviderBaseParam {
         this.maxPageSize = maxPageSize;
     }
 
+    @Deprecated
     @XmlElement(name = "validate_certificates", required = false, defaultValue = "false")
     @JsonProperty("validate_certificates")
     public Boolean getValidateCertificates() {
         return validateCertificates;
     }
 
+    @Deprecated
     public void setValidateCertificates(Boolean validateCertificates) {
         this.validateCertificates = validateCertificates;
     }

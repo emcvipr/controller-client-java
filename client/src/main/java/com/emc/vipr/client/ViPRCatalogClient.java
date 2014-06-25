@@ -47,14 +47,6 @@ public class ViPRCatalogClient {
         return new Catalog(this, client);
     }
 
-    public Hosts hosts() {
-        return new Hosts(this, client);
-    }
-
-    public VCenters vcenters() {
-        return new VCenters(this, client);
-    }
-
     public ExecutionWindows executionWindows() {
         return new ExecutionWindows(this, client);
     }

@@ -239,7 +239,7 @@ public class SMISProviderRestRep extends DataObjectRestRep {
 
 
     /**
-     * The latest timestamp when the system run Metering successfully
+     * The latest timestamp when the system run scanning successfully
      *
      * @valid none
      */

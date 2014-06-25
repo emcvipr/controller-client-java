@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import java.net.URI;
 import java.util.Calendar;
 import java.util.LinkedHashSet;
@@ -30,7 +31,11 @@ public abstract class DataObjectRestRep {
     private RestLinkRep link;
     private Calendar creationTime;
     private Boolean inactive;
+    private Boolean global;
+    private Boolean remote;
+    private RelatedResourceRep vdc;
     private Set<String> tags;
+    private Boolean internal;
 
     public DataObjectRestRep() {}
     
@@ -145,8 +150,65 @@ public abstract class DataObjectRestRep {
         this.inactive = inactive;
     }
 
+    /**
+     * @return the global
+     */
+    public Boolean getGlobal() {
+        return global;
+    }
+
+    /**
+     * @param global the global to set
+     */
+    public void setGlobal(Boolean global) {
+        this.global = global;
+    }
+
+    /**
+     * @return the remote
+     */
+    public Boolean getRemote() {
+        return remote;
+    }
+
+    /**
+     * @param remote the remote to set
+     */
+    public void setRemote(Boolean remote) {
+        this.remote = remote;
+    }
+
     @Override
     public String toString() {
         return id.toString() + " " + name;
+    }
+
+    /**
+     * @return the vdc
+     */
+    public RelatedResourceRep getVdc() {
+        return vdc;
+    }
+
+    /**
+     * @param vdc the vdc to set
+     */
+    public void setVdc(RelatedResourceRep vdc) {
+        this.vdc = vdc;
+    }
+
+    /**
+     * Whether or not the resource is an internal resource.
+     *
+     * @valid true
+     * @valid false
+     */
+    @XmlElement
+    public Boolean getInternal() {
+        return internal;
+    }
+
+    public void setInternal(Boolean internal) {
+        this.internal = internal;
     }
 }

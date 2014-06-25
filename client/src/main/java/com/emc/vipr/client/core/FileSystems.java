@@ -43,6 +43,11 @@ public class FileSystems extends ProjectResources<FileShareRestRep> implements T
         return (FileSystems) super.withInactive(inactive);
     }
 
+    @Override
+    public FileSystems withInternal(boolean internal) {
+        return (FileSystems) super.withInternal(internal);
+    }
+
     /**
      * Gets the base URL for exports for a single filesystem: <tt>/file/filesystems/{id}/exports</tt>
      * 

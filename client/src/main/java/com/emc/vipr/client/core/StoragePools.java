@@ -41,6 +41,11 @@ public class StoragePools extends AbstractBulkResources<StoragePoolRestRep> impl
     }
 
     @Override
+    public StoragePools withInternal(boolean internal) {
+        return (StoragePools) super.withInternal(internal);
+    }
+
+    @Override
     protected List<StoragePoolRestRep> getBulkResources(BulkIdParam input) {
         StoragePoolBulkRep response = client.post(StoragePoolBulkRep.class, input, getBulkUrl());
         return defaultList(response.getStoragePools());

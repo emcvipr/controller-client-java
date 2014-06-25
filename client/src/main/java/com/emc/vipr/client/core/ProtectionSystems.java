@@ -37,6 +37,11 @@ public class ProtectionSystems extends AbstractBulkResources<ProtectionSystemRes
     }
 
     @Override
+    public ProtectionSystems withInternal(boolean internal) {
+        return (ProtectionSystems) super.withInternal(internal);
+    }
+
+    @Override
     protected List<ProtectionSystemRestRep> getBulkResources(BulkIdParam input) {
         ProtectionSystemBulkRep response = client.post(ProtectionSystemBulkRep.class, input, getBulkUrl());
         return defaultList(response.getProtectionSystems());

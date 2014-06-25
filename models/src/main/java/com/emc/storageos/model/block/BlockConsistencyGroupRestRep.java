@@ -1,5 +1,6 @@
 package com.emc.storageos.model.block;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,12 @@ public class BlockConsistencyGroupRestRep extends DataObjectRestRep {
     private RelatedResourceRep project;
     private RelatedResourceRep virtualArray;
     private String deviceName;
+    private String type;
+    private String linkStatus;
+    
+    // RecoverPoint fields
+    private URI rpProtectionSystem;
+    private String rpConsistenyGroupId;
 
     /**
      * Related storage controller
@@ -96,5 +103,61 @@ public class BlockConsistencyGroupRestRep extends DataObjectRestRep {
     
     public void setDeviceName(String deviceName) { 
         this.deviceName = deviceName;
+    }
+    
+    /**
+     * The type of block consistency group
+     *
+     * @valid none
+     */
+    @XmlElement(name = "type")
+    public String getType(){ 
+        return type; 
+    }
+    
+    public void setType(String type) { 
+        this.type = type;
+    }
+
+    /**
+     * The RecoverPoint protection system.  Applies only to CGs of type RP.
+     *
+     * @valid none
+     */
+    @XmlElement(name = "rp_protection_system")
+    public URI getRpProtectionSystem() {
+        return rpProtectionSystem;
+    }
+
+    public void setRpProtectionSystem(URI rpProtectionSystem) {
+        this.rpProtectionSystem = rpProtectionSystem;
+    }
+
+    /**
+     * The RecoverPoint consistency group id.  Applies only to CGs of type RP.
+     *
+     * @valid none
+     */    
+    @XmlElement(name = "rp_consistency_group_id")
+    public String getRpConsistenyGroupId() {
+        return rpConsistenyGroupId;
+    }
+
+    public void setRpConsistenyGroupId(String rpConsistenyGroupId) {
+        this.rpConsistenyGroupId = rpConsistenyGroupId;
+    }
+
+    /**
+     * The link status.
+     *
+     * @valid none
+     */
+    @XmlElement(name = "link_status")
+    public String getLinkStatus() {
+        return linkStatus;
+    }
+
+    public void setLinkStatus(String linkStatus) {
+        this.linkStatus = linkStatus;
     }
 }

@@ -16,4 +16,8 @@ public class ViPRHttpException extends ViPRException {
     public int getHttpCode() {
         return httpCode;
     }
+
+    public boolean isServiceUnavailable() {
+        return httpCode == 503;
+    }
 }

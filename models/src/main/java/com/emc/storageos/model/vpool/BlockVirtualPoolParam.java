@@ -25,6 +25,7 @@ public class BlockVirtualPoolParam extends VirtualPoolCommonParam {
     private Integer thinVolumePreAllocationPercentage;
     private Boolean multiVolumeConsistency;
     private Boolean expandable;
+    private Boolean fastExpansion; // used for VNMAX and VNX to use concatenated meta volumes vs. striped.
     private BlockVirtualPoolProtectionParam protection;
     private VirtualPoolHighAvailabilityParam highAvailability;
     private Boolean uniquePolicyNames;
@@ -218,8 +219,22 @@ public class BlockVirtualPoolParam extends VirtualPoolCommonParam {
     }
     
     /**
-     * Indicates if non-disruptive volume expansion is 
-     * supported.
+     * Indicates that virtual pool volumes should use concatenated meta volumes,
+     * not striped.
+     * @valid true
+     * @valid false
+     */
+    @XmlElement(name = "fast_expansion", required = false)
+    public Boolean getFastExpansion() {
+        return fastExpansion;
+    }
+
+    public void setFastExpansion(Boolean fastExpansion) {
+        this.fastExpansion = fastExpansion;
+    }
+
+    /**
+     * Indicates if volume expansion is supported.
      * @valid true
      * @valid false
      */

@@ -36,6 +36,11 @@ public class AutoTieringPolicies extends AbstractBulkResources<AutoTieringPolicy
     }
 
     @Override
+    public AutoTieringPolicies withInternal(boolean internal) {
+        return (AutoTieringPolicies) super.withInternal(internal);
+    }
+
+    @Override
     protected List<AutoTieringPolicyRestRep> getBulkResources(BulkIdParam input) {
         AutoTieringPolicyBulkRep response = client.post(AutoTieringPolicyBulkRep.class, input, getBulkUrl());
         return defaultList(response.getAutoTierPolicies());

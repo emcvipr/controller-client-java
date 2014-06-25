@@ -113,7 +113,7 @@ public class PropertyInfoRestRep extends PropertyInfo {
 
         return diffProps;
     }
-
+    
     public void removeProperty(String propName) {
         getProperties().remove(propName);
     }

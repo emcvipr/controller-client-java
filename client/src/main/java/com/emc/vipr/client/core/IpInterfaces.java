@@ -33,6 +33,11 @@ public class IpInterfaces extends AbstractBulkResources<IpInterfaceRestRep> {
     }
 
     @Override
+    public IpInterfaces withInternal(boolean internal) {
+        return (IpInterfaces) super.withInternal(internal);
+    }
+
+    @Override
     protected List<IpInterfaceRestRep> getBulkResources(BulkIdParam input) {
         IpInterfaceBulkRep response = client.post(IpInterfaceBulkRep.class, input, getBulkUrl());
         return defaultList(response.getIpInterfaces());

@@ -11,6 +11,7 @@ import com.emc.storageos.model.SnapshotList;
 import com.emc.storageos.model.block.BlockConsistencyGroupSnapshotCreate;
 import com.emc.storageos.model.block.BlockSnapshotBulkRep;
 import com.emc.storageos.model.block.BlockSnapshotRestRep;
+import com.emc.storageos.model.block.VolumeFullCopyCreateParam;
 import com.emc.storageos.model.block.VolumeSnapshotParam;
 import com.emc.storageos.model.block.export.ITLRestRep;
 import com.emc.storageos.model.block.export.ITLRestRepList;
@@ -26,7 +27,7 @@ import com.emc.vipr.client.impl.RestClient;
  * <p>
  * Base URL: <tt>/block/snapshots</tt>
  */
-public class BlockSnapshots extends AbstractBulkResources<BlockSnapshotRestRep> implements
+public class BlockSnapshots extends ProjectResources<BlockSnapshotRestRep> implements
         TaskResources<BlockSnapshotRestRep> {
     public BlockSnapshots(ViPRCoreClient parent, RestClient client) {
         super(parent, client, BlockSnapshotRestRep.class, PathConstants.BLOCK_SNAPSHOT_URL);
@@ -35,6 +36,11 @@ public class BlockSnapshots extends AbstractBulkResources<BlockSnapshotRestRep> 
     @Override
     public BlockSnapshots withInactive(boolean inactive) {
         return (BlockSnapshots) super.withInactive(inactive);
+    }
+
+    @Override
+    public BlockSnapshots withInternal(boolean internal) {
+        return (BlockSnapshots) super.withInternal(internal);
     }
 
     @Override
@@ -102,8 +108,8 @@ public class BlockSnapshots extends AbstractBulkResources<BlockSnapshotRestRep> 
      *        the ID of the snapshot to deactivate.
      * @return a task for monitoring the progress of the operation.
      */
-    public Task<BlockSnapshotRestRep> deactivate(URI id) {
-        return doDeactivateWithTask(id);
+    public Tasks<BlockSnapshotRestRep> deactivate(URI id) {
+        return doDeactivateWithTasks(id);
     }
 
     /**
@@ -298,10 +304,10 @@ public class BlockSnapshots extends AbstractBulkResources<BlockSnapshotRestRep> 
      *        the ID of the consistency group.
      * @param id
      *        the ID of the block snapshot to deactivate.
-     * @return a task for monitoring the progress of the operation.
+     * @return tasks for monitoring the progress of the operation.
      */
-    public Task<BlockSnapshotRestRep> deactivateForConsistencyGroup(URI consistencyGroupId, URI id) {
-        return postTask(getByConsistencyGroupUrl() + "/{id}/deactivate", consistencyGroupId, id);
+    public Tasks<BlockSnapshotRestRep> deactivateForConsistencyGroup(URI consistencyGroupId, URI id) {
+        return postTasks(getByConsistencyGroupUrl() + "/{id}/deactivate", consistencyGroupId, id);
     }
 
     /**
@@ -318,4 +324,19 @@ public class BlockSnapshots extends AbstractBulkResources<BlockSnapshotRestRep> 
     public Task<BlockSnapshotRestRep> restoreForConsistencyGroup(URI consistencyGroupId, URI id) {
         return postTask(getByConsistencyGroupUrl() + "/{id}/restore", consistencyGroupId, id);
     }
+
+    public Tasks<BlockSnapshotRestRep> createFullCopy(URI id, VolumeFullCopyCreateParam input) {
+        return postTasks(input, getFullCopyUrl(), id);
+    }
+    
+    /**
+     * Gets the base URL for full copies for a single block snapshot: <tt>/block/snapshots/{id}/protection/full-copies</tt>
+     * 
+     * @return the base full copy URL.
+     */
+    protected String getFullCopyUrl() {
+        return getIdUrl() + "/protection/full-copies";
+    }
+    
+    
 }

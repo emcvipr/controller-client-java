@@ -55,11 +55,11 @@ public class DataStoreRestRep extends DataObjectRestRep
     }
 
     /**
-     * vpool which is used for thisdata store
+     * varray which is used for thisdata store
      * @valid None
      * @return vpool
      */
-    @XmlElement(name = "data_services_vpool")
+    @XmlElement(name = "data_services_varray")
     public String getCoS() {
         return _vPool;
     }

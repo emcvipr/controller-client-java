@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012 EMC Corporation
+ *  Copyright (c) 2012-2014 EMC Corporation
  * All Rights Reserved
  *
  * This software contains the intellectual property of EMC Corporation
@@ -47,8 +47,17 @@ public enum LogSeverity {
         return null;
     }
 
+    public static int toLevel(String sevName) {
+        LogSeverity severity = find(sevName.toUpperCase());
+        if (severity != null)
+            return severity.ordinal();
+        return -1;
+    }
+
     // Corresponds to the value for INFO. Used by a JAX-RS DefaultValue
     // annotation, which requires a constant expression.
     public static final String DEFAULT_VALUE_AS_STR = "7";
+
+    public static final int MAX_LEVEL = 10;
 }
 

@@ -11,12 +11,14 @@
 package com.emc.vipr.model.sys.logging;
 
 import com.emc.vipr.model.sys.logging.LogSeverity;
-import com.google.gson.annotations.SerializedName;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -30,46 +32,58 @@ import java.util.TimeZone;
 @XmlAccessorType(XmlAccessType.NONE)
 public class LogMessage {
     // The log message
-    @SerializedName("message")
+    @JsonProperty("message")
     private String message = "";
+    
     // The Bourne node identifier.
-    @SerializedName("node")
-    private String nodeId = "";
-    // The line number in the class.
-    @SerializedName("line")
-    private String lineNumber = "";
+    @JsonProperty("node")
+    private String nodeId;
+    
+    // The line number in the class. 
+    @JsonProperty("line")
+    private String lineNumber;
+    
     // The class generating the log message.
-    @SerializedName("class")
-    private String className = "";
+    @JsonProperty("class")
+    private String className;
+    
     // The name of the Bourne service.
-    @SerializedName("service")
-    private String svcName = "";
-    // The thread in which the message was logged.
-    @SerializedName("thread")
-    private String thread = "";
+    @JsonProperty("service")
+    private String svcName;
+    
+    // The thread in which the message was logged.  
+    @JsonProperty("thread")
+    private String thread;
+    
     // The severity of the message.
-    @SerializedName("severity")
+    @JsonProperty("severity")
     private LogSeverity severity;
+    
     // Message time in MS
-    @SerializedName("time_ms")
+    @JsonProperty("time_ms")
     private long timeMS;
+    
     // Message formatted time
-    @SerializedName("time")
+    @JsonProperty("time")
     private String time;
-    @SerializedName("_facility")
+    
+    @JsonProperty("_facility")
     private String facility;
 
-    //this value comes from log properties file.
-    private transient static SimpleDateFormat dateFormat;
-
-    private static synchronized String formatDate(Date d) {
-        if (dateFormat == null) {
-            dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        }
-        return dateFormat.format(d);
-    }
-
+    // length of original log message read, for measuring purpose
+    @JsonIgnore
+    private int length;
+	
+    private static ThreadLocal<SimpleDateFormat> dateFormat = new ThreadLocal
+            <SimpleDateFormat>() {            
+                @Override 
+                protected SimpleDateFormat initialValue() {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    return dateFormat;
+                }
+            };
+            
     public LogMessage() {
 
     }
@@ -100,7 +114,7 @@ public class LogMessage {
         setTimeStr();
         this.facility = facility;
     }
-
+    
     //Constructor for error logs
     public LogMessage(String errMsg, Throwable t) {
         this.message = errMsg;
@@ -113,8 +127,8 @@ public class LogMessage {
         setTimeStr();
     }
 
-    private synchronized void setTimeStr() {
-        time = timeMS > 0 ? formatDate(new Date(timeMS)) : null;
+    private void setTimeStr() {
+        time = timeMS > 0 ? dateFormat.get().format(new Date(timeMS)) : null;
     }
 
     /**
@@ -168,6 +182,15 @@ public class LogMessage {
         return time;
     }
 
+    /**
+     * Setter for the time string.  
+     *
+     * @param time The log message time string.
+     */
+    public void setTime(String time) {
+        this.time = time;
+    }
+    
     /**
      * Getter for the log message thread.
      *
@@ -281,6 +304,14 @@ public class LogMessage {
         this.facility = facility;
     }
     
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+	
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();

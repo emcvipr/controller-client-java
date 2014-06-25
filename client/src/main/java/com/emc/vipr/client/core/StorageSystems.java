@@ -42,6 +42,11 @@ public class StorageSystems extends AbstractBulkResources<StorageSystemRestRep> 
     }
 
     @Override
+    public StorageSystems withInternal(boolean internal) {
+        return (StorageSystems) super.withInternal(internal);
+    }
+
+    @Override
     protected List<StorageSystemRestRep> getBulkResources(BulkIdParam input) {
         StorageSystemBulkRep response = client.post(StorageSystemBulkRep.class, input, getBulkUrl());
         return defaultList(response.getStorageSystems());
@@ -138,14 +143,14 @@ public class StorageSystems extends AbstractBulkResources<StorageSystemRestRep> 
     /**
      * Adds an SMI-S storage system.
      * <p>
-     * API Call: <tt>POST /vdc/smis-providers/storage-systems</tt>
+     * API Call: <tt>POST /vdc/storage-providers/storage-systems</tt>
      * 
      * @param input
      *        the SMI-S storage system configuration.
      * @return a task for monitoring the progress of the operation.
      */
     public Task<StorageSystemRestRep> add(StorageSystemSMISCreateParam input) {
-        return postTask(input, PathConstants.SMIS_PROVIDER_URL + "/storage-systems");
+        return postTask(input, PathConstants.STORAGE_PROVIDER_URL + "/storage-systems");
     }
 
     /**
@@ -235,7 +240,7 @@ public class StorageSystems extends AbstractBulkResources<StorageSystemRestRep> 
     /**
      * Lists the storage systems for the given SMI-S provider by ID.
      * <p>
-     * API Call: <tt>GET /vdc/smis-providers/{smisProviderId}/storage-systems</tt>
+     * API Call: <tt>GET /vdc/storage-providers/{smisProviderId}/storage-systems</tt>
      * 
      * @param smisProviderId
      *        the ID of the SMI-S provider.
@@ -243,7 +248,7 @@ public class StorageSystems extends AbstractBulkResources<StorageSystemRestRep> 
      */
     public List<NamedRelatedResourceRep> listBySmisProvider(URI smisProviderId) {
         StorageSystemList response = client.get(StorageSystemList.class,
-                PathConstants.STORAGE_SYSTEM_BY_SMIS_PROVIDER_URL, smisProviderId);
+                PathConstants.STORAGE_SYSTEM_BY_PROVIDER_URL, smisProviderId);
         return defaultList(response.getStorageSystems());
     }
 

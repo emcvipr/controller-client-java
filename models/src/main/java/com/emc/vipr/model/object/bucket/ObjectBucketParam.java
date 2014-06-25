@@ -17,6 +17,9 @@ public class ObjectBucketParam {
     private URI vpool;
     private Boolean filesystemEnabled;
 
+    private String headType;
+    private String namespace;
+
     public ObjectBucketParam() { }
 
     /**
@@ -50,6 +53,25 @@ public class ObjectBucketParam {
     public Boolean getFilesystemEnabled() {
         return filesystemEnabled;
     }
+    
+    /**
+     * HeadType indicates the object head type that is allowed to access the bucket. If the bucket has FS-Enabled, 
+     * then the FS heads are implicitly allowed to access this bucket
+     */
+
+    @XmlElement(required = true, name = "head_type")
+	public String getHeadType() {
+		return headType;
+	}
+
+    /**
+     * namespace associated with the user/tenant that is allowed to access the bucket
+     */
+    
+	@XmlElement(name = "namespace")
+	public String getNamespace() {
+		return namespace;
+	}
 
     public void setName(String name) {
         this.name = name;
@@ -67,5 +89,12 @@ public class ObjectBucketParam {
         this.filesystemEnabled = filesystemEnabled;
     }
 
+	public void setHeadType(String headType) {
+		this.headType = headType;
+	}
+
+	public void setNamespace(String namespace) {
+		this.namespace = namespace;
+	}   
 }
 

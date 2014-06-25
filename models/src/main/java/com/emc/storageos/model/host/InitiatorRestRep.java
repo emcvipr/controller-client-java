@@ -26,15 +26,17 @@ public class InitiatorRestRep extends HostInterfaceRestRep {
     private String initiatorNode;
     private String initiatorPort;
     private String clusterName;
+    private String label;
 
     public InitiatorRestRep() {}
     
     public InitiatorRestRep(String hostName, String initiatorNode,
-            String initiatorPort, String clusterName) {
+            String initiatorPort, String clusterName, String label) {
         this.hostName = hostName;
         this.initiatorNode = initiatorNode;
         this.initiatorPort = initiatorPort;
         this.clusterName = clusterName;
+        this.label = label;
     }
     
     /**
@@ -91,6 +93,20 @@ public class InitiatorRestRep extends HostInterfaceRestRep {
 
     public void setInitiatorPort(String initiatorPort) {
         this.initiatorPort = initiatorPort;
+    }
+    
+    /**
+     * The label for the initiator.
+     * @valid none
+     * @return The initiator label.
+     */
+    @XmlElement(name="label")
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 }
 

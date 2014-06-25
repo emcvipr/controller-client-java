@@ -24,8 +24,8 @@ public class IpInterfaceUpdateParam extends IpInterfaceParam {
     }
     
     public IpInterfaceUpdateParam(Integer netmask, Integer prefixLength,
-            String scopeId, String protocol, String ipAddress) {
-        super(netmask, prefixLength, scopeId);
+            String scopeId, String protocol, String ipAddress, String name) {
+        super(netmask, prefixLength, scopeId, name);
         this.protocol = protocol;
         this.ipAddress = ipAddress;
     }

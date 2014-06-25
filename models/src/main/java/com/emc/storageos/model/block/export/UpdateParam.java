@@ -1,12 +1,15 @@
 package com.emc.storageos.model.block.export;
 
 import java.net.URI;
-import java.util.Collection;
+import java.util.Set;
 
 public abstract class UpdateParam {
     
-    public abstract Collection<URI> getAdd();
-    public abstract Collection<URI> getRemove();
+    protected Set<URI> add;
+    protected Set<URI> remove;
+    
+    public abstract Set<URI> getAdd();
+    public abstract Set<URI> getRemove();
     public boolean hasAdded() {
         return getAdd() != null && getAdd().size() > 0;
     }

@@ -1,18 +1,41 @@
 package com.emc.vipr.client.object;
 
-import com.emc.storageos.model.TaskResourceRep;
-import com.emc.vipr.client.Task;
-import com.emc.vipr.client.exceptions.ViPRException;
-import com.emc.vipr.client.impl.RestClient;
-import com.emc.vipr.model.object.datastore.*;
+import static com.emc.vipr.client.object.impl.PathConstants.COMMODITY_PATH;
+import static com.emc.vipr.client.object.impl.PathConstants.DATA_STORES_URL;
+import static com.emc.vipr.client.object.impl.PathConstants.DEACTIVATE_PATH;
+import static com.emc.vipr.client.object.impl.PathConstants.FILESYSTEMS_PATH;
+import static com.emc.vipr.client.object.impl.PathConstants.ID_PATH;
+import static com.emc.vipr.client.object.impl.PathConstants.NFSEXPORT_PATH;
+import static com.emc.vipr.client.object.impl.PathConstants.SEARCH_PATH;
+import static com.emc.vipr.client.object.impl.PathConstants.VARRAY_PATH;
+import static com.emc.vipr.client.object.impl.PathConstants.IP_ADDR_PATH;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import static com.emc.vipr.client.object.impl.PathConstants.*;
+
+import com.emc.storageos.model.TaskList;
+import com.emc.storageos.model.TaskResourceRep;
+import com.emc.vipr.client.Task;
+import com.emc.vipr.client.Tasks;
+import com.emc.vipr.client.core.util.ResourceUtils;
+import com.emc.vipr.client.exceptions.ViPRException;
+import com.emc.vipr.client.impl.RestClient;
+import com.emc.vipr.model.object.datastore.CommodityDataStoreList;
+import com.emc.vipr.model.object.datastore.CommodityDataStoreParam;
+import com.emc.vipr.model.object.datastore.CommodityDataStoreRestRep;
+import com.emc.vipr.model.object.datastore.DataStoreList;
+import com.emc.vipr.model.object.datastore.DataStoreNamedRelatedResourceRep;
+import com.emc.vipr.model.object.datastore.DataStoreRestRep;
+import com.emc.vipr.model.object.datastore.FileSystemsDataStoreParam;
+import com.emc.vipr.model.object.datastore.FileSystemsDataStoreRestRep;
+import com.emc.vipr.model.object.datastore.ModifyDataStoreParam;
+import com.emc.vipr.model.object.datastore.NfsExportPointsDataStoreRestRep;
 
 public class DataStores {
     public static final String FILE_SYSTEM_TYPE = "FileSystems";
     public static final String NFS_EXPORT_TYPE = "NfsExportPoints";
+    public static final String COMMODITY_TYPE = "Commodity";
 
     private RestClient client;
 
@@ -32,13 +55,42 @@ public class DataStores {
     }
 
     /**
-     * Convienece method for calling getByRefs(list()).
+     * Convenience method for calling getByRefs(list()).
      *
      * @return Returns all data store objects.
      */
     public List<DataStoreRestRep> getAll() {
         List<DataStoreNamedRelatedResourceRep> refs = list();
         return getByRefs(refs);
+    }
+
+    /**
+     * Gets all datastores of a given type.
+     * 
+     * @param type
+     *        the type of datastore.
+     * @return the list of datastores.
+     */
+    public List<DataStoreRestRep> getAllByType(String type) {
+        List<DataStoreNamedRelatedResourceRep> refs = listByType(type);
+        return getByRefs(refs);
+    }
+
+    /**
+     * Lists all datastores of a given type.
+     * 
+     * @param type
+     *        the type of datastore.
+     * @return the datastore references.
+     */
+    public List<DataStoreNamedRelatedResourceRep> listByType(String type) {
+        List<DataStoreNamedRelatedResourceRep> refs = new ArrayList<DataStoreNamedRelatedResourceRep>();
+        for (DataStoreNamedRelatedResourceRep ref : list()) {
+            if (ref.getResourceType().equalsIgnoreCase(type)) {
+                refs.add(ref);
+            }
+        }
+        return refs;
     }
 
     /**
@@ -158,6 +210,64 @@ public class DataStores {
         else if (NFS_EXPORT_TYPE.equalsIgnoreCase(ref.getResourceType())) {
             return getOnNfsExport(ref.getId());
         }
+        else if (COMMODITY_TYPE.equalsIgnoreCase(ref.getResourceType())) {
+            // TODO: CommodityDataStoreRestRep needs to extend from DataStoreRestRep
+             return getOnCommodity(ref.getId());
+        }
         throw new ViPRException("Unknown resource type: " + ref.getResourceType());
+    }
+    
+    
+    /**
+     * Creates a commodity data store.
+     * <p>
+     * API Call: <tt>POST /vdc/data-stores/commodity</tt>
+     *
+     * @param create Create parameters.
+     * @return List of Tasks for monitoring progress of the operation.
+     */
+    public Tasks<DataStoreRestRep> createOnCommodity(CommodityDataStoreParam create) {
+        TaskList tasks = client.post(TaskList.class, create, DATA_STORES_URL + COMMODITY_PATH);
+        return new Tasks<DataStoreRestRep>(client, tasks.getTaskList(), DataStoreRestRep.class);
+       
+    }
+    
+    /**
+     * Retrieves a commodity data store.
+     * <p>
+     * API Client: <tt>GET /vdc/data-stores/commodity/{id}</tt>
+     *
+     * @param id Identifier of the commodity data store.
+     * @return The data store object.
+     */
+    public CommodityDataStoreRestRep getOnCommodity(URI id) {
+        return client.get(CommodityDataStoreRestRep.class, DATA_STORES_URL + COMMODITY_PATH + ID_PATH, id);
+    }
+    
+    /**
+     * Search list of commodity data stores associated with varray
+     * <p>
+     * API Client: <tt>GET /vdc/data-stores/commodity/search/varray/{id}</tt>
+     *
+     * @param id Identifier of the varray.
+     * @return List of commodity data store object associated with the varray
+     */
+    public List<CommodityDataStoreRestRep> findOnCommodityByVirtualArray(URI id) {
+        CommodityDataStoreList response = client.get(CommodityDataStoreList.class, 
+                DATA_STORES_URL + COMMODITY_PATH + SEARCH_PATH + VARRAY_PATH +ID_PATH, id);
+        return ResourceUtils.defaultList(response.getPools());
+    }
+    
+    /**
+     * Search a commodity data stores associated with a commodity server having with a particular ipAddress
+     * <p>
+     * API Client: <tt>GET /vdc/data-stores/commodity/search/ipaddress/{id}</tt>
+     *
+     * @param id is the ip address of the commodity server
+     * @return The commodity data store object associated with the commodity server
+     */
+    public CommodityDataStoreRestRep findOnCommodityByNode(String id) {
+        return client.get(CommodityDataStoreRestRep.class, 
+                DATA_STORES_URL + COMMODITY_PATH + SEARCH_PATH + IP_ADDR_PATH +ID_PATH, id);
     }
 }

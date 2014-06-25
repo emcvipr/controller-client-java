@@ -3,9 +3,12 @@ package com.emc.vipr.model.catalog;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.emc.storageos.model.search.Tags;
 
 @XmlRootElement
 public class OrderInfo extends ModelInfo {
@@ -20,6 +23,7 @@ public class OrderInfo extends ModelInfo {
     private String status;                      // Order Status. One of: PENDING, EXECUTING, SUCCESS, ERROR, SCHEDULED, CANCELLED, APPROVAL, APPROVED, REJECTED
     private Reference execution;                // Reference to the execution information
     private List<Parameter> parameters;         // Parameters to an order
+    private Tags tags;                          // Tags on the order object
 
     public String getOrderNumber() {
         return orderNumber;
@@ -114,8 +118,17 @@ public class OrderInfo extends ModelInfo {
         this.parameters = parameters;
     }
 
+    public void setTags(Tags tags) {
+        this.tags = tags;
+    }
+    
+    public Tags getTags() {
+        return this.tags;
+    }
+
     @Override
     public String toString() {
         return String.format("Order %s (%s) %s - %s %s", orderNumber, id, summary, status, message);
     }
+
 }

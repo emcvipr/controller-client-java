@@ -12,7 +12,8 @@ public class UserInfo {
     private String commonName;
     private String distinguishedName;
     private String tenant;
-    private List<String> roles;
+    private List<String> vdcRoles;
+    private List<String> homeTenantRoles;
     private List<SubTenantRoles> subTenantRoles;
 
     @XmlElement(name = "common_name")
@@ -43,28 +44,45 @@ public class UserInfo {
         this.tenant = tenant;
     }
 
-    @XmlElementWrapper(name = "roles")
+    @XmlElementWrapper(name = "vdc_roles")
     /**
-     * Roles that the user has.
-     * @valid SYSTEM_ADMIN (virtual data center role)
-     * @valid SECURITY_ADMIN (virtual data center role)
-     * @valid SYSTEM_MONITOR (virtual data center role)
-     * @valid SYSTEM_AUDITOR (virtual data center role)
-     * @valid TENANT_ADMIN (tenant role)
-     * @valid PROJECT_ADMIN (tenant role)
-     * @valid TENANT_APPROVER (tenant role)
+     * Virtual data center roles that the user has.
+     * @valid SYSTEM_ADMIN
+     * @valid SECURITY_ADMIN
+     * @valid SYSTEM_MONITOR
+     * @valid SYSTEM_AUDITOR
      */
-    @XmlElement(name = "role")
-    public List<String> getRoles() {
-        if (roles == null) {
-            roles = new ArrayList<String>();
+    @XmlElement(name = "vdc_role")
+    public List<String> getVdcRoles() {
+        if (vdcRoles == null) {
+            vdcRoles = new ArrayList<String>();
         }
-        return roles;
+        return vdcRoles;
     }
 
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
+    public void setVdcRoles(List<String> roles) {
+        this.vdcRoles = roles;
     }
+
+    @XmlElementWrapper(name = "home_tenant_roles")
+    /**
+     * Provider tenant roles that the user has.
+     * @valid TENANT_ADMIN
+     * @valid PROJECT_ADMIN
+     * @valid TENANT_APPROVER
+     */
+    @XmlElement(name = "home_tenant_role")
+    public List<String> getHomeTenantRoles() {
+        if (homeTenantRoles == null) {
+            homeTenantRoles = new ArrayList<String>();
+        }
+        return homeTenantRoles;
+    }
+
+    public void setHomeTenantRoles(List<String> roles) {
+        this.homeTenantRoles = roles;
+    }
+
 
     @XmlElementWrapper(name = "subtenant_roles")
     /**

@@ -40,11 +40,12 @@ public class StorageSystemRequestParam {
 
     /**
      * Type of the storage system allowed on POST
+     * Possible values: isilon,vnxfile,netapp,rp
      * 
      * @valid isilon
      * @valid vnxfile
      * @valid netapp
-     * @valid vplex
+     * @valid rp
      * 
      */
     @XmlElement(required = true, name = "system_type")
@@ -129,6 +130,8 @@ public class StorageSystemRequestParam {
 
     /**
      * IP Address of SMIS Provider
+     * This field is required for storage systems of type 'vnxfile'.
+     * It is ignored for other storage system types and can be null.
      * 
      * @valid none
      */
@@ -143,6 +146,8 @@ public class StorageSystemRequestParam {
 
     /**
      * Port number of SMIS Provider to connect to
+     * This field is required for storage systems of type 'vnxfile'.
+     * It is ignored for other storage system types and can be null.
      * 
      * @valid none
      */
@@ -157,6 +162,8 @@ public class StorageSystemRequestParam {
 
     /**
      * Username to connect to SMIS Provider
+     * This field is required for storage systems of type 'vnxfile'.
+     * It is ignored for other storage system types and can be null.
      * 
      * @valid none
      */
@@ -170,8 +177,9 @@ public class StorageSystemRequestParam {
     }
 
     /**
-     * Password to connect to smis provider
-     * 
+     * Password to connect to SMIS provider
+     * This field is required for storage systems of type 'vnxfile'.
+     * It is ignored for other storage system types and can be null.
      * 
      * @valid none
      */
@@ -186,7 +194,9 @@ public class StorageSystemRequestParam {
 
     /**
      * Determines the protocol used for connection purposes.
-     * If HTTPS, then set true ,else false
+     * If HTTPS, then set true, else false.
+     * This field is required for storage systems of type 'vnxfile'.
+     * It is ignored for other storage system types and can be null.
      * 
      *  @valid true
      *  @valid false

@@ -10,13 +10,14 @@
  */
 package com.emc.storageos.model.vpool;
 
-import com.emc.storageos.model.RestLinkRep;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
-import java.net.URI;
+import com.emc.storageos.model.RestLinkRep;
+import com.emc.storageos.model.StringHashMapEntry;
 
 /**
  * Extends the name related resource to add new fields
@@ -27,16 +28,24 @@ public class VirtualPoolChangeRep extends NamedRelatedVirtualPoolRep {
 
     private Boolean allowed;
     private String notAllowedReason;
+    private List<StringHashMapEntry> allowedChangeOperations; 
     
     public VirtualPoolChangeRep() {
     }
 
     public VirtualPoolChangeRep(URI id, RestLinkRep selfLink, String name, String virtualPoolType,
-                                Boolean allowed, String notAllowedReason) {
+                                String notAllowedReason, List<VirtualPoolChangeOperationEnum> allowedChangeOperationEnums) {
         super(id, selfLink, name, virtualPoolType);
-        this.allowed = allowed;
+        this.allowed = allowedChangeOperationEnums != null && !allowedChangeOperationEnums.isEmpty();
         this.notAllowedReason = notAllowedReason;
+        
+        if ( allowedChangeOperationEnums != null) {
+            for (VirtualPoolChangeOperationEnum allowedChangeOperationEnum : allowedChangeOperationEnums) {
+                getAllowedChangeOperations().add(new StringHashMapEntry(allowedChangeOperationEnum.name(), allowedChangeOperationEnum.toString()));
+            }
+        }
     }
+    
 
     /**
      * Specifies whether or not a virtual pool change is allowed.
@@ -66,5 +75,21 @@ public class VirtualPoolChangeRep extends NamedRelatedVirtualPoolRep {
     public void setNotAllowedReason(String notAllowedReason) {
         this.notAllowedReason = notAllowedReason;
     }
-    
+
+    /**
+     * Get list of allowed change operations
+     * @return
+     */
+    @XmlElement(name = "allowed_change_operation")
+    public List<StringHashMapEntry> getAllowedChangeOperations() {
+        if (allowedChangeOperations == null) {
+            allowedChangeOperations = new ArrayList<StringHashMapEntry>();
+        }
+        return allowedChangeOperations;
+    }
+
+    public void setAllowedChangeOperations(List<StringHashMapEntry> allowedOperations) {
+        this.allowedChangeOperations = allowedOperations;
+    }  
 }
+
