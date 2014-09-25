@@ -12,5 +12,8 @@ https://emcvipr.github.io/controller-client-java/javadoc
 
 More information is available on the EMC Developer Community here: https://community.emc.com/community/products/vipr#developer
 
+## Documentation
+
 Release Notes: https://community.emc.com/docs/DOC-33848
+
 Cookbook: https://community.emc.com/docs/DOC-33847
