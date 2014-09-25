@@ -59,6 +59,7 @@ com.emc.vipr.model.object.network
 com.emc.vipr.model.object.retention
 com.emc.vipr.model.object.user
 com.emc.vipr.model.object.vpool
+com.emc.vipr.model.object.zone
 com.emc.vipr.model.sys
 com.emc.vipr.model.sys.backup
 com.emc.vipr.model.sys.eventhandler
