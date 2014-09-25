@@ -6,8 +6,23 @@ import com.emc.vipr.client.impl.RestClient;
 public class ViPRCatalogClient {
     protected RestClient client;
 
+    /**
+     * Convenience method for calling constructor with new ClientConfig().withHost(host)
+     *
+     * @param host Hostname or IP address for the Virtual IP of the target environment.
+     */
     public ViPRCatalogClient(String host) {
         this(new ClientConfig().withHost(host));
+    }
+
+    /**
+     * Convenience method for calling constructor with new ClientConfig().withHost(host).withIgnoringCertificates(ignoreCertificates)
+     *
+     * @param host Hostname or IP address for the Virtual IP of the target environment.
+     * @param ignoreCertificates True if SSL certificates should be ignored.
+     */
+    public ViPRCatalogClient(String host, boolean ignoreCertificates) {
+        this(new ClientConfig().withHost(host).withIgnoringCertificates(ignoreCertificates));
     }
 
     public ViPRCatalogClient(ClientConfig config) {
@@ -49,5 +64,9 @@ public class ViPRCatalogClient {
 
     public ExecutionWindows executionWindows() {
         return new ExecutionWindows(this, client);
+    }
+
+    public Setup setup() {
+        return new Setup(this, client);
     }
 }

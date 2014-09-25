@@ -4,7 +4,11 @@ import static com.emc.vipr.client.core.util.ResourceUtils.defaultList;
 import static com.emc.vipr.client.core.util.ResourceUtils.id;
 
 import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.core.UriBuilder;
 
@@ -20,8 +24,16 @@ import com.emc.storageos.model.host.InitiatorRestRep;
 import com.emc.vipr.client.Task;
 import com.emc.vipr.client.Tasks;
 import com.emc.vipr.client.ViPRCoreClient;
-import com.emc.vipr.client.core.filters.*;
+import com.emc.vipr.client.core.filters.ExportClusterFilter;
+import com.emc.vipr.client.core.filters.ExportFilter;
+import com.emc.vipr.client.core.filters.ExportHostFilter;
+import com.emc.vipr.client.core.filters.ExportHostOrClusterFilter;
+import com.emc.vipr.client.core.filters.ExportVirtualArrayFilter;
+import com.emc.vipr.client.core.filters.ProjectFilter;
+import com.emc.vipr.client.core.filters.ResourceFilter;
+import com.emc.vipr.client.core.filters.VirtualArrayFilter;
 import com.emc.vipr.client.core.impl.PathConstants;
+import com.emc.vipr.client.core.search.ExportGroupSearchBuilder;
 import com.emc.vipr.client.impl.RestClient;
 
 /**
@@ -104,7 +116,7 @@ public class BlockExports extends ProjectResources<ExportGroupRestRep> implement
     }
 
     /**
-     * Finds the exports associated with a host.
+     * Finds the exports associated with a cluster.
      *
      * @param clusterId
      *        the ID of the cluster.
@@ -115,19 +127,7 @@ public class BlockExports extends ProjectResources<ExportGroupRestRep> implement
      * @return the list of export groups associated with the cluster.
      */
     public List<ExportGroupRestRep> findByCluster(URI clusterId, URI projectId, URI varrayId) {
-        List<String> initiators = new ArrayList<String>();
-        for (HostRestRep host : parent.hosts().getByCluster(clusterId)) {
-            for (InitiatorRestRep initiator : parent.initiators().getByHost(host.getId())) {
-                initiators.add(initiator.getInitiatorPort());
-            }
-        }
-
-        List<URI> blockExportIds = new ArrayList<URI>();
-        for (ITLRestRep itl : parent.blockExports().getExportsForInitiatorPorts(initiators)) {
-            blockExportIds.add(itl.getExport().getId());
-        }
-
-        return parent.blockExports().getByIds(blockExportIds, new ExportClusterFilter(clusterId, projectId, varrayId));
+        return search().byCluster(clusterId).filter(new ExportClusterFilter(clusterId, projectId, varrayId)).run();
     }
 
     /**
@@ -143,17 +143,7 @@ public class BlockExports extends ProjectResources<ExportGroupRestRep> implement
      *
      */
     public List<ExportGroupRestRep> findByHost(URI hostId, URI projectId, URI varrayId) {
-        List<String> initiators = new ArrayList<String>();
-        for (InitiatorRestRep initiator : parent.initiators().getByHost(hostId)) {
-            initiators.add(initiator.getInitiatorPort());
-        }
-
-        List<URI> blockExportIds = new ArrayList<URI>();
-        for (ITLRestRep itl : parent.blockExports().getExportsForInitiatorPorts(initiators)) {
-            blockExportIds.add(itl.getExport().getId());
-        }
-
-        return parent.blockExports().getByIds(blockExportIds, new ExportHostFilter(hostId, projectId, varrayId));
+        return search().byHost(hostId).filter(new ExportHostFilter(hostId, projectId, varrayId)).run();
     }
 
     /**
@@ -168,17 +158,7 @@ public class BlockExports extends ProjectResources<ExportGroupRestRep> implement
      * @return the list of export groups associated with the host.
      */
     public List<ExportGroupRestRep> findContainingHost(URI hostId, URI projectId, URI varrayId) {
-        List<String> initiators = new ArrayList<String>();
-        for (InitiatorRestRep initiator : parent.initiators().getByHost(hostId)) {
-            initiators.add(initiator.getInitiatorPort());
-        }
-
-        List<URI> blockExportIds = new ArrayList<URI>();
-        for (ITLRestRep itl : parent.blockExports().getExportsForInitiatorPorts(initiators)) {
-            blockExportIds.add(itl.getExport().getId());
-        }
-
-        return parent.blockExports().getByIds(blockExportIds, new ProjectFilter(projectId).and(new VirtualArrayFilter(varrayId)));
+        return search().byHost(hostId).filter(new ExportFilter(projectId, varrayId)).run();
     }
 
 
@@ -261,5 +241,15 @@ public class BlockExports extends ProjectResources<ExportGroupRestRep> implement
         builder.queryParam("initiators", ports.toString());
         ITLRestRepList list = client.getURI(ITLRestRepList.class, builder.build());
         return defaultList(list.getExportList());
+    }
+    
+    /**
+     * Creates a search builder specifically for creating export group search queries.
+     * 
+     * @return a export group search builder.
+     */
+    @Override
+    public ExportGroupSearchBuilder search() {
+        return new ExportGroupSearchBuilder(this);
     }
 }

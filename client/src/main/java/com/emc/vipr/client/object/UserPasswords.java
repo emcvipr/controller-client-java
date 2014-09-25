@@ -5,6 +5,7 @@ import com.emc.vipr.model.object.user.*;
 import java.net.URI;
 import static com.emc.vipr.client.object.impl.PathConstants.DEACTIVATE_PATH;
 import static com.emc.vipr.client.object.impl.PathConstants.ID_PATH;
+import static com.emc.vipr.client.object.impl.PathConstants.NAMESPACE_ID_PATH;
 import static com.emc.vipr.client.object.impl.PathConstants.USER_PASSWORD_URL;
 
 public class UserPasswords {
@@ -25,6 +26,19 @@ public class UserPasswords {
      */
     public UserGroupRestRep getGroups(URI userId) {
         return client.get(UserGroupRestRep.class, USER_PASSWORD_URL + ID_PATH, userId);
+    }
+    
+    /**
+     * Retrieves groups for the specified user ID.
+     * <p>
+     *     API Call: <tt>GET /object/user-password/{uid}/{namespace}</tt>
+     * </p>
+     *
+     * @param userId User identifier.
+     * @return User groups.
+     */
+    public UserGroupRestRep getGroups(URI userId, URI namespace) {
+        return client.get(UserGroupRestRep.class, USER_PASSWORD_URL + ID_PATH + NAMESPACE_ID_PATH, userId, namespace);
     }
 
     /**

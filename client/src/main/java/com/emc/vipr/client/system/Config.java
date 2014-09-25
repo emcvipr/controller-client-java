@@ -1,15 +1,18 @@
 package com.emc.vipr.client.system;
 
+import static com.emc.vipr.client.impl.jersey.ClientUtils.addQueryParam;
+import static com.emc.vipr.client.system.impl.PathConstants.CONFIG_CONNECT_EMC_EMAIL_URL;
+import static com.emc.vipr.client.system.impl.PathConstants.CONFIG_CONNECT_EMC_FTPS_URL;
 import static com.emc.vipr.client.system.impl.PathConstants.CONFIG_DATA_NODE_URL;
+import static com.emc.vipr.client.system.impl.PathConstants.CONFIG_EXTRA_NODES_UPGRADE_LOCK_URL;
 import static com.emc.vipr.client.system.impl.PathConstants.CONFIG_PROPERTIES_URL;
 import static com.emc.vipr.client.system.impl.PathConstants.CONFIG_PROP_METADATA_URL;
-import static com.emc.vipr.client.system.impl.PathConstants.CONFIG_CONNECT_EMC_FTPS_URL;
-import static com.emc.vipr.client.system.impl.PathConstants.CONFIG_CONNECT_EMC_EMAIL_URL;
 import static com.emc.vipr.client.system.impl.PathConstants.CONFIG_PROP_RESET_URL;
-import static com.emc.vipr.client.system.impl.PathConstants.CONFIG_EXTRA_NODES_UPGRADE_LOCK_URL;
-import static com.emc.vipr.client.impl.jersey.ClientUtils.addQueryParam;
+
 import java.io.InputStream;
+
 import javax.ws.rs.core.UriBuilder;
+
 import com.emc.storageos.model.property.PropertiesMetadata;
 import com.emc.storageos.model.property.PropertyInfoRestRep;
 import com.emc.storageos.model.property.PropertyInfoUpdate;
@@ -26,6 +29,8 @@ public class Config {
 	private static final String REMOVE_OBSOLETE = "1";
 	
 	private RestClient client;
+	
+	private enum UserScopeType {GLOBAL, NAMESPACE};
 	
 	public Config(RestClient client) {
         this.client = client;
@@ -144,4 +149,5 @@ public class Config {
 	public void resetExtraNodesUpgradeLock() {
 		client.post(String.class, CONFIG_EXTRA_NODES_UPGRADE_LOCK_URL);
 	}
+	
 }

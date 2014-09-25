@@ -2,12 +2,28 @@ package com.emc.vipr.client;
 
 import com.emc.vipr.client.impl.RestClient;
 import com.emc.vipr.client.object.*;
+import com.emc.vipr.client.system.UserConfig;
 
 public class ViPRObjectClient {
     protected RestClient client;
 
+    /**
+     * Convenience method for calling constructor with new ClientConfig().withHost(host)
+     *
+     * @param host Hostname or IP address for the Virtual IP of the target environment.
+     */
     public ViPRObjectClient(String host) {
         this(new ClientConfig().withHost(host));
+    }
+
+    /**
+     * Convenience method for calling constructor with new ClientConfig().withHost(host).withIgnoringCertificates(ignoreCertificates)
+     *
+     * @param host Hostname or IP address for the Virtual IP of the target environment.
+     * @param ignoreCertificates True if SSL certificates should be ignored.
+     */
+    public ViPRObjectClient(String host, boolean ignoreCertificates) {
+        this(new ClientConfig().withHost(host).withIgnoringCertificates(ignoreCertificates));
     }
 
     public ViPRObjectClient(ClientConfig config) {
@@ -116,5 +132,17 @@ public class ViPRObjectClient {
     
     public CasHead casHead() {
         return new CasHead(client);
+    }
+
+    public UserConfig userConfiguration() {
+        return new UserConfig(client);
+    }
+
+    public Vdcs vdcs() {
+        return new Vdcs(client);
+    }
+    
+    public Capacities capacities() {
+    	return new Capacities(client);
     }
 }

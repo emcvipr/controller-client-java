@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.emc.storageos.model.NamedRelatedResourceRep;
 import com.emc.storageos.model.TaskResourceRep;
-import com.emc.storageos.model.systems.StorageSystemRestRep;
 import com.emc.storageos.model.vdc.VirtualDataCenterAddParam;
 import com.emc.storageos.model.vdc.VirtualDataCenterList;
 import com.emc.storageos.model.vdc.VirtualDataCenterModifyParam;
@@ -93,7 +92,7 @@ public class VirtualDataCenters extends AbstractResources<VirtualDataCenterRestR
      * @return Task<VirtualDataCenterRestRep> the task to reconnect the vdc.
      */
     public Task<VirtualDataCenterRestRep> reconnect(URI id) {
-    	return postTask(getDisconnectUrl(), id);
+    	return postTask(getReconnectUrl(), id);
     }
     
     /**
@@ -106,7 +105,7 @@ public class VirtualDataCenters extends AbstractResources<VirtualDataCenterRestR
      * @return Task<VirtualDataCenterRestRep> the task to disconnect the vdc.
      */
     public Task<VirtualDataCenterRestRep> disconnect(URI id) {
-    	return postTask(TaskResourceRep.class, getDisconnectUrl(), id);
+    	return postTask(getDisconnectUrl(), id);
     }
     
     /**

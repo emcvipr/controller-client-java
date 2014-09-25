@@ -2,7 +2,9 @@ package com.emc.vipr.client;
 
 import com.emc.vipr.client.exceptions.ViPRException;
 import com.emc.vipr.client.impl.RestClient;
+import com.emc.vipr.client.impl.SSLUtil;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSocketFactory;
 import javax.ws.rs.core.MediaType;
 import java.net.URI;
@@ -33,6 +35,7 @@ public class ClientConfig {
     private int bulkSize = DEFAULT_BULK_SIZE;
     private String host;
     private SSLSocketFactory socketFactory;
+    private HostnameVerifier hostnameVerifier;
 
     public boolean isRequestLoggingEnabled() {
         return requestLoggingEnabled;
@@ -226,7 +229,8 @@ public class ClientConfig {
     }
 
     /**
-     * provide an alternate socket factory for the clients
+     * Provide an alternate socket factory for the clients
+     *
      * @param socketFactory custom socket factory
      */
     public void setSocketFactory(SSLSocketFactory socketFactory) {
@@ -235,10 +239,45 @@ public class ClientConfig {
 
     /**
      * Returns the provided SSLSocketFactory, or null
+     *
      * @return The custom SSLSocketFactory
      */
     public SSLSocketFactory getSocketFactory() {
         return socketFactory;
+    }
+
+    /**
+     * Returns the provided HostnameVerifier, or null
+     *
+     * @return The custom HostnameVerifier
+     */
+    public HostnameVerifier getHostnameVerifier() {
+        return hostnameVerifier;
+    }
+
+    /**
+     * Provide and alternate Hostname Verifier for the clients
+     *
+     * @param hostnameVerifier custom hostname verifier
+     */
+    public void setHostnameVerifier(HostnameVerifier hostnameVerifier) {
+        this.hostnameVerifier = hostnameVerifier;
+    }
+
+    /**
+     * Sets the SSLSocketFactory and HostnameVerifier to ignore all SSL certificates. This is suitable for a default
+     * installation using self-signed certificates. This is <b>not</b> intended for production use as it bypasses
+     * important SSL security.
+     *
+     * @param ignoreCertificates True if SSL trust should be disabled
+     * @see #setSocketFactory(javax.net.ssl.SSLSocketFactory)
+     * @see #setHostnameVerifier(javax.net.ssl.HostnameVerifier)
+     */
+    public void setIgnoreCertificates(boolean ignoreCertificates) {
+        if (ignoreCertificates) {
+            setSocketFactory(SSLUtil.getTrustAllSslSocketFactory());
+            setHostnameVerifier(SSLUtil.getNullHostnameVerifier());
+        }
     }
 
     /**
@@ -415,6 +454,31 @@ public class ClientConfig {
      */
     public ClientConfig withSocketFactory(SSLSocketFactory factory) {
         setSocketFactory(factory);
+        return this;
+    }
+
+    /**
+     * Sets the HostnameVerifier and returns the updated configuration.
+     *
+     * @see #setHostnameVerifier(javax.net.ssl.HostnameVerifier)
+     * @param verifier The HostnameVerifier to use
+     * @return the updated ClientConfig object
+     */
+    public ClientConfig withHostnameVerifier(HostnameVerifier verifier) {
+        setHostnameVerifier(verifier);
+        return this;
+    }
+
+    /**
+     * Sets the SSLSocketFactory and HostnameVerifier to ignore all SSL certificates and returns the updated
+     * configuration. This is suitable for a default installation using self-signed certificates. This
+     * is <b>not</b> intended for production use as it bypasses important SSL security.
+     *
+     * @see #setIgnoreCertificates(boolean)
+     * @return the updated ClientConfig object
+     */
+    public ClientConfig withIgnoringCertificates(boolean ignoringCertificates) {
+        setIgnoreCertificates(ignoringCertificates);
         return this;
     }
 

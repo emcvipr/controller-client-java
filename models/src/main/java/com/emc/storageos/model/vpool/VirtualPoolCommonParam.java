@@ -20,6 +20,7 @@ public class VirtualPoolCommonParam {
     private Boolean useMatchedPools = true;
     private String provisionType;
     private String systemType;
+    private Boolean longTermRetention;
     
     public VirtualPoolCommonParam() {}
 
@@ -143,5 +144,14 @@ public class VirtualPoolCommonParam {
     public void setSystemType(String systemType) {
         this.systemType = systemType;
     }
+
+    @XmlElement(name = "long_term_retention")
+	public Boolean getLongTermRetention() {
+		return longTermRetention;
+	}
+
+	public void setLongTermRetention(Boolean longTermRetention) {
+		this.longTermRetention = longTermRetention;
+	}
     
 }

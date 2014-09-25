@@ -16,6 +16,7 @@ public class UpdateBucketOwnerParam {
 
     /**
      * Namespace that is allowed to access this bucket
+     * @valid none
      */
     @XmlElement(required = true, name = "namespace")
     public String getNamespace() {
@@ -28,6 +29,7 @@ public class UpdateBucketOwnerParam {
 
     /**
      * New owner of the bucket
+     * @valid none
      */
     @XmlElement(required = true, name = "new_owner")
     public String getNewOwner() {

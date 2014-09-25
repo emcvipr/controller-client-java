@@ -29,6 +29,7 @@ public class XmlUtils {
         if (DOM_FACTORY == null) {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setNamespaceAware(true);
+            factory.setExpandEntityReferences(false);
             DOM_FACTORY = factory;
         }
         return DOM_FACTORY;

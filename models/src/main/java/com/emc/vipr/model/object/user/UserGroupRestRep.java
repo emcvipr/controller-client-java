@@ -12,7 +12,6 @@ import java.util.List;
  * Parameter for creating groups for user
  */
 @XmlRootElement(name = "user_groups")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class UserGroupRestRep {
     /**
      * List of groups for the user

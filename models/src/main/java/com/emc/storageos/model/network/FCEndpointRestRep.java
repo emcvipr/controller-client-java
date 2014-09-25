@@ -14,6 +14,7 @@ public class FCEndpointRestRep extends DataObjectRestRep {
     private String fcid;
     private String remoteNodeName;
     private String remotePortName;
+    private String remotePortAlias;
     private RelatedResourceRep networkDevice;
 
     public FCEndpointRestRep() {}
@@ -109,6 +110,19 @@ public class FCEndpointRestRep extends DataObjectRestRep {
 
     public void setRemotePortName(String remotePortName) {
         this.remotePortName = remotePortName;
+    }
+
+    /**
+     * The alias of the remote port of the connection
+     * @valid none
+     */
+    @XmlElement(name = "remote_port_alias")
+    public String getRemotePortAlias() {
+        return remotePortAlias;
+    }
+
+    public void setRemotePortAlias(String remotePortAlias) {
+        this.remotePortAlias = remotePortAlias;
     }
 
     /**

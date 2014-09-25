@@ -11,10 +11,10 @@
 
 package com.emc.storageos.model.ports;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.emc.storageos.model.RelatedResourceRep;
 import com.emc.storageos.model.varray.VirtualArrayResourceRestRep;
@@ -24,6 +24,7 @@ import com.emc.storageos.model.varray.VirtualArrayResourceRestRep;
 @XmlAccessorType(XmlAccessType.PROPERTY)
 public class StoragePortRestRep extends VirtualArrayResourceRestRep {
     private String portName;
+    private String portAlias;
     private String ipAddress;
     private Long tcpPortNumber;
     private String portNetworkId;
@@ -119,6 +120,20 @@ public class StoragePortRestRep extends VirtualArrayResourceRestRep {
     public void setPortName(String portName) {
         this.portName = portName;
     }
+    
+    /**
+     * The alias represents port's wwn id
+     *
+     * @valid none
+     */
+    @XmlElement(name = "port_alias")
+    public String getPortAlias() {
+        return portAlias;
+    }
+
+    public void setPortAlias(String portAlias) {
+        this.portAlias = portAlias;
+    }    
 
     /**
      * The network address of the port. When Fibre-Channel (FC) is the

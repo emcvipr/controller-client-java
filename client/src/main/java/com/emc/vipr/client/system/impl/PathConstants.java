@@ -46,4 +46,7 @@ public class PathConstants {
     public static final String CALLHOME_ALERT_TASK_URL = CALLHOME_URL + "/alert/{id}/tasks/{op_id}";
     public static final String CALLHOME_ERS_URL = CALLHOME_URL + "/esrs-device";
     
+    public static final String USER_SCOPE_URL = "/user-scope";
+    public static final String USER_SCOPE = "/{scope}";
+    
 }

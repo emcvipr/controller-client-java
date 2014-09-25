@@ -13,7 +13,8 @@ public class SSLUtil {
     
     private static boolean trustAllEnabled = false;
     private static SSLContext trustAllContext;
-    private static NullHostNameVerifier hostnameVerifier;
+    private static SSLSocketFactory trustAllSslSocketFactory;
+    private static NullHostNameVerifier nullHostnameVerifier;
 
     public static void setSSLSocketFactory(SSLSocketFactory factory) {
         HttpsURLConnection.setDefaultSSLSocketFactory(factory);
@@ -24,18 +25,32 @@ public class SSLUtil {
             return;
         }
 
-        SSLContext sc = getTrustAllContext();
-        setSSLSocketFactory(sc.getSocketFactory());
+        setSSLSocketFactory(getTrustAllSslSocketFactory());
         trustAllEnabled = true;
     }
 
     public static void trustAllHostnames() {
-        if (hostnameVerifier == null) {
-            hostnameVerifier = new NullHostNameVerifier();
-            HttpsURLConnection.setDefaultHostnameVerifier(hostnameVerifier);
+        if (nullHostnameVerifier == null) {
+            nullHostnameVerifier = getNullHostnameVerifier();
+            HttpsURLConnection.setDefaultHostnameVerifier(nullHostnameVerifier);
         }
     }
-    
+
+    public static NullHostNameVerifier getNullHostnameVerifier() {
+        if (nullHostnameVerifier == null) {
+            nullHostnameVerifier = new NullHostNameVerifier();
+        }
+        return nullHostnameVerifier;
+    }
+
+    public static SSLSocketFactory getTrustAllSslSocketFactory() {
+        if (trustAllSslSocketFactory == null) {
+            SSLContext sc = getTrustAllContext();
+            trustAllSslSocketFactory = sc.getSocketFactory();
+        }
+        return trustAllSslSocketFactory;
+    }
+
     public static SSLContext getTrustAllContext() {
         if (trustAllContext == null) {
             try {
@@ -50,7 +65,7 @@ public class SSLUtil {
         return trustAllContext;
     }
     
-    public static TrustManager[] newTrustManagers() {
+    private static TrustManager[] newTrustManagers() {
         return new TrustManager[] { new AllTrustManager() };
     }
 

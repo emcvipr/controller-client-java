@@ -16,7 +16,8 @@ public enum ObjectResourceTypeEnum {
     BASE_URL          ("baseurl",   "/object/baseurl"),
     NAMESPACE         ("namespace",     "/object/namespaces/namespace"),
     OBJECT_TZ         ("object_transport_zone", "/object/networks"),
-    CAS_CLUSTER       ("cas_cluster", "/dataservice/cas-cluster");
+    CAS_CLUSTER       ("cas_cluster", "/dataservice/cas-cluster"),
+    VDC               ("vdc", "/object/vdcs/vdc");
 
     private final String type;
     private final String service;

@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class FileVirtualPoolRestRep extends VirtualPoolCommonRestRep {
     
     private FileVirtualPoolProtectionParam protection;
+    private Boolean longTermRetention;
 
     public FileVirtualPoolRestRep() {}
             
@@ -42,6 +43,21 @@ public class FileVirtualPoolRestRep extends VirtualPoolCommonRestRep {
     public void setProtection(FileVirtualPoolProtectionParam protection) {
         this.protection = protection;
     }
-    
+
+
+    /**
+     * Not currently used
+     * @valid none
+     */
+    @XmlElement(name = "long_term_retention")
+    public Boolean getLongTermRetention() {
+        return longTermRetention;
+    }
+
+    public void setLongTermRetention(Boolean longTermRetention) {
+        this.longTermRetention = longTermRetention;
+    }
+
+
 }
 

@@ -29,7 +29,9 @@ public class DataServiceVpoolRestRep extends DataObjectRestRep {
     private String name;
     private List<StringHashMapEntry> mappings;
 
-    /**
+    private boolean allowAllNamespaces;
+    
+   /**
      * DataService VirtualPool description
      * @return Object store Descrption
      */
@@ -83,7 +85,20 @@ public class DataServiceVpoolRestRep extends DataObjectRestRep {
         else {
             this.mappings = Collections.emptyList();
         }
-    }
+    }	
+
+    /**
+     * Parameter to check if the Vpool can access all Namespace
+     * @return true or false
+     */
+    @XmlElement(name = "isAllowAllNamespaces")
+    public boolean isAllowAllNamespaces() {
+		return allowAllNamespaces;
+	}
+
+	public void setAllowAllNamespaces(boolean allowAllNamespaces) {
+		this.allowAllNamespaces = allowAllNamespaces;
+	}   
 }
 
 

@@ -19,4 +19,5 @@ public class PathConstants {
     public static final String SERVICE_URL = "/api/services/{id}";
     public static final String SERVICE_DESCRIPTOR_URL = SERVICE_URL + "/descriptor";
     public static final String CATALOG_URL = "/api/catalog";
+    public static final String SETUP_SKIP_URL = "/api/setup/skip";
 }

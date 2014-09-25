@@ -33,7 +33,7 @@ public class PropertyInfoRestRep extends PropertyInfo {
     public PropertyInfoRestRep(Map<String, String> properties) {
         super(properties);
     }
-
+  
     public Map<String, String> getAllProperties() {
         return super.getAllProperties();
     }

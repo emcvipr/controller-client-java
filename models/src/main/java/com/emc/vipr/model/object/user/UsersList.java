@@ -11,25 +11,36 @@ import java.util.List;
  */
 @XmlRootElement(name = "users")
 public class UsersList {
-    private List<URI> users;
+    private List<BlobUser> users;
 
-    public void addUser(URI id){
-        getUsers().add(id);
+    public void addUser(URI userId){
+    	BlobUser user = new BlobUser();
+    	user.setUser(userId);
+    	user.setNamespace(null);
+    	getUsers().add(user);
+    }
+    
+    public void addUser(URI userId, URI namespace)
+    {
+    	BlobUser user = new BlobUser();
+    	user.setUser(userId);
+    	user.setNamespace(namespace);
+    	getUsers().add(user);
     }
 
     /**
      * A list of users provisioned with the object service
      * @valid None
      */
-    @XmlElement(name="users_list")
-    public List<URI> getUsers() {
+    @XmlElement( name = "blobuser")
+    public List<BlobUser> getUsers() {
         if (users == null) {
-            users = new ArrayList<URI>();
+            users = new ArrayList<BlobUser>();
         }
         return users;
     }
 
-    public void setUsers(List<URI> users) {
+    public void setUsers(List<BlobUser> users) {
         this.users = users;
     }
 }

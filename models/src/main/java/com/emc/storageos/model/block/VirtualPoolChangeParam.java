@@ -22,6 +22,7 @@ import com.emc.storageos.model.vpool.BlockVirtualPoolProtectionParam;
 /**
  * Specifies the parameters to change the virtual pool for a volume.
  */
+@Deprecated
 @XmlRootElement(name = "volume_vpool_change")
 public class VirtualPoolChangeParam {
 

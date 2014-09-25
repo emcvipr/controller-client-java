@@ -71,18 +71,38 @@ public class VirtualDataCenterModifyParam {
         this.keyCertChain = keyCertChain;
     }
     
+    /**
+     * @deprecated GEO command endpoints have moved to
+     *             {@link com.emc.vipr.model.object.zone.VdcRestRep#getCmdEndPoints()}
+     */
+    @Deprecated
     @XmlElement(name="geo_command_endpoint")
     public String getGeoCommandEndpoint() {
         return geoCommandEndpoint;
     }
+    /**
+     * @deprecated GEO command endpoints have moved to
+     *             {@link com.emc.vipr.model.object.zone.VdcRestRep#setCmdEndPoints(String)}
+     */
+    @Deprecated
     public void setGeoCommandEndpoint(String geoCommandEndpoint) {
         this.geoCommandEndpoint = geoCommandEndpoint;
     }
     
+    /**
+     * @deprecated GEO data endpoints have moved to
+     *             {@link com.emc.vipr.model.object.zone.VdcRestRep#getDataEndPoints()}
+     */
+    @Deprecated
     @XmlElement(name="geo_data_endpoint")
     public String getGeoDataEndpoint() {
         return geoDataEndpoint;
     }
+    /**
+     * @deprecated GEO data endpoints have moved to
+     *             {@link com.emc.vipr.model.object.zone.VdcRestRep#setDataEndPoints(String)}
+     */
+    @Deprecated
     public void setGeoDataEndpoint(String geoDataEndpoint) {
         this.geoDataEndpoint = geoDataEndpoint;
     }

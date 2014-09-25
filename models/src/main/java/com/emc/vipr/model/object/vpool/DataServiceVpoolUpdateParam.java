@@ -10,11 +10,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class DataServiceVpoolUpdateParam {
     private String name;
     private String description;
+    private Boolean allowAllNamespaces;
 
     public DataServiceVpoolUpdateParam() { }
     public DataServiceVpoolUpdateParam(String name, String description) {
+       this(name, description, null);
+    }
+    public DataServiceVpoolUpdateParam(String name, String description, Boolean allowAllNamespaces) {
         this.name = name;
         this.description = description;
+        this.allowAllNamespaces = allowAllNamespaces;
     }
 
     /**
@@ -42,5 +47,18 @@ public class DataServiceVpoolUpdateParam {
     public void setDescription(String description) {
         this.description = description;
     }
+    
+    /**
+     * AllowAllNamespaces to update
+     * @valid None
+     */
+    @XmlElement(required = false)
+	public Boolean isAllowAllNamespaces() {
+		return allowAllNamespaces;
+	}
+    
+	public void setAllowAllNamespaces(Boolean allowAllNamespaces) {
+		this.allowAllNamespaces = allowAllNamespaces;
+	}    
 }
 

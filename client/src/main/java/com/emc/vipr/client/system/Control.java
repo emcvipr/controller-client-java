@@ -13,6 +13,8 @@ public class Control {
 			
 	private static final String NODE_ID_PARAM = "node_id";
 	private static final String NAME_PARAM = "name";
+    private static final String FORCE_PARAM = "force";
+    private static final String FORCE_VALUE = "1";
 	
 	private RestClient client;
 	
@@ -54,6 +56,21 @@ public class Control {
 	 * API Call: POST /control/cluster/poweroff
 	 */
 	public void powerOffCluster() {
-		client.post(String.class, CONTROL_POWER_OFF_CLUSTER_URL);
+		powerOffCluster(false);
 	}
+
+    /**
+     * Powers off all nodes in a ViPR cluster.
+     * <p>
+     * API Call: POST /control/cluster/poweroff
+     *
+     * @param force Set to true to force poweroff
+     */
+    public void powerOffCluster(boolean force) {
+        UriBuilder builder = client.uriBuilder(CONTROL_POWER_OFF_CLUSTER_URL);
+        if (force) {
+            addQueryParam(builder, FORCE_PARAM, FORCE_VALUE);
+        }
+        client.postURI(String.class, builder.build());
+    }
 }

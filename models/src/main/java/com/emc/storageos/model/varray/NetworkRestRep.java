@@ -15,16 +15,18 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.emc.storageos.model.DiscoveredDataObjectRestRep;
-import com.emc.storageos.model.RelatedResourceRep;
-import com.emc.storageos.model.StringHashMapEntry;
 import org.codehaus.jackson.annotate.JsonProperty;
+
+import com.emc.storageos.model.DiscoveredDataObjectRestRep;
+import com.emc.storageos.model.EndpointAliasRestRep;
+import com.emc.storageos.model.RelatedResourceRep;
 
 @XmlRootElement(name = "network")
 @XmlAccessorType(XmlAccessType.PROPERTY)
@@ -32,7 +34,7 @@ public class NetworkRestRep extends DiscoveredDataObjectRestRep {
     private RelatedResourceRep varray;
     private String transportType;
     private Set<String> endpoints;
-    private List<StringHashMapEntry> endpointsDiscovered;
+    private List<EndpointAliasRestRep> endpointsDiscovered;
     private String fabricId;
     private Boolean discovered;
     private Set<String> networkSystems;
@@ -82,14 +84,14 @@ public class NetworkRestRep extends DiscoveredDataObjectRestRep {
      */
     @XmlElementWrapper(name = "endpoints_discovered")
     @XmlElement(name = "endpoint_discovered")
-    public List<StringHashMapEntry> getEndpointsDiscovered() {
+    public List<EndpointAliasRestRep> getEndpointsDiscovered() {
         if (endpointsDiscovered == null) {
-            endpointsDiscovered = new ArrayList<StringHashMapEntry>();
+            endpointsDiscovered = new ArrayList<EndpointAliasRestRep>();
         }
         return endpointsDiscovered;
     }
 
-    public void setEndpointsDiscovered(List<StringHashMapEntry> endpointsDiscovered) {
+    public void setEndpointsDiscovered(List<EndpointAliasRestRep> endpointsDiscovered) {
         this.endpointsDiscovered = endpointsDiscovered;
     }
 
@@ -218,5 +220,4 @@ public class NetworkRestRep extends DiscoveredDataObjectRestRep {
     public void setRoutedNetworks(Set<String> routedNetworks) {
         this.routedNetworks = routedNetworks;
     }
-
 }

@@ -20,7 +20,7 @@ public class OrderInfo extends ModelInfo {
     private String message;                     // System generated message relating to this order
     private Date createdDate;                   // Date the order was placed
     private Date dateCompleted;                 // Date the order completed
-    private String status;                      // Order Status. One of: PENDING, EXECUTING, SUCCESS, ERROR, SCHEDULED, CANCELLED, APPROVAL, APPROVED, REJECTED
+    private String status;                      // Order Status. One of: PENDING, EXECUTING, PARTIAL_SUCCESS, SUCCESS, ERROR, SCHEDULED, CANCELLED, APPROVAL, APPROVED, REJECTED
     private Reference execution;                // Reference to the execution information
     private List<Parameter> parameters;         // Parameters to an order
     private Tags tags;                          // Tags on the order object
