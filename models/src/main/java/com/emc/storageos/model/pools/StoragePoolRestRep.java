@@ -44,6 +44,7 @@ public class StoragePoolRestRep extends VirtualArrayResourceRestRep {
     private List<StringHashMapEntry> tierUtilizationPercentage;
     private String poolName;
     private String poolServiceType;
+    private Boolean longTermRetention;
     private String supportedResourceTypes;
     private RelatedResourceRep storageSystem;
     private Integer maxThinPoolSubscriptionPercentage;
@@ -314,6 +315,24 @@ public class StoragePoolRestRep extends VirtualArrayResourceRestRep {
     public void setPoolServiceType(String poolServiceType) {
         this.poolServiceType = poolServiceType;
     }
+
+
+    /**
+     * The Long term retention policy is available on this pool
+     *
+     * @valid block  = Volume
+     * @valid file   = File System
+     * @valid object = Object Store
+     */
+    @XmlElement(name = "long_term_retention")
+    public Boolean getLongTermRetention() {
+        return longTermRetention;
+    }
+
+    public void setLongTermRetention(boolean longTermRetention) {
+        this.longTermRetention = longTermRetention;
+    }
+
 
     /**
      * The protocols this pool uses to transport disk commands and

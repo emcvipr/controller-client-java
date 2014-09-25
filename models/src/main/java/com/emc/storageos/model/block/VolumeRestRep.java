@@ -42,6 +42,7 @@ public class VolumeRestRep extends BlockObjectRestRep {
     private ProtectionRestRep protection;
     private String accessState;
     private String linkStatus;
+    private RelatedResourceRep pool;
     
     // Fields in a Volume that are specific to RecoverPoint
     public static class RecoverPointRestRep {
@@ -548,6 +549,19 @@ public class VolumeRestRep extends BlockObjectRestRep {
 
     public void setLinkStatus(String linkStatus) {
         this.linkStatus = linkStatus;
+    }
+
+    /**
+     * URI for the storage pool containing storage allocated for the volume.
+     * @valid none 
+     */
+    @XmlElement(name = "storage_pool")
+    public RelatedResourceRep getPool() {
+        return pool;
+    }
+
+    public void setPool(RelatedResourceRep pool) {
+        this.pool = pool;
     }
 
 }

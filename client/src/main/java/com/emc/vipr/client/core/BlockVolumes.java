@@ -654,8 +654,23 @@ public class BlockVolumes extends ProjectResources<VolumeRestRep> implements Tas
      *        the virtual pool change configuration.
      * @return a task for monitoring the progress of the operation.
      */
+    @Deprecated
     public Task<VolumeRestRep> changeVirtualPool(URI id, VirtualPoolChangeParam input) {
         return putTask(input, getIdUrl() + "/vpool", id);
+    }
+
+
+    /**
+     * Changes the virtual pool for the given block volume.
+     * <p>
+     * API Call: <tt>POST /block/volumes/vpool-change</tt>
+     *
+     * @param input
+     *        the virtual pool change configuration.
+     * @return a task for monitoring the progress of the operation.
+     */
+    public Tasks<VolumeRestRep> changeVirtualPool(VolumeVirtualPoolChangeParam input) {
+        return postTasks(input, baseUrl + "/vpool-change");
     }
 
     /**

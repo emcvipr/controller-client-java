@@ -6,8 +6,23 @@ import com.emc.vipr.client.system.*;
 public class ViPRSystemClient {
     protected RestClient client;
 
+    /**
+     * Convenience method for calling constructor with new ClientConfig().withHost(host)
+     *
+     * @param host Hostname or IP address for the Virtual IP of the target environment.
+     */
     public ViPRSystemClient(String host) {
         this(new ClientConfig().withHost(host));
+    }
+
+    /**
+     * Convenience method for calling constructor with new ClientConfig().withHost(host).withIgnoringCertificates(ignoreCertificates)
+     *
+     * @param host Hostname or IP address for the Virtual IP of the target environment.
+     * @param ignoreCertificates True if SSL certificates should be ignored.
+     */
+    public ViPRSystemClient(String host, boolean ignoreCertificates) {
+        this(new ClientConfig().withHost(host).withIgnoringCertificates(ignoreCertificates));
     }
 
     public ViPRSystemClient(ClientConfig config) {

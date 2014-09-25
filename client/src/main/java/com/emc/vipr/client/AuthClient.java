@@ -6,7 +6,11 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
+
+import static com.emc.vipr.client.impl.jersey.ClientUtils.addQueryParam;
+import static com.emc.vipr.client.system.impl.PathConstants.CONTROL_POWER_OFF_CLUSTER_URL;
 
 public class AuthClient {
     protected RestClient client;
@@ -15,8 +19,23 @@ public class AuthClient {
         this.client = client;
     }
 
+    /**
+     * Convenience method for calling constructor with new ClientConfig().withHost(host)
+     *
+     * @param host Hostname or IP address for the Virtual IP of the target environment.
+     */
     public AuthClient(String host) {
         this(new ClientConfig().withHost(host));
+    }
+
+    /**
+     * Convenience method for calling constructor with new ClientConfig().withHost(host).withIgnoringCertificates(ignoreCertificates)
+     *
+     * @param host Hostname or IP address for the Virtual IP of the target environment.
+     * @param ignoreCertificates True if SSL certificates should be ignored.
+     */
+    public AuthClient(String host, boolean ignoreCertificates) {
+        this(new ClientConfig().withHost(host).withIgnoringCertificates(ignoreCertificates));
     }
 
     public AuthClient(ClientConfig config) {
@@ -60,6 +79,18 @@ public class AuthClient {
             ClientResponse response = client.resource(uri).get(ClientResponse.class);
             response.close();
         }
+    }
+
+    public void logoutUser(String username, boolean force, boolean includeProxyTokens) {
+        UriBuilder builder = client.uriBuilder("/logout");
+        builder.queryParam("username", username);
+        if (force) {
+            builder.queryParam("force", "true");
+        }
+        if (includeProxyTokens) {
+            builder.queryParam("proxytokens", "true");
+        }
+        client.getURI(String.class, builder.build());
     }
     
     public boolean isLoggedIn() {

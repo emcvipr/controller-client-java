@@ -5,6 +5,7 @@ import com.emc.storageos.model.StringHashMapEntry;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -18,18 +19,30 @@ public class DataServiceVpoolCreateParam {
     private String name;
     private String description;
     private List<StringHashMapEntry> mappings;
+    private Boolean allowAllNamespaces;
 
     public DataServiceVpoolCreateParam() { }
-
-    public DataServiceVpoolCreateParam(String name, String description, List<StringHashMapEntry> mappings) {
-        this(null, name, description, mappings);
+    public DataServiceVpoolCreateParam(String name, String description, List<StringHashMapEntry> mappings, Boolean allowedAllNamespaces) {
+        this(null, name, description, mappings, allowedAllNamespaces);
     }
+    
 
-    public DataServiceVpoolCreateParam(String id, String name, String description, List<StringHashMapEntry> mappings) {
+    /**
+     * This constructor is used when allowAllNamespaces param is not based
+     * @param name
+     * @param description
+     * @param mappings
+     */
+    public DataServiceVpoolCreateParam(String name, String description, List<StringHashMapEntry> mappings) {
+        this(null, name, description, mappings, null);
+    }
+    
+    public DataServiceVpoolCreateParam(String id, String name, String description, List<StringHashMapEntry> mappings, Boolean allowAllNamespaces) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.mappings = mappings;
+        this.allowAllNamespaces = allowAllNamespaces;
     }
 
     /**
@@ -93,5 +106,22 @@ public class DataServiceVpoolCreateParam {
     public void setVarrayMappings( List<StringHashMapEntry> mappings) {
         this.mappings = mappings;
     }
+
+    /**
+     * set if Vpool Allows access to all Namespaces for dataservices
+     * @valid None
+     */
+    @XmlElement(required = false, name = "isAllowAllNamespaces", defaultValue = "true")
+    public Boolean isAllowAllNamespaces() {
+    	if (this.allowAllNamespaces == null)
+    	{
+    		return new Boolean(true);
+    	}
+		return this.allowAllNamespaces;
+	}
+
+	public void setAllowAllNamespaces(Boolean allowAllNamespaces) {
+		this.allowAllNamespaces = allowAllNamespaces;
+	}
 }
 

@@ -20,7 +20,7 @@ import com.emc.vipr.client.impl.RestClient;
 /**
  * Auto tier policy resources.
  * <p>
- * Base URL: <tt>/vdc/auth-tier-policies</tt>
+ * Base URL: <tt>/vdc/auto-tier-policies</tt>
  * 
  * @see AutoTieringPolicyRestRep
  */
@@ -212,6 +212,49 @@ public class AutoTieringPolicies extends AbstractBulkResources<AutoTieringPolicy
             builder.queryParam("unique_auto_tier_policy_names", uniqueNames);
         }
         return getList(builder.build(virtualArrayId));
+    }
+    
+    /**
+     * Gets all auto tier policies for a given virtual array.
+     * 
+     * @param virtualArrayId
+     *        the ID of the virtual array.
+     * @param provisioningType
+     *        the provisioning type, if null matches any provisioning type.
+     * @param uniqueNames
+     *        when true duplicate named policies will be ignored.
+     * @param filter
+     *        filter used to filter results       
+     * @return the list of auto tier policies.
+     * 
+     * @see #listByVirtualArray(URI, String, Boolean)
+     * @see #getByRefs(java.util.Collection)
+     * @see VirtualArrays
+     */
+    public List<AutoTieringPolicyRestRep> getByVirtualArray(URI virtualArrayId, String provisioningType,
+            Boolean uniqueNames, ResourceFilter<AutoTieringPolicyRestRep> filter) {
+        List<NamedRelatedResourceRep> refs = listByVirtualArray(virtualArrayId, provisioningType, uniqueNames);
+        
+        return getByRefs(refs, filter);
+    }
+    
+    /**
+     * Gets all auto tier policies for a given virtual array. This is a convenience method for: <tt>getByRefs(list())</tt>.
+     * 
+     * @param virtualArrayId
+     *        the ID of the virtual array.
+     * @param provisioningType
+     *        the provisioning type, if null matches any provisioning type.
+     * @param uniqueNames
+     *        when true duplicate named policies will be ignored.       
+     * @return the list of auto tier policies.
+     * 
+     * @see #getByVirtualArray(URI, String, Boolean, ResourceFilter)
+     * @see VirtualArrays
+     */
+    public List<AutoTieringPolicyRestRep> getByVirtualArray(URI virtualArrayId, String provisioningType,
+            Boolean uniqueNames) {
+        return getByVirtualArray(virtualArrayId, provisioningType, uniqueNames, null);
     }
 
     /**

@@ -39,7 +39,7 @@ public class VirtualPoolChangeRep extends NamedRelatedVirtualPoolRep {
         this.allowed = allowedChangeOperationEnums != null && !allowedChangeOperationEnums.isEmpty();
         this.notAllowedReason = notAllowedReason;
         
-        if ( allowedChangeOperationEnums != null) {
+        if (allowedChangeOperationEnums != null) {
             for (VirtualPoolChangeOperationEnum allowedChangeOperationEnum : allowedChangeOperationEnums) {
                 getAllowedChangeOperations().add(new StringHashMapEntry(allowedChangeOperationEnum.name(), allowedChangeOperationEnum.toString()));
             }

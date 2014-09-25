@@ -2,6 +2,7 @@ package com.emc.vipr.model.object.user;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
 public class UserPasswordGroupUpdateParam {
     private String password;
     private List<String> groups;
+    private String namespace;
 
     /**
      * Password for the user
@@ -41,4 +43,19 @@ public class UserPasswordGroupUpdateParam {
     public void setGroups(List<String> groups) {
         this.groups = groups;
     }
+
+    /**
+     * Namespace associated with the user user as userId qualifier if the User Scope is NAMESPACE
+     * @valid None
+     */
+    @XmlElement(required = false, name = "namespace")
+	public String getNamespace() {
+		return namespace;
+	}
+
+	public void setNamespace(String namespace) {
+		this.namespace = namespace;
+	}
+    
+    
 }

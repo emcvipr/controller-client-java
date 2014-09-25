@@ -18,7 +18,8 @@ public enum VirtualPoolChangeOperationEnum {
     RP_PROTECTED("Change one or more volumes to include RecoverPoint protection"), 
     SRDF_PROTECED("Chnage one or more volumes to include SRDF protection"), 
     ADD_MIRRORS("Change one or more volumes to include continuous copies protection"), 
-    EXPORT_PATH_PARAMS("Change one or more volumes' path paramters");
+    EXPORT_PATH_PARAMS("Change one or more volumes' path paramters"),
+    AUTO_TIERING_POLICY("Change one or more volumes' Auto-tiering policy");
 
     private String description;
 

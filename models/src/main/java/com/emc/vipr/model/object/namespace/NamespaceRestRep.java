@@ -11,13 +11,15 @@
 
 package com.emc.vipr.model.object.namespace;
 
-import com.emc.storageos.model.DataObjectRestRep;
+import java.net.URI;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.net.URI;
-import java.util.HashMap;
+
+import com.emc.storageos.model.DataObjectRestRep;
 
 /**
  * Namespace used for object services bucket defaults and access
@@ -28,6 +30,8 @@ public class NamespaceRestRep extends DataObjectRestRep {
     private URI tenant;
     private URI tenantDefaultProject;
     private URI tenantDefaultVpool;
+    private List<URI> listOfAllowedVpoolsList;
+    private List<URI> listOfDisAllowedVpoolsList;
 
     /**
      * the tenant for the vdc
@@ -66,5 +70,33 @@ public class NamespaceRestRep extends DataObjectRestRep {
     public void setTenantDefaultVpool(final URI tenantDefaultVpool) {
         this.tenantDefaultVpool = tenantDefaultVpool;
     }
+
+    /**
+     * List of Data Services Vpools that are allowed access to Namespace
+     * @valid None
+     */
+    @XmlElement(required = false, name = "allowed_vpools_list")
+	public List<URI> getListOfAllowedVpoolsList() {
+		return listOfAllowedVpoolsList;
+	}
+
+	public void setListOfAllowedVpoolsList(List<URI> listOfAllowedVpoolsList) {
+		this.listOfAllowedVpoolsList = listOfAllowedVpoolsList;
+	}
+
+	/**
+	 * List of Data Services Vpools that are not allowed access to Namespace
+	 * @valid None
+	 */
+	@XmlElement(required = true, name = "disallowed_vpools_list")
+	public List<URI> getListOfDisAllowedVpoolsList() {
+		return listOfDisAllowedVpoolsList;
+	}
+
+	public void setListOfDisAllowedVpoolsList(List<URI> listOfDisAllowedVpoolsList) {
+		this.listOfDisAllowedVpoolsList = listOfDisAllowedVpoolsList;
+	}
+    
+    
 }
 

@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
  */
 public class LoggingFilter extends ClientFilter {
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(
-            "(<[\\w\\-\\_]*password\\>|password\\<\\/key\\>\\s*\\<value\\>)(.*?)(<\\/|$)",
+            "(<[\\w\\-\\_]*password\\>|password\\<\\/key\\>\\s*\\<value\\>|<secret_key[\\w\\-\\_]*\\>)(.*?)(<\\/|$)",
             Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
     private static final String PASSWORD_REPLACEMENT = "$1*****$3";
 
@@ -246,7 +246,7 @@ public class LoggingFilter extends ClientFilter {
         }
     }
 
-    protected static String protectPasswords(String entity) {
+    public static String protectPasswords(String entity) {
         Matcher m = PASSWORD_PATTERN.matcher(entity);
         return m.replaceAll(PASSWORD_REPLACEMENT);
     }

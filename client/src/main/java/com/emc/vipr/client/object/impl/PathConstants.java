@@ -2,6 +2,7 @@ package com.emc.vipr.client.object.impl;
 
 public class PathConstants {
     public static final String ID_PATH = "/{id}";
+    public static final String NAMESPACE_ID_PATH = "/{namespace}";
     public static final String DATA_STORES_URL = "/vdc/data-stores";
     public static final String FILESYSTEMS_PATH = "/filesystems";
     public static final String NFSEXPORT_PATH = "/nfsexportpoints";
@@ -32,8 +33,12 @@ public class PathConstants {
     public static final String VARRAY_PATH = "/varray";
     public static final String IP_ADDR_PATH = "/ipaddress";
     public static final String CAS_CLUSTERS_URL = "/dataservice/cas-cluster";
+    public static final String CLUSTER_CAPACITY_URL="/object/capacity";
     public static final String CAS_PROFILES_URL = CAS_CLUSTERS_URL + "/{clusterId}/profile";
     public static final String CAS_PROFILE_PEA_URL = CAS_PROFILES_URL + "/{profileId}/pea";
     public static final String CAS_POOLS_URL = CAS_CLUSTERS_URL + "/{clusterId}/pool";
     public static final String CAS_APPLICATIONS_URL = CAS_CLUSTERS_URL + "/{clusterId}/applications";
+    public static final String VDCS_URL = "/object/vdcs";
+    public static final String VDC_URL = VDCS_URL + "/vdc/{vdcName}";
+    public static final String VDC_LIST_URL = VDCS_URL + "/vdc/list";
 }

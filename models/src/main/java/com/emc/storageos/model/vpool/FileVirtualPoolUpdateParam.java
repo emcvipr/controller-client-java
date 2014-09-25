@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class FileVirtualPoolUpdateParam extends VirtualPoolUpdateParam {
     
     private FileVirtualPoolProtectionParam protection;
+    private Boolean retention;
 
     public FileVirtualPoolUpdateParam() {}
     
@@ -31,5 +32,15 @@ public class FileVirtualPoolUpdateParam extends VirtualPoolUpdateParam {
     public void setProtection(FileVirtualPoolProtectionParam protection) {
         this.protection = protection;
     }
-    
+
+
+    @XmlElement(name = "long_term_retention")
+    public Boolean getLongTermRetention() {
+        return retention;
+    }
+
+    public void setLongTermRetention(Boolean retention) {
+        this.retention = retention;
+    }
+
 }

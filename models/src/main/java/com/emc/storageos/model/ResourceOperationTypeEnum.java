@@ -84,7 +84,7 @@ public enum ResourceOperationTypeEnum {
     CREATE_FILE_SYSTEM_SNAPSHOT("SNAPSHOT FILESYSTEM",   "snapshot filesystem"),
     ASSIGN_FILE_SYSTEM_TAG     ("TAG A FILESYSTEM",      "tag a filesystem"),
     DELETE_FILE_SNAPSHOT       ("DELETE FILESYSTEM SNAPSHOT",   "delete filesystem snapshot"),
-    UNEXPORT_FILE_SYSTEM       ("UNEXPORT FILESYSTEM",          "unexport filesystem"),
+    UNEXPORT_FILE_SYSTEM       ("UNEXPORT FILESYSTEM",          "unexport filesystem operation"),
     DELETE_FILE_SYSTEM_SHARE   ("DELETE FILESHARE",             "delete fileshare"),
     EXPORT_FILE_SNAPSHOT       ("EXPORT FILESYSTEM SNAPSHOT",   "export fileshare snapshot"),
     CREATE_FILE_SNAPSHOT_SHARE ("SNAPSHOT FILESHARE",           "perform fileshare snapshot"),
@@ -154,8 +154,10 @@ public enum ResourceOperationTypeEnum {
     UPDATE_NETWORK_SYSTEM      ("UPDATE NETWORKSYSTEM",     "update a network system"),
     DELETE_NETWORK_SYSTEM      ("DELETE NETWORKSYSTEM",     "delete a network system"),
     DISCOVER_NETWORK_SYSTEM    ("DISCOVER NETWORKSYSTEM",   "discover one network system"),
-    ADD_SAN_ZONE             ("ADD SAN ZONE",          "add a san zone"),
-    REMOVE_SAN_ZONE          ("REMOVE SAN ZONE",       "remove a san zone"),
+    ADD_SAN_ZONE               ("ADD SAN ZONE",          "add one or more san zones"),
+    REMOVE_SAN_ZONE            ("REMOVE SAN ZONE",       "remove one or more san zones"),
+    UPDATE_SAN_ZONE            ("UPDATE SAN ZONE",       "update one or more san zones"),
+    ACTIVATE_SAN_ZONE          ("ACTIVATE SAN ZONE",     "activate one or more san zones"),
     PERFORM_PROTECTION_OPERATION  ("PERFORM PROTECTION OPERATION",  "protect a block volume" ),
     DISCOVER_PROTECTION_SET       ("DISCOVER_PROTECTION_SET", "discover protection set"),
     PERFORM_PROTECTION_ACTION                      ("PERFORM PROTECTION ACTION",                      "perform unspecified link management"),
@@ -231,6 +233,8 @@ public enum ResourceOperationTypeEnum {
     DELETE_EXPORT_INITIATOR         ("DELETE INITIATOR FROM EXPORT GROUP",    "delete initiator from export group"),
     ADD_STORAGE_VIEW_INITIATOR      ("ADD INITIATOR TO STORAGE VIEW",         "add initiator to storage view"),
     DELETE_STORAGE_VIEW_INITIATOR   ("DELETE INITIATOR TO STORAGE VIEW",      "delete initiator from storage view"),
+    ADD_STORAGE_VIEW_STORAGEPORTS   ("ADD STORAGE PORTS TO STORAGE VIEW",     "add storage ports to storage view"),
+    DELETE_STORAGE_VIEW_STORAGEPORTS   ("DELETE STORAGE PORTS FROM STORAGE VIEW",     "delete storage ports from storage view"),
     ROLLBACK_NOOP              ("ROLLBACK NOOP",            "no-op rollback operation"),
     PAUSE_NATIVE_CONTINUOUS_COPIES     ("PAUSE NATIVE CONTINUOUS COPIES", "pause Native Continuous Copies"),
     RESUME_NATIVE_CONTINUOUS_COPIES    ("RESUME NATIVE CONTINUOUS COPIES", "resume Native Continuous Copies"),
@@ -239,7 +243,13 @@ public enum ResourceOperationTypeEnum {
     UPDATE_VDC             ("UPDATE VDC",          "update a VDC info"),
     REMOVE_VDC             ("REMOVE VDC",       "remove a VDC from ViPR"),
     DISCONNECT_VDC         ("DISCONNECT VDC",   "temporarily disconnect a VDC from ViPR"),
-    RECONNECT_VDC          ("RECONNECT VDC",    "reconnect a VDC to ViPR");    
+    RECONNECT_VDC          ("RECONNECT VDC",    "reconnect a VDC to ViPR"),
+    UPGRADE_VPLEX_LOCAL_TO_DISTRIBUTED         ("UPGRADE VPLEX LOCAL TO DISTRIBUTED",   "Upgrade a VPLEX local volume to distributed"),
+    WAIT_ON_VPLEX_VOLUME_REBUILD    ("WAIT ON VPLEX VOLUME REBUILD",   "Wait on VPLEX volume rebuild"),
+    ADD_ALIAS               ("ADD ALIAS",          "add one or more aliases"),
+    REMOVE_ALIAS               ("REMOVE ALIAS",          "remove one or more aliases"),
+    UPDATE_ALIAS              ("UPDATE ALIAS",          "update one or more aliases");
+
 
     private final String name;
     private final String description;

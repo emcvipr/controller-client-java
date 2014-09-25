@@ -7,6 +7,7 @@ import com.sun.jersey.api.client.*;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider;
 import org.slf4j.LoggerFactory;
+import javax.net.ssl.HttpsURLConnection;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 
@@ -26,12 +27,11 @@ public class RestClient {
         this.apiBaseUri = baseUri;
         this.config = config;
         if (config.getSocketFactory() != null) {
-            SSLUtil.setSSLSocketFactory(config.getSocketFactory());
-        } else {
-            SSLUtil.trustAllSSLCertificates();
+            HttpsURLConnection.setDefaultSSLSocketFactory(config.getSocketFactory());
         }
-        //do we want to do this when we're validating certs?
-        SSLUtil.trustAllHostnames();
+        if (config.getHostnameVerifier() != null) {
+            HttpsURLConnection.setDefaultHostnameVerifier(config.getHostnameVerifier());
+        }
     }
 
     public ClientConfig getConfig() {

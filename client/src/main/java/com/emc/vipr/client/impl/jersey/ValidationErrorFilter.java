@@ -17,8 +17,9 @@ import java.util.List;
  * Error filter that handles portal validation errors (400).
  */
 public class ValidationErrorFilter extends ClientFilter {
+    private static final Logger LOG = LoggerFactory.getLogger(ValidationErrorFilter.class);
+
     private ClientConfig config;
-    private Logger log = LoggerFactory.getLogger(getClass());
 
     public ValidationErrorFilter(ClientConfig config) {
         this.config = config;
@@ -31,7 +32,7 @@ public class ValidationErrorFilter extends ClientFilter {
         if (supportsPortalValidation(request) && status == 400) {
             List<ValidationError> errorsList = ApiListUtils.getEntityList(config, new GenericType<List<ValidationError>>() {}, response);
             ValidationException exception = new ValidationException(response.getStatus(), errorsList);
-            log.error(exception.getMessage());
+            LOG.error(exception.getMessage());
             throw exception;
         }
         return response;

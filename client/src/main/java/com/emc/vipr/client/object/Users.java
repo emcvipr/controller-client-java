@@ -1,17 +1,17 @@
 package com.emc.vipr.client.object;
 
+import static com.emc.vipr.client.object.impl.PathConstants.DEACTIVATE_PATH;
+import static com.emc.vipr.client.object.impl.PathConstants.NAMESPACE_ID_PATH;
+import static com.emc.vipr.client.object.impl.PathConstants.USERS_URL;
+
+import java.util.List;
+
 import com.emc.vipr.client.impl.RestClient;
-import com.emc.vipr.model.object.ObjectNamedRelatedResourceRep;
-import com.emc.vipr.model.object.namespace.*;
 import com.emc.vipr.model.object.user.SecretKeyInfoRep;
+import com.emc.vipr.model.object.user.BlobUser;
 import com.emc.vipr.model.object.user.UserCreateParam;
 import com.emc.vipr.model.object.user.UserDeleteParam;
 import com.emc.vipr.model.object.user.UsersList;
-
-import java.net.URI;
-import java.util.List;
-
-import static com.emc.vipr.client.object.impl.PathConstants.*;
 
 public class Users {
     private RestClient client;
@@ -26,10 +26,23 @@ public class Users {
      *     API Call: <tt>GET /object/users</tt>
      * </p>
      *
-     * @return All user identifiers.
+     * @return All user identifiers with namespace.
      */
-    public List<URI> getAll() {
+    public List<BlobUser> getAll() {
         return client.get(UsersList.class, USERS_URL).getUsers();
+    }
+    
+    /**
+     * Retrieve all User identifiers associated with a particular Namespace
+     * <p>
+     *     API Call: <tt>GET /object/users/{namespace}</tt>
+     * </p>
+     *
+     * @return All user identifiers with namespace.
+     */
+    
+    public List<BlobUser> getAllFromNamespace(String namespace) {
+        return client.get(UsersList.class, USERS_URL + NAMESPACE_ID_PATH, namespace).getUsers();
     }
 
     /**

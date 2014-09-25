@@ -1,9 +1,14 @@
 package com.emc.vipr.client.object;
 
-import com.emc.vipr.client.impl.RestClient;
-import com.emc.vipr.model.object.user.*;
+import static com.emc.vipr.client.object.impl.PathConstants.DEACTIVATE_PATH;
+import static com.emc.vipr.client.object.impl.PathConstants.USER_SECRET_KEYS_URL;
+import static com.emc.vipr.client.object.impl.PathConstants.NAMESPACE_ID_PATH;
 import java.net.URI;
-import static com.emc.vipr.client.object.impl.PathConstants.*;
+import com.emc.vipr.client.impl.RestClient;
+import com.emc.vipr.model.object.user.SecretKeyInfoRep;
+import com.emc.vipr.model.object.user.SecretKeyRestRep;
+import com.emc.vipr.model.object.user.UserSecretKeyCreateParam;
+import com.emc.vipr.model.object.user.UserSecretKeyDeleteParam;
 
 public class UserSecretKeys {
     private RestClient client;
@@ -22,7 +27,21 @@ public class UserSecretKeys {
      * @return Secret keys for the user.
      */
     public SecretKeyRestRep get(URI userId) {
-        return client.get(SecretKeyRestRep.class, USER_SECRET_KEYS_URL, userId);
+    		return client.get(SecretKeyRestRep.class, USER_SECRET_KEYS_URL, userId);   
+    }
+    
+    /**
+     * Retrieves secret keys for the specified user.
+     * <p>
+     *     API Call: <tt>GET /object/user-secret-keys/{uid}/{namespace}</tt>
+     * </p>
+     *
+     * @param userId User identifier.
+     * @param namespace associated with the user, works as a user qualifier if the User Scope is NAMESPACE
+     * @return Secret keys for the user.
+     */
+    public SecretKeyRestRep get(URI userId, URI namespace) {
+    		return client.get(SecretKeyRestRep.class, USER_SECRET_KEYS_URL + NAMESPACE_ID_PATH, userId, namespace);
     }
 
     /**

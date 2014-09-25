@@ -21,6 +21,7 @@ public class PropertyConstants {
     public static final String PERCENT                         = "percent";
     public static final String URL                             = "url";
     public static final String EMAIL                           = "email";
+    public static final String EMAILLIST                       = "emaillist";
     public static final String LICENSE                         = "license";
     public static final String HOSTNAME                        = "hostname";
     public static final String IPLIST                          = "iplist";

@@ -1,9 +1,11 @@
 package com.emc.vipr.client.core.util;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +13,7 @@ import java.util.Map;
 import com.emc.storageos.model.DataObjectRestRep;
 import com.emc.storageos.model.NamedRelatedResourceRep;
 import com.emc.storageos.model.RelatedResourceRep;
+import com.emc.vipr.client.core.filters.ResourceFilter;
 
 public class ResourceUtils {
     /** Null URI to use to unassign certain values. */
@@ -308,10 +311,14 @@ public class ResourceUtils {
      * 
      * @param value
      *        the string value.
-     * @return the URI.
+     * @return the URI or null if the value does not represent a valid URI.
      */
-    public static URI uri(String value) {
-        return (value != null && value.length() > 0) ? URI.create(value) : null;
+    public static URI uri(String value)  {
+        try {
+            return (value != null && value.length() > 0) ? URI.create(value) : null;
+        } catch(IllegalArgumentException invalid) {
+            return null;
+        }
     }
 
     /**
@@ -425,5 +432,25 @@ public class ResourceUtils {
      */
     public static NamedRelatedResourceRep createNamedRef(DataObjectRestRep resource) {
         return (resource != null) ? new NamedRelatedResourceRep(id(resource), null, name(resource)) : null;
+    }
+
+    /**
+     * Applies a resource filter to the collection of resources.
+     * 
+     * @param resources
+     *        the resources to filter.
+     * @param filter
+     *        the filter to apply.
+     */
+    public static <T extends DataObjectRestRep> void applyFilter(Collection<T> resources, ResourceFilter<T> filter) {
+        if (filter != null) {
+            Iterator<T> iter = resources.iterator();
+            while (iter.hasNext()) {
+                T resource = iter.next();
+                if (!filter.accept(resource)) {
+                    iter.remove();
+                }
+            }
+        }
     }
 }

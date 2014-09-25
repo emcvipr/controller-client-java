@@ -9,8 +9,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "user_secret_key_create")
 public class UserSecretKeyCreateParam {
     private String expiryTimeInMins;
+    private String namespace;
 
-    /**
+	/**
      * Expiry time/date for the secret key
      * @valid None
      */
@@ -22,4 +23,19 @@ public class UserSecretKeyCreateParam {
     public void setExpiryTimeInMins(String expiryTimeInMins) {
         this.expiryTimeInMins = expiryTimeInMins;
     }
+
+    /**
+     * Namespace for User qualifier if User Scope is NAMESPACE
+     * @valid None
+     */
+    @XmlElement(required = false, name = "namespace")
+	public String getNamespace() {
+		return namespace;
+	}
+
+	public void setNamespace(String namespace) {
+		this.namespace = namespace;
+	}
+    
+    
 }

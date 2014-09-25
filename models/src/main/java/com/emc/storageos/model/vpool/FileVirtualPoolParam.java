@@ -31,5 +31,5 @@ public class FileVirtualPoolParam extends VirtualPoolCommonParam {
     public void setProtection(FileVirtualPoolProtectionParam protection) {
         this.protection = protection;
     }
-   
+
 }

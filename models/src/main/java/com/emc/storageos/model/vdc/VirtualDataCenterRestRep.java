@@ -1,6 +1,8 @@
 package com.emc.storageos.model.vdc;
 
-import java.net.URI;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -19,6 +21,14 @@ public class VirtualDataCenterRestRep extends DataObjectRestRep {
     private String shortId;
     private String geoCommandEndpoint;
     private String geoDataEndpoint;
+    private Long lastSeenTimeInMillis;
+            
+    private static Set<String> ALLOW_DISCONNECT_STATUS = new HashSet<String>(Arrays.asList("CONNECTED", 
+    		"REMOVE_FAILED", "REMOVE_PRECHECK_FAILED", "UPDATE_FAILED", 
+    		"DISCONNECT_PRECHECK_FAILED", "DISCONNECT_FAILED"));
+    private static Set<String> ALLOW_RECONNECT_STATUS = new HashSet<String>(Arrays.asList("DISCONNECTED", 
+    	     "RECONNECT_PRECHECK_FAILED", "RECONNECT_FAILED"));
+    
     
     @XmlElement(name="description")
     public String getDescription() {
@@ -83,5 +93,22 @@ public class VirtualDataCenterRestRep extends DataObjectRestRep {
         this.geoDataEndpoint = geoDataEndpoint;
     }
     
+    @XmlElement(name="lastSeenTimeInMillis")
+    public Long getLastSeenTimeInMillis() {
+        return lastSeenTimeInMillis;
+    }
+
+    public void setLastSeenTimeInMillis(Long lastSeenTimeInMillis) {
+        this.lastSeenTimeInMillis = lastSeenTimeInMillis;
+    }
     
+    public boolean canDisconnect() {        
+        return (Boolean.FALSE.equals(this.local) 
+                && ALLOW_DISCONNECT_STATUS.contains(this.connectionStatus != null ? this.connectionStatus.toUpperCase() : ""));
+    }
+    
+    public boolean canReconnect() {
+        return (Boolean.FALSE.equals(this.local) 
+                && ALLOW_RECONNECT_STATUS.contains(this.connectionStatus != null ? this.connectionStatus.toUpperCase() : ""));
+    }    
 }
