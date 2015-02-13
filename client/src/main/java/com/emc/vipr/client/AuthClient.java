@@ -1,5 +1,6 @@
 package com.emc.vipr.client;
 
+import com.emc.storageos.model.password.PasswordChangeParam;
 import com.emc.vipr.client.impl.Constants;
 import com.emc.vipr.client.impl.RestClient;
 import com.sun.jersey.api.client.ClientResponse;
@@ -95,5 +96,15 @@ public class AuthClient {
     
     public boolean isLoggedIn() {
         return (client.getAuthToken() != null) && !("".equals(client.getAuthToken()));
+    }
+
+    public void changePassword(String username, String oldPassword, String password) {
+        WebResource resource = client.getClient().resource(client.uriBuilder("/change-password").build());
+        PasswordChangeParam passwordChangeParam = new PasswordChangeParam();
+        passwordChangeParam.setUsername(username);
+        passwordChangeParam.setOldPassword(oldPassword);
+        passwordChangeParam.setPassword(password);
+        ClientResponse response = resource.put(ClientResponse.class, passwordChangeParam);
+        response.close();
     }
 }

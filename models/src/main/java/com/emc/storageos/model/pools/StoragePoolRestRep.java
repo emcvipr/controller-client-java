@@ -50,7 +50,9 @@ public class StoragePoolRestRep extends VirtualArrayResourceRestRep {
     private Integer maxThinPoolSubscriptionPercentage;
     private Integer maxPoolUtilizationPercentage;
     private Boolean thinVolumePreAllocationSupported;
+    private Boolean autoTieringSupported;
     private String compatibilityStatus;
+    private String discoveryStatus;
 
     public StoragePoolRestRep() {}
    
@@ -400,7 +402,7 @@ public class StoragePoolRestRep extends VirtualArrayResourceRestRep {
 
     /**
      * The total amount of usable space that is configured in the pool
-     * and presented to attached hosts (GB)
+     * and is associated with resources provisioned in the pool. (GB)
      *
      * @valid none
      */
@@ -523,6 +525,24 @@ public class StoragePoolRestRep extends VirtualArrayResourceRestRep {
     }
     
     /**
+     * Determines whether auto-tiering is supported on this storage pool
+     * 
+     * @valid true
+     * @valid false
+     */
+    @XmlElement(name = "auto_tiering_supported")
+    public Boolean getAutoTieringSupported() {
+        return autoTieringSupported;
+    }
+
+    /**
+     * @param autoTieringEnabled the autoTieringEnabled to set
+     */
+    public void setAutoTieringSupported(Boolean autoTieringSupported) {
+        this.autoTieringSupported = autoTieringSupported;
+    }
+
+    /**
      * Whether or not this storage pool is compatible with ViPR
      * 
      * @valid COMPATIBLE
@@ -537,4 +557,20 @@ public class StoragePoolRestRep extends VirtualArrayResourceRestRep {
     public void setCompatibilityStatus(String compatibilityStatus) {
         this.compatibilityStatus = compatibilityStatus;
     }
+
+    /**
+     * Whether or not this storage pool is visible in discovery
+     * @valid VISIBLE
+     * @valid NOTVISIBLE
+     */
+    @XmlElement(name = "discovery_status")
+    public String getDiscoveryStatus() {
+        return discoveryStatus;
+    }
+
+    public void setDiscoveryStatus(String discoveryStatus) {
+        this.discoveryStatus = discoveryStatus;
+    }
+    
+    
 }

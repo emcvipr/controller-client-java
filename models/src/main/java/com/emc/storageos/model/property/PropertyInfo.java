@@ -27,7 +27,8 @@ public class PropertyInfo {
     public static enum PropCategory { ALL,
     	                              CONFIG, 
     	                              OVF, 
-    	                              MUTATED, 
+    	                              MUTATED,
+                                      SECRETS,
     	                              OBSOLETE 
     }   
 

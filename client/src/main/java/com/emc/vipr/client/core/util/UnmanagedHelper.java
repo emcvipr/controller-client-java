@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import com.emc.storageos.model.StringHashMapEntry;
 import com.emc.storageos.model.adapters.StringSetMapAdapter.Entry;
+import com.emc.storageos.model.block.UnManagedVolumeRestRep;
 
 /**
  * Unmanaged volumes API is pretty poor. Need utilities to process key/value pairs as there is no concrete
@@ -14,6 +15,8 @@ import com.emc.storageos.model.adapters.StringSetMapAdapter.Entry;
 public class UnmanagedHelper {
     public static final String IS_INGESTABLE = "IS_INGESTABLE";
     public static final String SUPPORTED_VPOOL_LIST = "SUPPORTED_VPOOL_LIST";
+    public static final String NATIVE_ID = "NATIVE_ID";
+    public static final String PROVISIONED_CAPACITY = "PROVISIONED_CAPACITY";
 
     public static Set<URI> getVpoolsForUnmanaged(List<Entry> infoEntries, List<StringHashMapEntry> characteristicsEntries) {
         Set<URI> results = new HashSet<URI>();
@@ -52,6 +55,30 @@ public class UnmanagedHelper {
         }
         catch (Exception e) {
             // nothing to do here. We'll just return 0;
+        }
+        return defaultValue;
+    }
+
+    public static String getInfoField(UnManagedVolumeRestRep volume, String key) {
+        if (key == null || key.equals("")) {
+            return "";
+        }
+
+        for (Entry entry: volume.getVolumeInformation()) {
+            if (key.equals(entry.getKey())) {
+                return entry.getValue();
+            }
+        }
+        return "";
+    }
+
+    public static long getInfoField(UnManagedVolumeRestRep volume, String key, long defaultValue) {
+        String value = getInfoField(volume, key);
+        try {
+            return Long.parseLong(value);
+        }
+        catch (Exception e) {
+            // nothing to do here. We'll just return the default
         }
         return defaultValue;
     }

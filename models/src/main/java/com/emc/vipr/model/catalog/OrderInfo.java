@@ -12,18 +12,66 @@ import com.emc.storageos.model.search.Tags;
 
 @XmlRootElement
 public class OrderInfo extends ModelInfo {
-    private String orderNumber;                 // Number of this order
-    private String submittedBy;                 // User who submitted this order
-    private Reference service;                  // Service that this order will execute
-    private String executionWindow;             // Execution window to run this order in
-    private String summary;                     // Summary for this order
-    private String message;                     // System generated message relating to this order
-    private Date createdDate;                   // Date the order was placed
-    private Date dateCompleted;                 // Date the order completed
-    private String status;                      // Order Status. One of: PENDING, EXECUTING, PARTIAL_SUCCESS, SUCCESS, ERROR, SCHEDULED, CANCELLED, APPROVAL, APPROVED, REJECTED
-    private Reference execution;                // Reference to the execution information
-    private List<Parameter> parameters;         // Parameters to an order
-    private Tags tags;                          // Tags on the order object
+    
+    /**
+     * Number of this order
+     */
+    private String orderNumber;
+    
+    /**
+     * User who submitted this order
+     */
+    private String submittedBy;     
+    
+    /**
+     * Service that this order will execute
+     */
+    private Reference service;             
+    
+    /**
+     * Execution window to run this order in
+     */
+    private String executionWindow;         
+    
+    /**
+     * Summary for this order
+     */
+    private String summary;  
+    
+    /**
+     * System generated message relating to this order
+     */
+    private String message;                    
+    
+    /**
+     * Date the order was placed
+     */
+    private Date createdDate;   
+    
+    /**
+     * Date the order completed
+     */
+    private Date dateCompleted;
+    
+    /**
+     * Order Status. One of: PENDING, EXECUTING, PARTIAL_SUCCESS, SUCCESS, ERROR, SCHEDULED, CANCELLED, APPROVAL, APPROVED, REJECTED
+     */
+    private String status;                     
+    
+    /**
+     * Reference to the execution information
+     */
+    private Reference execution;                
+    
+    /**
+     * Parameters to an order
+     */
+    private List<Parameter> parameters;         
+    
+    /**
+     * Tags on the order object
+     */
+    private Tags tags;                          
 
     public String getOrderNumber() {
         return orderNumber;
@@ -109,7 +157,7 @@ public class OrderInfo extends ModelInfo {
     @XmlElement(name = "parameter")
     public List<Parameter> getParameters() {
         if (parameters == null) {
-            parameters = new ArrayList<Parameter>();
+            parameters = new ArrayList<>();
         }
         return parameters;
     }

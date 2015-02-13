@@ -3,9 +3,13 @@ package com.emc.vipr.client.system;
 import static com.emc.vipr.client.system.impl.PathConstants.PASSWORD_URL;
 import static com.emc.vipr.client.system.impl.PathConstants.UPDATE_AUTH_KEY_URL;
 import static com.emc.vipr.client.system.impl.PathConstants.UPDATE_PASSWORD_URL;
+import static com.emc.vipr.client.system.impl.PathConstants.VALIDATE_PASSWORD_URL;
+
 import com.emc.storageos.model.password.PasswordResetParam;
 import com.emc.storageos.model.password.PasswordUpdateParam;
+import com.emc.storageos.model.password.PasswordValidateParam;
 import com.emc.storageos.model.password.SSHKeyUpdateParam;
+import com.emc.vipr.client.exceptions.ServiceErrorException;
 import com.emc.vipr.client.impl.RestClient;
 
 public class Password {
@@ -25,9 +29,10 @@ public class Password {
 	 * 
 	 * @param password The clear text or encrypted password
 	 * @param encrypted If true, the supplied password is already hashed
+     * @param oldPassword the previous password in clear text
 	 */
-	public void update(String password, boolean encrypted) {
-        update(password, encrypted, true);
+	public void update(String oldPassword, String password, boolean encrypted) {
+        update(oldPassword, password, encrypted, true);
 	}
 
     /**
@@ -41,8 +46,9 @@ public class Password {
      * @param encrypted If true, the supplied password is already hashed
      * @param logoutUser If true, logout the user after updating the password
      */
-    public void update(String password, boolean encrypted, boolean logoutUser) {
+    public void update(String oldPassword, String password, boolean encrypted, boolean logoutUser) {
         PasswordUpdateParam param = new PasswordUpdateParam();
+        param.setOldPassword(oldPassword);
         if (encrypted) {
             param.setEncPassword(password);
         }
@@ -62,8 +68,8 @@ public class Password {
      * @param password Clear text or encrypted password
      * @param encrypted If true, the provided password is encrypted
      */
-    public void update(String username, String password, boolean encrypted) {
-        update(username, password, encrypted, true);
+    public void reset(String username, String password, boolean encrypted) {
+        reset(username, password, encrypted, true);
     }
 
     /**
@@ -77,7 +83,7 @@ public class Password {
      * @param encrypted If true, the provided password is encrypted
      * @param logoutUser If true, logout the user after updating the password
      */
-    public void update(String username, String password, boolean encrypted, boolean logoutUser) {
+    public void reset(String username, String password, boolean encrypted, boolean logoutUser) {
         PasswordResetParam param = new PasswordResetParam();
         param.setUsername(username);
         if (encrypted) {
@@ -103,4 +109,20 @@ public class Password {
         key.setSshKey(sshKey);
         client.put(String.class, key, UPDATE_AUTH_KEY_URL);
 	}
+	
+    /**
+     * Validate a password.  If validation passes, it will return an http 204 status code (no content).  
+     * If validation fails, it will throw a ServiceErrorException with an http 400 status code (bad parameters).  
+     * 
+     * <p>
+     * API Call: POST /password/validate
+	 *
+	 * @param password plaintext password to validate
+	 * @throws Exception
+	 */
+	public void validate(String password) throws Exception {
+        PasswordValidateParam input = new PasswordValidateParam();
+        input.setPassword(password);
+        client.post(input, VALIDATE_PASSWORD_URL);
+	}	
 }

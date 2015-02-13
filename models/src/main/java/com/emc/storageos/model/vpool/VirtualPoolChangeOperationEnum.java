@@ -16,7 +16,7 @@ public enum VirtualPoolChangeOperationEnum {
     VPLEX_DATA_MIGRATION("Migrate data from one or more volumes to new virtual pool"), 
     NON_VPLEX_TO_VPLEX("Change one or more volumes from non-VPLEX to a local or distributed virtual pool"), 
     RP_PROTECTED("Change one or more volumes to include RecoverPoint protection"), 
-    SRDF_PROTECED("Chnage one or more volumes to include SRDF protection"), 
+    SRDF_PROTECED("Change one or more volumes to include SRDF protection"), 
     ADD_MIRRORS("Change one or more volumes to include continuous copies protection"), 
     EXPORT_PATH_PARAMS("Change one or more volumes' path paramters"),
     AUTO_TIERING_POLICY("Change one or more volumes' Auto-tiering policy");

@@ -14,9 +14,12 @@ import com.emc.storageos.model.DataObjectRestRep;
 @XmlRootElement(name = "virtual_data_center")
 @XmlAccessorType(XmlAccessType.PROPERTY)
 public class VirtualDataCenterRestRep extends DataObjectRestRep {
+
+    private static final long NETWORK_ALARM_THRESHOLD = 30 * 60 * 1000; // 30 min  
+
     private String description;
     private String apiEndpoint;
-    private String connectionStatus;
+    private String status;
     private Boolean local; 
     private String shortId;
     private String geoCommandEndpoint;
@@ -29,6 +32,9 @@ public class VirtualDataCenterRestRep extends DataObjectRestRep {
     private static Set<String> ALLOW_RECONNECT_STATUS = new HashSet<String>(Arrays.asList("DISCONNECTED", 
     	     "RECONNECT_PRECHECK_FAILED", "RECONNECT_FAILED"));
     
+    private static Set<String> DISALLOW_DELETE_STATUS = new HashSet<String>(Arrays.asList("DISCONNECTING", 
+            "CONNECTING_SYNCED", "RECONNECTING", "DISCONNECT_PRECHECK_FAILED","RECONNECT_PRECHECK_FAILED",
+            "CONNECTING"));
     
     @XmlElement(name="description")
     public String getDescription() {
@@ -48,15 +54,26 @@ public class VirtualDataCenterRestRep extends DataObjectRestRep {
         this.apiEndpoint = apiEndpoint;
     }
 
+    @Deprecated
     @XmlElement(name="connectionStatus")
     public String getConnectionStatus() {
-        return connectionStatus;
+        return status;
     }
 
+    @Deprecated
     public void setConnectionStatus(String connectionStatus) {
-        this.connectionStatus = connectionStatus;
+        this.status = connectionStatus;
+    }
+    
+    @XmlElement(name="status")
+    public String getStatus() {
+        return status;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+     
     @XmlElement(name="local")
     public Boolean isLocal() {
         return local;
@@ -101,14 +118,28 @@ public class VirtualDataCenterRestRep extends DataObjectRestRep {
     public void setLastSeenTimeInMillis(Long lastSeenTimeInMillis) {
         this.lastSeenTimeInMillis = lastSeenTimeInMillis;
     }
-    
+
     public boolean canDisconnect() {        
         return (Boolean.FALSE.equals(this.local) 
-                && ALLOW_DISCONNECT_STATUS.contains(this.connectionStatus != null ? this.connectionStatus.toUpperCase() : ""));
+                && ALLOW_DISCONNECT_STATUS.contains(this.status != null ? this.status.toUpperCase() : ""));
     }
     
     public boolean canReconnect() {
         return (Boolean.FALSE.equals(this.local) 
-                && ALLOW_RECONNECT_STATUS.contains(this.connectionStatus != null ? this.connectionStatus.toUpperCase() : ""));
-    }    
+                && ALLOW_RECONNECT_STATUS.contains(this.status != null ? this.status.toUpperCase() : ""));
+    }  
+    
+    public boolean canDelete() {
+        return (Boolean.FALSE.equals(this.local) 
+                && !DISALLOW_DELETE_STATUS.contains(this.status != null ? this.status.toUpperCase() : ""));
+    }
+
+    public Boolean shouldAlarm() {
+        if (this.lastSeenTimeInMillis == null) {
+            return false;
+        }
+        long delta = System.currentTimeMillis() - this.lastSeenTimeInMillis;
+        return delta > NETWORK_ALARM_THRESHOLD;
+    }
+
 }

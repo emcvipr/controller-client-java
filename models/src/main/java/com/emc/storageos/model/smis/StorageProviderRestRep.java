@@ -41,6 +41,8 @@ public class StorageProviderRestRep extends DataObjectRestRep {
     private String compatibilityStatus;
     private String registrationStatus;
     private String interface_type;
+    private String secondaryUsername;
+    private String elementManagerURL;
 
     public StorageProviderRestRep() {}
     
@@ -293,5 +295,33 @@ public class StorageProviderRestRep extends DataObjectRestRep {
 
     public void setCompatibilityStatus(String compatibilityStatus) {
         this.compatibilityStatus = compatibilityStatus;
+    }
+
+    /**
+     * Username for an optional, secondary credential
+     *
+     * @valid none
+     */
+    @XmlElement(name = "secondary_username")
+    public String getSecondaryUsername() {
+        return secondaryUsername;
+    }
+
+    public void setSecondaryUsername(String secondaryUsername) {
+        this.secondaryUsername = secondaryUsername;
+    }
+
+    /**
+     * URL of the Element Management system that is associated with the Provider.
+     *
+     * @valid none
+     */
+    @XmlElement(name = "element_manager_url")
+    public String getElementManagerURL() {
+        return elementManagerURL;
+    }
+
+    public void setElementManagerURL(String elementManagerURL) {
+        this.elementManagerURL = elementManagerURL;
     }
 }

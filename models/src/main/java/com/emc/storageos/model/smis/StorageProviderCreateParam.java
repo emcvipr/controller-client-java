@@ -18,6 +18,9 @@ public class StorageProviderCreateParam {
     private Boolean useSSL;
     private String interfaceType;
     private String sioCLI;
+    private String secondaryUsername;
+    private String secondaryPassword;
+    private String elementManagerURL;
 
     public StorageProviderCreateParam() {}
     
@@ -112,7 +115,7 @@ public class StorageProviderCreateParam {
     }
     /**
      * Interface type of the Storage Provider
-     * @valid example: hicommand,smis,vplex,cinder,scaleio
+     * @valid example: hicommand,smis,vplex,cinder,scaleio,ddmc,ibmxiv
      */
     @XmlElement(required = true, name = "interface_type")
     public String getInterfaceType() {
@@ -136,5 +139,45 @@ public class StorageProviderCreateParam {
 
     public void setSioCLI(String sioCLI) {
         this.sioCLI = sioCLI;
+    }
+
+    /**
+     * Secondary credentials that may be required for management
+     * @valid none
+     */
+    @XmlElement(required = false, name = "secondary_username")
+    public String getSecondaryUsername() {
+        return secondaryUsername;
+    }
+
+    /**
+     * Secondary credentials that may be required for management
+     * @valid none
+     */
+    public void setSecondaryUsername(String secondaryUsername) {
+        this.secondaryUsername = secondaryUsername;
+    }
+
+    @XmlElement(required = false, name = "secondary_password")
+    public String getSecondaryPassword() {
+        return secondaryPassword;
+    }
+
+    public void setSecondaryPassword(String secondaryPassword) {
+        this.secondaryPassword = secondaryPassword;
+    }
+
+    /**
+     * URL of the Element Management system that is associated with the Provider.
+     *
+     * @valid none
+     */
+    @XmlElement(required = false, name = "element_manager_url")
+    public String getElementManagerURL() {
+        return elementManagerURL;
+    }
+
+    public void setElementManagerURL(String elementManagerURL) {
+        this.elementManagerURL = elementManagerURL;
     }
 }

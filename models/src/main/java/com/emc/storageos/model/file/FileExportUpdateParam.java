@@ -17,8 +17,9 @@ public class FileExportUpdateParam {
     
     private List<String> add;
     private List<String> remove;
-
-    public FileExportUpdateParam() {}
+    private String comments;
+    
+	public FileExportUpdateParam() {}
     
     public FileExportUpdateParam(List<String> add, List<String> remove) {
         this.add = add;
@@ -59,5 +60,15 @@ public class FileExportUpdateParam {
         this.remove = remove;
     }
     
+    @XmlElementWrapper(required=false)
+    @XmlElement(name="comments")
+    public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
 }
 

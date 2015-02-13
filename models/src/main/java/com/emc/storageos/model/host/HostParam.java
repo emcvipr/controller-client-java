@@ -27,8 +27,10 @@ public abstract class HostParam {
     private URI cluster;
     private URI vcenterDataCenter;
     private URI project;
+    private URI tenant;
     private Boolean discoverable;
-    
+    private URI bootVolume;
+
     public HostParam() {}
     
     /**
@@ -203,4 +205,26 @@ public abstract class HostParam {
     public void setDiscoverable(Boolean discoverable) {
         this.discoverable = discoverable;
     }
+
+    /**
+     * The URI of the tenant owning the host.
+     * @valid example: urn:storageos:TenantOrg:45baad25-ff81-4c67-9db5-91df44cb1312:global
+     */
+	@XmlElement(name="tenant")
+	public URI getTenant() {
+		return tenant;
+	}
+
+	public void setTenant(URI tenant) {
+		this.tenant = tenant;
+	}
+
+	@XmlElement(name="boot_volume", required=false)
+	public URI getBootVolume() {
+		return bootVolume;
+	}
+
+	public void setBootVolume(URI bootVolume) {
+		this.bootVolume = bootVolume;
+	}
 }

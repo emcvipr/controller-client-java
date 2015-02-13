@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 public class UserMappingParam {
@@ -28,8 +29,8 @@ public class UserMappingParam {
     public UserMappingParam(String domain,
             List<UserMappingAttributeParam> attributes, List<String> groups) {
         this.domain = domain;
-        this.attributes = attributes;
-        this.groups = groups;
+        this.attributes = this.removeDuplicate(attributes);;
+        this.groups = this.removeDuplicate(groups);
     }
 
     /**
@@ -64,7 +65,7 @@ public class UserMappingParam {
     }
 
     public void setAttributes(List<UserMappingAttributeParam> attributes) {
-        this.attributes = attributes;
+        this.attributes = removeDuplicate(attributes);
     }
     
     @XmlElementWrapper(name="groups")    
@@ -81,6 +82,17 @@ public class UserMappingParam {
     }
 
     public void setGroups(List<String> groups) {
-        this.groups = groups;
+        this.groups = removeDuplicate(groups);
+    }
+
+    /**
+     * Removes the duplicate entries from the collection (List<T>)
+     * and returns the list with unique entries.
+     *
+     * @valid none
+     */
+    private <T> List<T> removeDuplicate(List<T> listWithDuplicates){
+        List<T> uniqueList = new ArrayList<T>(new LinkedHashSet<T>(listWithDuplicates));
+        return uniqueList;
     }
 }

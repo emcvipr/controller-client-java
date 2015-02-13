@@ -20,7 +20,12 @@ import com.emc.vipr.model.catalog.ExecutionInfo;
 import com.emc.vipr.model.catalog.OrderInfo;
 import com.emc.vipr.model.catalog.Reference;
 import com.sun.jersey.api.client.GenericType;
-
+/**
+ * 
+ * @deprecated Replaced by
+ * @see Orders2
+ */
+@Deprecated
 public class Orders extends AbstractBulkResources<OrderInfo> {
     public Orders(ViPRCatalogClient parent, RestClient client) {
         super(parent, client, OrderInfo.class, PathConstants.ORDER_URL);
@@ -33,6 +38,7 @@ public class Orders extends AbstractBulkResources<OrderInfo> {
      *
      * @return Order references
      */
+    @Deprecated
     public List<Reference> list() {
         return doList();
     }
@@ -44,6 +50,7 @@ public class Orders extends AbstractBulkResources<OrderInfo> {
      *
      * @return All orders for the current user.
      */
+    @Deprecated
     public List<OrderInfo> getAll() {
         return doGetAll();
     }
@@ -55,6 +62,7 @@ public class Orders extends AbstractBulkResources<OrderInfo> {
      *
      * @return All order references for a specific time range.
      */
+    @Deprecated
     public List<Reference> listByTimeRange(Date start, Date end) {
         Long startTime = null;
         if (start != null) {
@@ -74,6 +82,7 @@ public class Orders extends AbstractBulkResources<OrderInfo> {
      *
      * @return All order references for a specific time range.
      */
+    @Deprecated
     public List<Reference> listByTimeRange(Long startTime, Long endTime) {
         UriBuilder builder = client.uriBuilder(baseUrl + "/all");
         if (startTime != null) {
@@ -92,6 +101,7 @@ public class Orders extends AbstractBulkResources<OrderInfo> {
      *
      * @return All orders for a specific time range.
      */
+    @Deprecated
     public List<OrderInfo> getByTimeRange(Date start, Date end) {
         List<Reference> apiList = listByTimeRange(start, end);
         return getByRefs(apiList);
@@ -104,6 +114,7 @@ public class Orders extends AbstractBulkResources<OrderInfo> {
      *
      * @return All orders for a specific time range.
      */
+    @Deprecated
     public List<OrderInfo> getByTimeRange(Long startTime, Long endTime) {
         List<Reference> apiList = listByTimeRange(startTime, endTime);
         return getByRefs(apiList);
@@ -117,6 +128,7 @@ public class Orders extends AbstractBulkResources<OrderInfo> {
      * @param id Identifier of the order to retrieve execution information for.
      * @return Execution information.
      */
+    @Deprecated
     public ExecutionInfo getExecutionInfo(String id) {
         return client.get(ExecutionInfo.class, String.format(EXECUTION_URL_FORMAT, baseUrl), id);
     }

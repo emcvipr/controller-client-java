@@ -30,7 +30,7 @@ import javax.ws.rs.core.UriBuilder;
  * <p>
  * Base URL: <tt>/vdc/storage-systems</tt>
  */
-public class StorageSystems extends AbstractBulkResources<StorageSystemRestRep> implements
+public class StorageSystems extends AbstractCoreBulkResources<StorageSystemRestRep> implements
         TopLevelResources<StorageSystemRestRep>, TaskResources<StorageSystemRestRep> {
     public StorageSystems(ViPRCoreClient parent, RestClient client) {
         super(parent, client, StorageSystemRestRep.class, PathConstants.STORAGE_SYSTEM_URL);

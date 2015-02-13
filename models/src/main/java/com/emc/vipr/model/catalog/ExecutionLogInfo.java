@@ -5,11 +5,31 @@ import java.util.Date;
 
 @XmlType
 public class ExecutionLogInfo {
-    private Date date;              // Date for this log message
-    private String level;           // Level for this log message
-    private String message;         // Log message
-    private String stackTrace;      // Stacktrace for error log messages
-    private String phase;           // Execution phase for this message
+    
+    /**
+     * Date for this log message
+     */
+    private Date date;              
+    
+    /**
+     * Level for this log message
+     */
+    private String level;           
+    
+    /**
+     * Log message
+     */
+    private String message;
+    
+    /**
+     * Stacktrace for error log messages
+     */
+    private String stackTrace;      
+    
+    /**
+     * Execution phase for this message
+     */
+    private String phase;          
 
     public Date getDate() {
         return date;

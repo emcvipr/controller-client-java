@@ -18,7 +18,7 @@ public class TaskUtil {
     public static final String ERROR_STATE = "error";
 
     public static TaskResourceRep refresh(RestClient client, TaskResourceRep task) {
-        RestLinkRep link = task.getRestLink();
+        RestLinkRep link = task.getLink();
         if (link == null) {
             throw new ViPRException("Task has no link");
         }

@@ -10,6 +10,8 @@
  */
 package com.emc.storageos.model.auth;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -74,7 +76,7 @@ public class PrincipalsToValidate {
      *            the users to set
      */
     public void setUsers(List<String> users) {
-        this.users = users;
+        this.users = deDuplicate(users);
     }
 
     /**
@@ -95,7 +97,7 @@ public class PrincipalsToValidate {
      *            the altTenantUsers to set
      */
     public void setAltTenantUsers(List<String> altTenantUsers) {
-        this.altTenantUsers = altTenantUsers;
+        this.altTenantUsers = deDuplicate(altTenantUsers);
     }
 
     /**
@@ -112,7 +114,16 @@ public class PrincipalsToValidate {
      *            the groups to set
      */
     public void setGroups(List<String> groups) {
-        this.groups = groups;
+        this.groups = deDuplicate(groups);
+    }
+
+    private List<String> deDuplicate(List<String> input) {
+        HashSet hs = new HashSet();
+        hs.addAll(input);
+
+        List<String> result = new ArrayList<String>();
+        result.addAll(hs);
+        return result;
     }
 
 }

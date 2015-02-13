@@ -3,6 +3,7 @@ package com.emc.storageos.model.file;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,8 @@ public class FileSystemExportParam {
     private String protocol;
     private String subDirectory;
     private String mountPoint;
+    private String comments;
+    
     private List<String> endpoints;
 
     public FileSystemExportParam() {}
@@ -63,6 +66,19 @@ public class FileSystemExportParam {
     }
 
     /**
+     * Description of the operation
+     * @return
+     */
+    
+    @XmlElement(name="comments")
+    public String getComments() {
+		return comments;
+	}
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
+	/**
      * Permissions for the file export
      * @valid ro = read only
      * @valid rw = read and write

@@ -12,8 +12,8 @@ import com.emc.storageos.model.vdc.VirtualDataCenterList;
 import com.emc.storageos.model.vdc.VirtualDataCenterModifyParam;
 import com.emc.storageos.model.vdc.VirtualDataCenterRestRep;
 import com.emc.storageos.model.vdc.VirtualDataCenterSecretKeyRestRep;
-import com.emc.vipr.client.Task;
 import com.emc.vipr.client.Tasks;
+import com.emc.vipr.client.Task;
 import com.emc.vipr.client.ViPRCoreClient;
 import com.emc.vipr.client.core.filters.ResourceFilter;
 import com.emc.vipr.client.core.impl.PathConstants;
@@ -24,7 +24,7 @@ import com.emc.vipr.client.impl.RestClient;
  * <p>
  * Base URL: <tt>/vdc</tt>
  */
-public class VirtualDataCenters extends AbstractResources<VirtualDataCenterRestRep> implements TopLevelResources<VirtualDataCenterRestRep> {
+public class VirtualDataCenters extends AbstractCoreResources<VirtualDataCenterRestRep> implements TopLevelResources<VirtualDataCenterRestRep> {
     public VirtualDataCenters(ViPRCoreClient parent, RestClient client) {
         super(parent, client, VirtualDataCenterRestRep.class, PathConstants.VDC_URL);
     }

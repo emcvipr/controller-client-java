@@ -47,6 +47,26 @@ public class UnManagedVolumeRestRep extends DataObjectRestRep {
      * @valid none
      */ 
     private List<StringHashMapEntry> volumeCharacteristics;
+
+    /**
+     * List of UnManagedExportMasks associated with this UnManagedVolume.
+     */
+    private List<String> unManagedExportMasks;
+
+    /**
+     * List of initiator URIs associated with this UnManagedVolume.
+     */
+    private List<String> initiatorUris;
+
+    /**
+     * List of initiator network IDs associated with this UnManagedVolume.
+     */
+    private List<String> initiatorNetworkIds;
+
+    /**
+     * List of storage port URIs associated with this UnManagedVolume.
+     */
+    private List<String> storagePortUris;
     
     /**
      * The storage system to which this volume belongs. 
@@ -112,4 +132,57 @@ public class UnManagedVolumeRestRep extends DataObjectRestRep {
     public void setVolumeInformation(List<StringSetMapAdapter.Entry> volumeInformation) {
         this.volumeInformation = volumeInformation;
     }
+
+    @XmlElementWrapper(name = "unmanaged_export_masks")
+    @XmlElement(name = "unmanaged_export_mask")
+    public List<String> getUnManagedExportMasks() {
+        if (unManagedExportMasks == null) {
+            unManagedExportMasks = new ArrayList<String>();
+        }
+        return unManagedExportMasks;
+    }
+
+    public void setUnManagedExportMasks(List<String> unManagedExportMasks) {
+        this.unManagedExportMasks = unManagedExportMasks;
+    }
+
+    @XmlElementWrapper(name = "initiators")
+    @XmlElement(name = "initiator")
+    public List<String> getInitiatorUris() {
+        if (initiatorUris == null) {
+            initiatorUris = new ArrayList<String>();
+        }
+        return initiatorUris;
+    }
+
+    public void setInitiatorUris(List<String> initiatorUris) {
+        this.initiatorUris = initiatorUris;
+    }
+
+    @XmlElementWrapper(name = "initiator_network_ids")
+    @XmlElement(name = "initiator_network_id")
+    public List<String> getInitiatorNetworkIds() {
+        if (initiatorNetworkIds == null) {
+            initiatorNetworkIds = new ArrayList<String>();
+        }
+        return initiatorNetworkIds;
+    }
+
+    public void setInitiatorNetworkIds(List<String> initiatorNetworkIds) {
+        this.initiatorNetworkIds = initiatorNetworkIds;
+    }
+
+    @XmlElementWrapper(name = "storage_ports")
+    @XmlElement(name = "storage_port")
+    public List<String> getStoragePortUris() {
+        if (storagePortUris == null) {
+            storagePortUris = new ArrayList<String>();
+        }
+        return storagePortUris;
+    }
+
+    public void setStoragePortUris(List<String> storagePortUris) {
+        this.storagePortUris = storagePortUris;
+    }
+
 }

@@ -12,20 +12,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name="wwn_aliases")
 public class WwnAliasesParam {
 
-    private List<? extends WwnAliasParam> aliases;
+    private List<WwnAliasParam> aliases;
     private String fabricId;
     
     public WwnAliasesParam() {}
 
-    public WwnAliasesParam(List<? extends WwnAliasParam> aliases) {
+    public WwnAliasesParam(List<WwnAliasParam> aliases) {
         this.aliases = aliases;
     }
     
     /**
-     * The identifier of the fabric where the aliases will be added. It can be either
+     * The identifier of the aliases fabric for a Brocade device. It can be either
      * the fabric name or its WWN.
      * <p>
-     * This field is required for Brocade only. If provided for Cisco it will ignored.
+     * This field applies to Brocade network systems only.
      * @valid none
      */
     @XmlElement(name="fabric_id")
@@ -46,14 +46,14 @@ public class WwnAliasesParam {
      * @valid none
      */
     @XmlElement(name="wwn_alias")
-    public List<? extends WwnAliasParam> getAliases() {
+    public List<WwnAliasParam> getAliases() {
         if (aliases == null) {
             aliases = new ArrayList<WwnAliasParam>();
         }
         return aliases;
     }
 
-    public void setAliases(List<? extends WwnAliasParam> aliases) {
+    public void setAliases(List<WwnAliasParam> aliases) {
         this.aliases = aliases;
     }
     

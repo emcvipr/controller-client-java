@@ -13,8 +13,8 @@ import com.emc.storageos.model.protection.ProtectionSystemList;
 import com.emc.storageos.model.protection.ProtectionSystemRequestParam;
 import com.emc.storageos.model.protection.ProtectionSystemRestRep;
 import com.emc.storageos.model.protection.ProtectionSystemUpdateRequestParam;
-import com.emc.vipr.client.Task;
 import com.emc.vipr.client.Tasks;
+import com.emc.vipr.client.Task;
 import com.emc.vipr.client.ViPRCoreClient;
 import com.emc.vipr.client.core.filters.ResourceFilter;
 import com.emc.vipr.client.core.impl.PathConstants;
@@ -25,7 +25,7 @@ import com.emc.vipr.client.impl.RestClient;
  * <p>
  * Base URL: <tt>/vdc/protection-systems</tt>
  */
-public class ProtectionSystems extends AbstractBulkResources<ProtectionSystemRestRep> implements
+public class ProtectionSystems extends AbstractCoreBulkResources<ProtectionSystemRestRep> implements
         TopLevelResources<ProtectionSystemRestRep>, TaskResources<ProtectionSystemRestRep> {
     public ProtectionSystems(ViPRCoreClient parent, RestClient client) {
         super(parent, client, ProtectionSystemRestRep.class, PathConstants.PROTECTION_SYSTEM_URL);

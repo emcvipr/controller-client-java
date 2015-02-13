@@ -22,14 +22,11 @@ public class StorageStats {
     public StorageStats() {
     }
 
-    public StorageStats(ControllerStorageStats controllerStorageStats, 
-                        DataServiceStorageStats unstructuredStorageStats) {
+    public StorageStats(ControllerStorageStats controllerStorageStats) {
         this.controllerStorageStats = controllerStorageStats;
-        this.unstructuredStorageStats = unstructuredStorageStats;
     }
 
     private ControllerStorageStats controllerStorageStats;
-    private DataServiceStorageStats unstructuredStorageStats;
 
     public static class ControllerStorageStats {
         private double fileCapacityKB;
@@ -102,26 +99,6 @@ public class StorageStats {
     public void setControllerStorageStats(ControllerStorageStats controllerStorageStats) {
         this.controllerStorageStats = controllerStorageStats;
     }
-
-    @XmlElement(name = "unstructured")
-    public DataServiceStorageStats getUnstructuredStorageStats() {
-        return unstructuredStorageStats;
-    }
-    
-    public void setUnstructuredStorageStats(DataServiceStorageStats unstructuredStorageStats) {
-        this.unstructuredStorageStats = unstructuredStorageStats;
-    }
-    
-    @Deprecated
-    @XmlElement(name = "object")
-    public DataServiceStorageStats getObjectStorageStats() {
-        return unstructuredStorageStats;
-    }
-
-    @Deprecated
-    public void setObjectStorageStats(DataServiceStorageStats unstructuredStorageStats) {
-        this.unstructuredStorageStats = unstructuredStorageStats;
-    }    
 }
 
 

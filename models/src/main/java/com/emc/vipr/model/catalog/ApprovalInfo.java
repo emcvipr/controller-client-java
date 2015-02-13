@@ -3,14 +3,39 @@ package com.emc.vipr.model.catalog;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
+@Deprecated
 @XmlRootElement
 public class ApprovalInfo extends ModelInfo {
-    private String message;         // Approval or rejection message
-    private Date dateActioned;      // Date approve or reject was performed
-    private String status;          // Approval Status. One of PENDING, APPROVED, REJECTED
-    private String approvedBy;      // User ID this approval is approved or rejected by
-    private Reference order;        // Reference to the order this approval is related to
-    private String tenant;          // Tenant for this approval request
+    
+    /**
+     * Approval or rejection message
+     */
+    private String message;        
+    
+    /**
+     * Date approve or reject was performed
+     */
+    private Date dateActioned;     
+    
+    /**
+     * Approval Status. One of PENDING, APPROVED, REJECTED
+     */
+    private String status;         
+    
+    /**
+     * User ID this approval is approved or rejected by
+     */
+    private String approvedBy;      
+    
+    /**
+     * Reference to the order this approval is related to
+     */
+    private Reference order;        
+    
+    /**
+     * Tenant for this approval request
+     */
+    private String tenant;         
 
     public String getApprovedBy() {
         return approvedBy;

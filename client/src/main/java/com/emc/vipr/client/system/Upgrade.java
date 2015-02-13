@@ -15,7 +15,6 @@ public class Upgrade {
 	private static final String FORCE_PARAM = "force";
 	private static final String FORCE = "1";
 	private static final String SHOW_ALL_VERSIONS = "1";
-	private static final String NOT_VERIFIED = "1";
 	
 	private RestClient client;
 	
@@ -113,18 +112,17 @@ public class Upgrade {
      * <p>
      * API Call: PUT /upgrade/target-version
      * 
-	 * @param version The new version number
-	 * @param verifyVersionNumbers If true, version numbers are verified.
-	 * 
+     * @param version The new version number
+     * @param skipGeoPrecheck If true, skips all multi-VDC pre-checks.
      * @return The cluster information
      */
-    public ClusterInfo setTargetVersion(String version, boolean verifyVersionNumbers) {
+    public ClusterInfo setTargetVersion(String version, boolean skipGeoPrecheck) {
     	UriBuilder builder = client.uriBuilder(TARGET_VERSION_URL);
     	addQueryParam(builder, VERSION_PARAM, version);
-    	if (!verifyVersionNumbers) {
-    		addQueryParam(builder, FORCE_PARAM, NOT_VERIFIED);
+    	if (!skipGeoPrecheck) {
+    	    addQueryParam(builder, FORCE_PARAM, FORCE);
     	}
-		return client.putURI(ClusterInfo.class, null, builder.build());	
+    	return client.putURI(ClusterInfo.class, null, builder.build());	
     }    
     
     /**
@@ -136,7 +134,7 @@ public class Upgrade {
      * @return The cluster information
      */
     public ClusterInfo setTargetVersion(String version) {
-    	return setTargetVersion(version, false);
+    	return setTargetVersion(version, true);
     }  	
 	
     /**

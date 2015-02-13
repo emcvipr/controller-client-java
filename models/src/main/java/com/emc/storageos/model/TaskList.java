@@ -44,4 +44,7 @@ public class TaskList {
         this.taskList = taskList;
     }
 
+    public void addTask(TaskResourceRep task) {
+        getTaskList().add(task);
+    }
 }

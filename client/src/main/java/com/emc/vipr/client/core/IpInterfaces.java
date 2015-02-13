@@ -22,7 +22,7 @@ import com.emc.vipr.client.impl.RestClient;
  * <p>
  * Base URL: <tt>/compute/ip-interfaces</tt>
  */
-public class IpInterfaces extends AbstractBulkResources<IpInterfaceRestRep> {
+public class IpInterfaces extends AbstractCoreBulkResources<IpInterfaceRestRep> {
     public IpInterfaces(ViPRCoreClient parent, RestClient client) {
         super(parent, client, IpInterfaceRestRep.class, PathConstants.IPINTERFACE_URL);
     }

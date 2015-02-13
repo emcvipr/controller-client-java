@@ -31,6 +31,7 @@ public class PropertyMetadata {
     private Boolean hidden = false;             // Do not show in  wizard and syssvc API without force
     private Boolean reconfigRequired = false;
     private Boolean rebootRequired = false;
+    private String[] notifiers = new String[0];
     private String value;
     private Boolean controlNodeOnly = false;    // Control node only property flag
 
@@ -164,6 +165,16 @@ public class PropertyMetadata {
     @JsonProperty("rebootRequired")
     public Boolean getRebootRequired() {
         return rebootRequired;
+    }
+
+    public void setNotifiers(String[] notifiers) {
+        this.notifiers = notifiers;
+    }
+
+    @XmlElement(name = "notifiers")
+    @JsonProperty("notifiers")
+    public String[] getNotifiers() {
+        return notifiers;
     }
 
     public void setValue(String value) {

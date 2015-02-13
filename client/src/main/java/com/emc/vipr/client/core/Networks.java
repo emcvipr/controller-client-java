@@ -26,7 +26,7 @@ import com.emc.vipr.client.impl.RestClient;
  * <p>
  * Base URL: <tt>/vdc/networks</tt>
  */
-public class Networks extends AbstractBulkResources<NetworkRestRep> implements TopLevelResources<NetworkRestRep> {
+public class Networks extends AbstractCoreBulkResources<NetworkRestRep> implements TopLevelResources<NetworkRestRep> {
     public Networks(ViPRCoreClient parent, RestClient client) {
         super(parent, client, NetworkRestRep.class, PathConstants.NETWORK_URL);
     }

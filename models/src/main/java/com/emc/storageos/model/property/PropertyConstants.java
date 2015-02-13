@@ -18,6 +18,7 @@ public class PropertyConstants {
     public static final String UINT32                          = "uint32";
     public static final String UINT16                          = "uint16";
     public static final String UINT8                           = "uint8";
+    public static final String BOOLEAN                         = "boolean";
     public static final String PERCENT                         = "percent";
     public static final String URL                             = "url";
     public static final String EMAIL                           = "email";

@@ -9,6 +9,7 @@ import com.emc.storageos.model.BulkIdParam;
 import com.emc.storageos.model.NamedRelatedResourceRep;
 import com.emc.storageos.model.ports.StoragePortBulkRep;
 import com.emc.storageos.model.ports.StoragePortList;
+import com.emc.storageos.model.ports.StoragePortRequestParam;
 import com.emc.storageos.model.ports.StoragePortRestRep;
 import com.emc.storageos.model.ports.StoragePortUpdate;
 import com.emc.vipr.client.ViPRCoreClient;
@@ -22,7 +23,7 @@ import com.emc.vipr.client.core.util.ResourceUtils;
  * <p>
  * Base URL: <tt>/vdc/storage-ports</tt>
  */
-public class StoragePorts extends AbstractBulkResources<StoragePortRestRep> implements
+public class StoragePorts extends AbstractCoreBulkResources<StoragePortRestRep> implements
         TopLevelResources<StoragePortRestRep> {
     public StoragePorts(ViPRCoreClient parent, RestClient client) {
         super(parent, client, StoragePortRestRep.class, PathConstants.STORAGE_PORT_URL);
@@ -101,6 +102,19 @@ public class StoragePorts extends AbstractBulkResources<StoragePortRestRep> impl
     public List<StoragePortRestRep> getAll(ResourceFilter<StoragePortRestRep> filter) {
         List<NamedRelatedResourceRep> refs = list();
         return getByRefs(refs, filter);
+    }
+
+    /**
+     * Creates the given storage port.
+     * <p>
+     * API call: <tt>POST {@value PathConstants#STORAGE_PORT_BY_STORAGE_SYSTEM_URL}</tt>
+     * </p>
+     * @param id the storage system Id
+     * @param input the storage port
+     * @return the new storage port
+     */
+    public StoragePortRestRep create(URI id, StoragePortRequestParam input) {
+        return client.post(StoragePortRestRep.class, input, PathConstants.STORAGE_PORT_BY_STORAGE_SYSTEM_URL, id);
     }
 
     /**

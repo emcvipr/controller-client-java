@@ -24,7 +24,7 @@ import com.emc.vipr.client.core.util.ResourceUtils;
  * <p>
  * Base URL: <tt>/vdc/unmanaged/filesystems</tt>
  */
-public class UnManagedFileSystems extends AbstractBulkResources<UnManagedFileSystemRestRep> {
+public class UnManagedFileSystems extends AbstractCoreBulkResources<UnManagedFileSystemRestRep> {
     public UnManagedFileSystems(ViPRCoreClient parent, RestClient client) {
         super(parent, client, UnManagedFileSystemRestRep.class, PathConstants.UNMANAGED_FILESYSTEMS_URL);
     }

@@ -29,7 +29,7 @@ import com.emc.vipr.client.core.util.ResourceUtils;
  * <p>
  * Base URL: <tt>/vdc/storage-pools</tt>
  */
-public class StoragePools extends AbstractBulkResources<StoragePoolRestRep> implements
+public class StoragePools extends AbstractCoreBulkResources<StoragePoolRestRep> implements
         TopLevelResources<StoragePoolRestRep> {
     public StoragePools(ViPRCoreClient parent, RestClient client) {
         super(parent, client, StoragePoolRestRep.class, PathConstants.STORAGE_POOL_URL);

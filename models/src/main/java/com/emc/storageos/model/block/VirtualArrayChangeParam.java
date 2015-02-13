@@ -9,6 +9,7 @@ import java.net.URI;
 /**
  * Specifies the parameters to change the virtual array for a volume.
  */
+@Deprecated
 @XmlRootElement(name = "volume_varray_change")
 public class VirtualArrayChangeParam {
 

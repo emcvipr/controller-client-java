@@ -27,7 +27,7 @@ import com.emc.vipr.client.impl.RestClient;
  * <p>
  * Base URL: <tt>/compute/initiators</tt>
  */
-public class Initiators extends AbstractBulkResources<InitiatorRestRep> {
+public class Initiators extends AbstractCoreBulkResources<InitiatorRestRep> {
     public Initiators(ViPRCoreClient parent, RestClient client) {
         super(parent, client, InitiatorRestRep.class, PathConstants.INITIATOR_URL);
     }

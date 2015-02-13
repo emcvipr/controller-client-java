@@ -46,6 +46,10 @@ public class WwnAliasParam implements Serializable {
         setAddress(address);
     }
     
+    /**
+     * The alias WWN
+     * @return The alias WWN
+     */
     @XmlElement
 	public String getAddress() {
 		return address;
@@ -55,6 +59,10 @@ public class WwnAliasParam implements Serializable {
 	    this.address = address;
 	}
 	
+	/**
+	 * The alias name
+	 * @return The alias name
+	 */
 	@XmlElement (required=true)
     public String getName() {
         return name;

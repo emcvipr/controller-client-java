@@ -4,9 +4,18 @@ import com.emc.vipr.client.ViPRCatalogClient;
 import com.emc.vipr.client.impl.RestClient;
 import com.emc.vipr.model.catalog.ExecutionWindowInfo;
 import com.emc.vipr.model.catalog.Reference;
+
 import java.util.List;
+
 import static com.emc.vipr.client.catalog.impl.PathConstants.*;
 
+/**
+ * 
+ * @deprecated Replaced by
+ * @see ExecutionWindows2
+ * 
+ */
+@Deprecated
 public class ExecutionWindows extends AbstractResources<ExecutionWindowInfo> {
     public ExecutionWindows(ViPRCatalogClient parent, RestClient client) {
         super(parent, client, ExecutionWindowInfo.class, EXECUTION_WINDOWS_URL);
@@ -20,6 +29,7 @@ public class ExecutionWindows extends AbstractResources<ExecutionWindowInfo> {
      *
      * @return References to approval requests.
      */
+    @Deprecated
     public List<Reference> list() {
         return doList();
     }
@@ -33,6 +43,7 @@ public class ExecutionWindows extends AbstractResources<ExecutionWindowInfo> {
      * @see #getByRefs(java.util.Collection)
      * @return All approval requests
      */
+    @Deprecated
     public List<ExecutionWindowInfo> getAll() {
         return doGetAll();
     }
@@ -44,6 +55,7 @@ public class ExecutionWindows extends AbstractResources<ExecutionWindowInfo> {
      * </p>
      * @param window Execution window create information
      */
+    @Deprecated
     public ExecutionWindowInfo create(ExecutionWindowInfo window) {
         return client.post(ExecutionWindowInfo.class, window, baseUrl);
     }
@@ -56,6 +68,7 @@ public class ExecutionWindows extends AbstractResources<ExecutionWindowInfo> {
      * @param id Identifier of the execution window to update
      * @param window Execution window update information
      */
+    @Deprecated
     public ExecutionWindowInfo update(String id, ExecutionWindowInfo window) {
         return client.put(ExecutionWindowInfo.class, window, getIdUrl(), id);
     }
@@ -67,6 +80,7 @@ public class ExecutionWindows extends AbstractResources<ExecutionWindowInfo> {
      * </p>
      * @param id Identifier of the execution window to delete.
      */
+    @Deprecated
     public void delete(String id) {
         client.delete(String.class, getIdUrl(), id);
     }

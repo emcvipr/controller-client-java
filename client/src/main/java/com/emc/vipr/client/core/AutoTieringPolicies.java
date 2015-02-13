@@ -3,6 +3,7 @@ package com.emc.vipr.client.core;
 import static com.emc.vipr.client.core.util.ResourceUtils.defaultList;
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.List;
 
 import javax.ws.rs.core.UriBuilder;
@@ -24,7 +25,7 @@ import com.emc.vipr.client.impl.RestClient;
  * 
  * @see AutoTieringPolicyRestRep
  */
-public class AutoTieringPolicies extends AbstractBulkResources<AutoTieringPolicyRestRep> implements
+public class AutoTieringPolicies extends AbstractCoreBulkResources<AutoTieringPolicyRestRep> implements
         TopLevelResources<AutoTieringPolicyRestRep> {
     public AutoTieringPolicies(ViPRCoreClient parent, RestClient client) {
         super(parent, client, AutoTieringPolicyRestRep.class, PathConstants.AUTO_TIERING_POLICY_URL);
@@ -236,6 +237,37 @@ public class AutoTieringPolicies extends AbstractBulkResources<AutoTieringPolicy
         List<NamedRelatedResourceRep> refs = listByVirtualArray(virtualArrayId, provisioningType, uniqueNames);
         
         return getByRefs(refs, filter);
+    }
+    
+    /**
+     * Gets all auto tier policies for all virtual arrays.
+     * 
+     * @param virtualArrayId
+     *        the ID of the virtual array.
+     * @param provisioningType
+     *        the provisioning type, if null matches any provisioning type.
+     * @param uniqueNames
+     *        when true duplicate named policies will be ignored.      
+     * @param filter 
+     * @return the list of auto tier policies.
+     * 
+     * @see #getByRefs(java.util.Collection)
+     * @see VirtualArrays
+     */
+    public List<AutoTieringPolicyRestRep> getByVirtualArrays(Collection<URI> virtualArrayIds, String provisioningType, Boolean uniqueNames, ResourceFilter<AutoTieringPolicyRestRep> filter) {
+        UriBuilder builder = client.uriBuilder(PathConstants.AUTO_TIER_FOR_ALL_VARRAY);
+        if ((provisioningType != null) && (provisioningType.length() > 0)) {
+            builder.queryParam("provisioning_type", provisioningType);
+        }
+        if (uniqueNames != null) {
+            builder.queryParam("unique_auto_tier_policy_names", uniqueNames);
+        }
+        
+        BulkIdParam input = new BulkIdParam((List<URI>) virtualArrayIds);
+        
+        AutoTierPolicyList response = client.postURI(AutoTierPolicyList.class, input, builder.build());
+        
+        return defaultList(getByRefs(response.getAutoTierPolicies(), filter));
     }
     
     /**

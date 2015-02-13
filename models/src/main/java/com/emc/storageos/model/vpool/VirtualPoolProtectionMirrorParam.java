@@ -19,6 +19,8 @@ public class VirtualPoolProtectionMirrorParam {
     
     private Integer maxMirrors;
     private URI vpool;
+    private Integer haMaxMirrors;
+    private URI haVpool;
 
     public VirtualPoolProtectionMirrorParam() {}
     
@@ -54,5 +56,33 @@ public class VirtualPoolProtectionMirrorParam {
     public void setVpool(URI vpool) {
         this.vpool = vpool;
     }
+
+	public Integer getHaMaxMirrors() {
+		return haMaxMirrors;
+	}
+
+	 /**
+     * The maximum number of continuous copies for a High Availability virtual pool.
+     * 
+     * @valid none
+     */
+    @XmlElement(name="ha_max_native_continuous_copies", required = false)
+	public void setHaMaxMirrors(Integer haMaxMirrors) {
+		this.haMaxMirrors = haMaxMirrors;
+	}
+
+	/**
+     * The virtual pool for protection mirrors on the High Availability side.
+     * 
+     * @valid none
+     */
+    @XmlElement(name = "ha_protection_mirror_vpool", required = false)
+	public URI getHaVpool() {
+		return haVpool;
+	}
+
+	public void setHaVpool(URI haVpool) {
+		this.haVpool = haVpool;
+	}
     
 }

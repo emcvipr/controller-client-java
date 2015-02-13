@@ -1,17 +1,23 @@
 package com.emc.vipr.client.core;
 
+import static com.emc.vipr.client.core.impl.SearchConstants.TENANT_PARAM;
+import static com.emc.vipr.client.core.impl.SearchConstants.VALIDATE_CONNECTION_PARAM;
 import static com.emc.vipr.client.core.util.ResourceUtils.defaultList;
 
 import java.net.URI;
 import java.util.List;
 
+import javax.ws.rs.core.UriBuilder;
+
 import com.emc.storageos.model.BulkIdParam;
 import com.emc.storageos.model.NamedRelatedResourceRep;
+import com.emc.storageos.model.compute.OsInstallParam;
 import com.emc.storageos.model.host.HostBulkRep;
 import com.emc.storageos.model.host.HostCreateParam;
 import com.emc.storageos.model.host.HostList;
 import com.emc.storageos.model.host.HostRestRep;
 import com.emc.storageos.model.host.HostUpdateParam;
+import com.emc.storageos.model.host.ProvisionBareMetalHostsParam;
 import com.emc.vipr.client.Task;
 import com.emc.vipr.client.Tasks;
 import com.emc.vipr.client.ViPRCoreClient;
@@ -25,8 +31,9 @@ import com.emc.vipr.client.impl.RestClient;
  * <p>
  * Base URL: <tt>/compute/hosts</tt>
  */
-public class Hosts extends AbstractBulkResources<HostRestRep> implements TenantResources<HostRestRep>,
+public class Hosts extends AbstractCoreBulkResources<HostRestRep> implements TenantResources<HostRestRep>,
         TaskResources<HostRestRep> {
+
     public Hosts(ViPRCoreClient parent, RestClient client) {
         super(parent, client, HostRestRep.class, PathConstants.HOST_URL);
     }
@@ -74,20 +81,25 @@ public class Hosts extends AbstractBulkResources<HostRestRep> implements TenantR
     /**
      * Lists the hosts by tenant.
      * <p>
-     * API Call: <tt>GET /tenants/{tenantId}/hosts</tt>
+     * API Call: <tt>GET /compute/hosts?tenant={tenantId}</tt>
      * 
      * @param tenantId
      *        the ID of the tenant.
      * @return the list of host references.
      */
-    @Override
-    public List<NamedRelatedResourceRep> listByTenant(URI tenantId) {
-        return getList(PathConstants.HOST_BY_TENANT_URL, tenantId);
-    }
+	@Override
+	public List<NamedRelatedResourceRep> listByTenant(URI tenantId) {
+		UriBuilder uriBuilder = client.uriBuilder(baseUrl);
+		if (tenantId != null) {
+			uriBuilder.queryParam(TENANT_PARAM, tenantId);
+		}
+		HostList response = client.getURI(HostList.class, uriBuilder.build());
+		return defaultList(response.getHosts());
+	}
 
     @Override
     public List<NamedRelatedResourceRep> listByUserTenant() {
-        return listByTenant(parent.getUserTenantId());
+        return listByTenant(null);
     }
 
     @Override
@@ -178,17 +190,23 @@ public class Hosts extends AbstractBulkResources<HostRestRep> implements TenantR
     /**
      * Begins creating a host in the given tenant.
      * <p>
-     * API Call: <tt>POST /tenants/{tenantId}/hosts</tt>
+     * API Call: <tt>POST /compute/hosts</tt>
      * 
-     * @param tenantId
-     *        the ID of the tenant.
      * @param input
      *        the create configuration.
      * @return a task for monitoring the progress of the operation.
      */
-    public Task<HostRestRep> create(URI tenantId, HostCreateParam input) {
-        return postTask(input, PathConstants.HOST_BY_TENANT_URL, tenantId);
+    public Task<HostRestRep> create(HostCreateParam input) {
+        return create(input, false);
     }
+    
+    public Task<HostRestRep> create(HostCreateParam input, boolean validateConnection) {
+        UriBuilder uriBuilder = client.uriBuilder(baseUrl);
+        if (validateConnection) {
+            uriBuilder.queryParam(VALIDATE_CONNECTION_PARAM, Boolean.TRUE);
+        }
+        return postTaskURI(input, uriBuilder.build());
+    }    
 
     /**
      * Begins updating a host.
@@ -202,8 +220,16 @@ public class Hosts extends AbstractBulkResources<HostRestRep> implements TenantR
      * @return a task for monitoing the progress of the operation.
      */
     public Task<HostRestRep> update(URI id, HostUpdateParam input) {
-        return putTask(input, getIdUrl(), id);
+        return update(id, input, Boolean.FALSE);
     }
+    
+    public Task<HostRestRep> update(URI id, HostUpdateParam input, boolean validateConnection) {
+        UriBuilder uriBuilder = client.uriBuilder(getIdUrl());
+        if (validateConnection) {
+            uriBuilder.queryParam(VALIDATE_CONNECTION_PARAM, Boolean.TRUE);
+        }
+        return putTaskURI(input, uriBuilder.build(id));
+    }    
 
     /**
      * Deactivates a host.
@@ -221,7 +247,7 @@ public class Hosts extends AbstractBulkResources<HostRestRep> implements TenantR
     /**
      * Deactivates a host.
      * <p>
-     * API Call: <tt>POST /compute/hosts/{id}/deactivate?detach-storage={detachStorage}</tt>
+     * API Call: <tt>POST /compute/hosts/{id}/deactivate?detach_storage={detachStorage}</tt>
      * 
      * @param id
      *        the ID of the host to deactivate.
@@ -229,7 +255,25 @@ public class Hosts extends AbstractBulkResources<HostRestRep> implements TenantR
      *        if true, will first detach storage.
      */
     public Task<HostRestRep> deactivate(URI id, boolean detachStorage) {
-        URI deactivateUri = client.uriBuilder(getDeactivateUrl()).queryParam("detach-storage", detachStorage).build(id);
+        URI deactivateUri = client.uriBuilder(getDeactivateUrl()).queryParam("detach_storage", detachStorage).build(id);
+        return postTaskURI(deactivateUri);
+    }
+    
+    
+    /**
+     * Deactivates a host.
+     * <p>
+     * API Call: <tt>POST /compute/hosts/{id}/deactivate?detach_storage={detachStorage}&deactivate_boot_volume={deactivateBootVolume}</tt>
+     * 
+     * @param id
+     *        the ID of the host to deactivate.
+     * @param detachStorage
+     *        if true, will first detach storage.
+     * @param deactivateBootVolume
+     * 		  if true, and if the host was provisioned by ViPR the associated boot volume (if exists) will be deactivated 
+     */
+    public Task<HostRestRep> deactivate(URI id, boolean detachStorage,boolean deactivateBootVolume) {
+        URI deactivateUri = client.uriBuilder(getDeactivateUrl()).queryParam("detach_storage", detachStorage).queryParam("deactivate_boot_volume", deactivateBootVolume).build(id);
         return postTaskURI(deactivateUri);
     }
     
@@ -257,4 +301,30 @@ public class Hosts extends AbstractBulkResources<HostRestRep> implements TenantR
     public Task<HostRestRep> discover(URI id) {
         return postTask(getIdUrl() + "/discover", id);
     }
+
+    /**
+     * Provision bare metal hosts.
+     * <p>
+     * API Call: <tt>POST /compute/hosts/provision-bare-metal</tt>
+     *
+     * @return Tasks for monitoring the progress of the operation(s).
+     */
+    public Tasks<HostRestRep> provisionBareMetalHosts(ProvisionBareMetalHostsParam param) {
+        return postTasks(param, baseUrl + "/provision-bare-metal");
+    }
+
+	/**
+	 * Install OS on the given host.
+	 * <p>
+	 * API Call: <tt> PUT /compute/hosts/{id}/os-install</tt>
+	 *
+	 * @param id
+	 *            the ID of the host to install OS on.
+	 * @param input
+	 *            the OS install information.
+	 * @return a task for monitoring the progress of the operation.
+	 */
+	public Task<HostRestRep> osInstall(URI id, OsInstallParam input) {
+		return putTask(input, getIdUrl() + "/os-install", id);
+	}
 }

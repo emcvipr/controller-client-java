@@ -40,7 +40,7 @@ import com.emc.vipr.client.impl.RestClient;
  * <p>
  * Base URL: <tt>/block/vpools</tt>
  */
-public class BlockVirtualPools extends AbstractBulkResources<BlockVirtualPoolRestRep> implements
+public class BlockVirtualPools extends AbstractCoreBulkResources<BlockVirtualPoolRestRep> implements
         TopLevelResources<BlockVirtualPoolRestRep>, ACLResources, QuotaResources {
     public BlockVirtualPools(ViPRCoreClient parent, RestClient client) {
         super(parent, client, BlockVirtualPoolRestRep.class, PathConstants.BLOCK_VPOOL_URL);

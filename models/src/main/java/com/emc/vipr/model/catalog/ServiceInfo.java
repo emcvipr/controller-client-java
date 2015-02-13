@@ -2,16 +2,50 @@ package com.emc.vipr.model.catalog;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+@Deprecated
 @XmlRootElement
 public class ServiceInfo extends ModelInfo {
-    private String name;                                // Name of this category
-    private String title;                               // Title of this category. Used as the title in the UI
-    private String description;                         // Description of this category. Used as the description in the UI
-    private String image;                               // Icon to show for this category.
-    private boolean approvalRequired = false;           // Indicates if approval is required or not
-    private boolean executionWindowRequired = false;    // Indicates if this service will run in an execution window
-    private String defaultExecutionWindowId;            // ID of the execution window this service will run in
-    private String baseService;                         // Engine Workflow that will be executed for this service
+    
+    /**
+     * Name of this category
+     */
+    private String name;                               
+    
+    /**
+     * Title of this category. Used as the title in the UI
+     */
+    private String title;                              
+    
+    /**
+     * Description of this category. Used as the description in the UI
+     */
+    private String description;                         
+    
+    /**
+     * Icon to show for this category.
+     */
+    private String image;                               
+    
+    /**
+     * Indicates if approval is required or not
+     */
+    private boolean approvalRequired = false;           
+    
+    /**
+     * Indicates if this service will run in an execution window
+     */
+    private boolean executionWindowRequired = false;    
+    
+    /**
+     * ID of the execution window this service will run in
+     */
+    private String defaultExecutionWindowId;           
+    
+    /**
+     * Engine Workflow that will be executed for this service
+     */
+    private String baseService;                        
+    
     private Integer maxSize;
 
     public boolean isApprovalRequired() {

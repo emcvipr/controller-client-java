@@ -12,7 +12,8 @@ public class FCZoneReferenceRestRep {
     private String fabricId;
     private URI volumeUri;
     private URI groupUri;
-    
+    private boolean createdByUser;
+
     public FCZoneReferenceRestRep() {}
     
     public FCZoneReferenceRestRep(String pwwnKey, String zoneName,
@@ -101,5 +102,22 @@ public class FCZoneReferenceRestRep {
 
     public void setZoneName(String zoneName) {
         this.zoneName = zoneName;
+    }
+
+    /**
+     * A flag that indicates if the zone was created by the user or by the system.
+     * This flag is true when the zone is found on the network system , in other words,
+     * created by the user, and re-used by the system, false when the zone is created 
+     * by the system
+     * @valid true
+     * @valid false
+     */
+    @XmlElement
+    public boolean getCreatedByUser() {
+        return createdByUser;
+    }
+
+    public void setCreatedByUser(boolean createdByUser) {
+        this.createdByUser = createdByUser;
     }
 }

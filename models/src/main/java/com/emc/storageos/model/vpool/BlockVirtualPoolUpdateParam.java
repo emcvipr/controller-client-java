@@ -7,10 +7,11 @@
  */
 
 package com.emc.storageos.model.vpool;
-import com.emc.storageos.model.valid.Range;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.emc.storageos.model.valid.Range;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  * Parameter to update VPool
@@ -31,6 +32,10 @@ public class BlockVirtualPoolUpdateParam extends VirtualPoolUpdateParam {
     private BlockVirtualPoolProtectionUpdateParam protection;
     private VirtualPoolHighAvailabilityParam highAvailability;
     private Boolean uniquePolicyNames ;
+    
+    // VMAX Host IO Limits attributes
+    private Integer hostIOLimitBandwidth; // Host Front End limit bandwidth.  If not specified or 0, indicated unlimited
+    private Integer hostIOLimitIOPs; // Host Front End limit I/O.  If not specified or 0, indicated unlimited    
     
     public BlockVirtualPoolUpdateParam() {}
 
@@ -265,5 +270,33 @@ public class BlockVirtualPoolUpdateParam extends VirtualPoolUpdateParam {
      */
     public boolean allowsExpansion() {
         return (expandable != null && expandable);
+    }
+    
+    @XmlElement(name = "host_io_limit_bandwidth", required = false)
+    public Integer getHostIOLimitBandwidth() {
+        return hostIOLimitBandwidth;
+    }
+
+    public void setHostIOLimitBandwidth(Integer hostIOLimitBandwidth) {
+        this.hostIOLimitBandwidth = hostIOLimitBandwidth;
+    }
+
+    @XmlElement(name = "host_io_limit_iops", required = false)
+    public Integer getHostIOLimitIOPs() {
+        return hostIOLimitIOPs;
+    }
+
+    public void setHostIOLimitIOPs(Integer hostIOLimitIOPs) {
+        this.hostIOLimitIOPs = hostIOLimitIOPs;
+    }
+
+    @JsonIgnore
+    public boolean isHostIOLimitBandwidthSet() {
+        return hostIOLimitBandwidth != null && hostIOLimitBandwidth > 0;
+    }
+
+    @JsonIgnore
+    public boolean isHostIOLimitIOPsSet() {
+        return hostIOLimitIOPs != null && hostIOLimitIOPs > 0;
     }
 }

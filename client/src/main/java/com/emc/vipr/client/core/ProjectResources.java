@@ -1,17 +1,17 @@
 package com.emc.vipr.client.core;
 
+import java.net.URI;
+import java.util.List;
+
 import com.emc.storageos.model.DataObjectRestRep;
 import com.emc.storageos.model.project.ProjectRestRep;
 import com.emc.vipr.client.ViPRCoreClient;
 import com.emc.vipr.client.core.filters.ResourceFilter;
-import com.emc.vipr.client.impl.RestClient;
 import com.emc.vipr.client.core.search.ProjectSearchBuilder;
 import com.emc.vipr.client.core.util.ResourceUtils;
+import com.emc.vipr.client.impl.RestClient;
 
-import java.net.URI;
-import java.util.List;
-
-public abstract class ProjectResources<T extends DataObjectRestRep> extends AbstractBulkResources<T> {
+public abstract class ProjectResources<T extends DataObjectRestRep> extends AbstractCoreBulkResources<T> {
     public ProjectResources(ViPRCoreClient parent, RestClient client, Class<T> resourceClass, String baseUrl) {
         super(parent, client, resourceClass, baseUrl);
     }

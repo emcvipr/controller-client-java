@@ -4,7 +4,6 @@ import static com.emc.vipr.client.core.util.ResourceUtils.defaultList;
 import static com.emc.vipr.client.core.util.ResourceUtils.id;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -21,17 +20,15 @@ import com.emc.storageos.model.block.export.ITLRestRep;
 import com.emc.storageos.model.block.export.ITLRestRepList;
 import com.emc.storageos.model.host.HostRestRep;
 import com.emc.storageos.model.host.InitiatorRestRep;
-import com.emc.vipr.client.Task;
 import com.emc.vipr.client.Tasks;
+import com.emc.vipr.client.Task;
 import com.emc.vipr.client.ViPRCoreClient;
 import com.emc.vipr.client.core.filters.ExportClusterFilter;
 import com.emc.vipr.client.core.filters.ExportFilter;
 import com.emc.vipr.client.core.filters.ExportHostFilter;
 import com.emc.vipr.client.core.filters.ExportHostOrClusterFilter;
 import com.emc.vipr.client.core.filters.ExportVirtualArrayFilter;
-import com.emc.vipr.client.core.filters.ProjectFilter;
 import com.emc.vipr.client.core.filters.ResourceFilter;
-import com.emc.vipr.client.core.filters.VirtualArrayFilter;
 import com.emc.vipr.client.core.impl.PathConstants;
 import com.emc.vipr.client.core.search.ExportGroupSearchBuilder;
 import com.emc.vipr.client.impl.RestClient;
@@ -64,6 +61,10 @@ public class BlockExports extends ProjectResources<ExportGroupRestRep> implement
         return defaultList(response.getExports());
     }
 
+    public List<ExportGroupRestRep> getExports(List<URI> exportIds){
+    	return getBulkResources(new BulkIdParam(exportIds));
+    }
+    
     @Override
     public Tasks<ExportGroupRestRep> getTasks(URI id) {
         return doGetTasks(id);
@@ -161,7 +162,6 @@ public class BlockExports extends ProjectResources<ExportGroupRestRep> implement
         return search().byHost(hostId).filter(new ExportFilter(projectId, varrayId)).run();
     }
 
-
     /**
      * Finds the exports associated with a host (or that host's cluster) that are for the given project. If a virtual
      * array ID is specified, only exports associated with that virtual array are returned.
@@ -173,7 +173,10 @@ public class BlockExports extends ProjectResources<ExportGroupRestRep> implement
      * @param virtualArrayId
      *        the ID of the virtual array to restrict the exports to, or null for no restriction.
      * @return the list of export groups associated with the host or any host in the same cluster.
+     * @deprecated This method was only used in one test class {@code ViPRClientApp}
+     *             which doesn't use this method anymore.
      */
+    @Deprecated
     public List<ExportGroupRestRep> findByHostOrCluster(URI hostId, URI projectId, URI virtualArrayId) {
         HostRestRep host = parent.hosts().get(hostId);
         URI clusterId = (host != null) ? id(host.getCluster()) : null;
@@ -191,13 +194,15 @@ public class BlockExports extends ProjectResources<ExportGroupRestRep> implement
 
     /**
      * Finds the exports associated with a host (or that host's cluster) that are for the given project.
-     * 
+     *
      * @param hostId
      *        the ID of the host.
      * @param projectId
      *        the ID of the project.
      * @return the list of export groups associated with the host or any host in the same cluster.
+     * @deprecated This was a convenience method to a {@link #findByHostOrCluster(URI, URI, URI) deprecated method}.
      */
+    @Deprecated
     public List<ExportGroupRestRep> findByHostOrCluster(URI hostId, URI projectId) {
         return findByHostOrCluster(hostId, projectId, null);
     }
@@ -211,7 +216,7 @@ public class BlockExports extends ProjectResources<ExportGroupRestRep> implement
      * @return the list of exports.
      */
     public List<ITLRestRep> getExportsForInitiators(Collection<InitiatorRestRep> initiators) {
-        Set<String> ports = new LinkedHashSet<String>();
+        Set<String> ports = new LinkedHashSet<>();
         for (InitiatorRestRep initiator : initiators) {
             if (initiator.getInitiatorPort() != null && initiator.getInitiatorPort().length() > 0) {
                 ports.add(initiator.getInitiatorPort());

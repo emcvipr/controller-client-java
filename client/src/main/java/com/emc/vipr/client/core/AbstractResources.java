@@ -18,7 +18,6 @@ import com.emc.storageos.model.search.SearchResults;
 import com.emc.storageos.model.search.Tags;
 import com.emc.vipr.client.Task;
 import com.emc.vipr.client.Tasks;
-import com.emc.vipr.client.ViPRCoreClient;
 import com.emc.vipr.client.core.filters.ResourceFilter;
 import com.emc.vipr.client.impl.RestClient;
 import com.emc.vipr.client.core.search.SearchBuilder;
@@ -34,7 +33,7 @@ import javax.ws.rs.core.UriBuilder;
  *        the type of resource.
  */
 public abstract class AbstractResources<T extends DataObjectRestRep> implements Resources<T> {
-    protected final ViPRCoreClient parent;
+    
     protected final RestClient client;
     protected final Class<T> resourceClass;
     protected final String baseUrl;
@@ -45,8 +44,7 @@ public abstract class AbstractResources<T extends DataObjectRestRep> implements 
     /** Whether to include internal resources in fetch operations, defaults to false. */
     private boolean includeInternal;
 
-    public AbstractResources(ViPRCoreClient parent, RestClient client, Class<T> resourceClass, String baseUrl) {
-        this.parent = parent;
+    public AbstractResources(RestClient client, Class<T> resourceClass, String baseUrl) {
         this.client = client;
         this.baseUrl = baseUrl;
         this.resourceClass = resourceClass;
@@ -92,6 +90,24 @@ public abstract class AbstractResources<T extends DataObjectRestRep> implements 
      */
     protected String getDeactivateUrl() {
         return String.format(DEACTIVATE_URL_FORMAT, baseUrl);
+    }
+
+    /**
+     * Gets the URL for registering a resource by ID: <tt><i>baseUrl</i>/{id}/register</tt>
+     *
+     * @return the deactivate URL.
+     */
+    protected String getRegisterUrl() {
+        return String.format(REGISTER_URL_FORMAT, baseUrl);
+    }
+
+    /**
+     * Gets the URL for de-registering a resource by ID: <tt><i>baseUrl</i>/{id}/deregister</tt>
+     *
+     * @return the deactivate URL.
+     */
+    protected String getDeregisterUrl() {
+        return String.format(DEREGISTER_URL_FORMAT, baseUrl);
     }
 
     /**
@@ -429,6 +445,20 @@ public abstract class AbstractResources<T extends DataObjectRestRep> implements 
         TaskResourceRep task = client.put(TaskResourceRep.class, request, path, args);
         return new Task<T>(client, task, resourceClass);
     }
+    
+    /**
+     * Performs a PUT with a request that will return a single task as a response.
+     * 
+     * @param request
+     *        the request object.
+     * @param uri
+     *        the URI to put to.
+     * @return the task object.
+     */    
+    protected Task<T> putTaskURI(Object request, URI uri) {
+        TaskResourceRep task = client.putURI(TaskResourceRep.class, request, uri);
+        return new Task<T>(client, task, resourceClass);
+    }    
 
     /**
      * Performs a POST with no request that will return multiple tasks as a response.

@@ -48,14 +48,15 @@ public class LoggingFilter extends ClientFilter {
         private final StringBuilder sb;
         private boolean logged;
         private boolean truncated;
+        private long startTime;
 
-        public LoggingBufferStream(StringBuilder sb) {
+        public LoggingBufferStream(StringBuilder sb, long startTime) {
             this.sb = sb;
+            this.startTime = startTime;
         }
 
         @Override
         public synchronized void write(int b) {
-            logIfFull();
             if (!isFull()) {
                 super.write(b);
             }
@@ -68,7 +69,6 @@ public class LoggingFilter extends ClientFilter {
 
         @Override
         public synchronized void write(byte[] b, int off, int len) {
-            logIfFull();
             int writeLen = Math.min(len, available());
             if (writeLen > 0) {
                 super.write(b, off, writeLen);
@@ -96,15 +96,14 @@ public class LoggingFilter extends ClientFilter {
             }
         }
 
-        private void logIfFull() {
-            if (isFull()) {
-                truncated = true;
-                log();
-            }
-        }
-
         private void log() {
             if (!logged) {
+                // If startTime is specified, include the timing of the operation as part of the log
+                if (startTime > 0) {
+                    long deltaTime = System.currentTimeMillis() - startTime;
+                    sb.append("  took ").append(deltaTime).append(" ms");
+                }
+
                 printEntity(sb, toByteArray(), truncated);
                 log.info(sb.toString());
                 logged = true;
@@ -118,7 +117,7 @@ public class LoggingFilter extends ClientFilter {
 
         LoggingOutputStream(OutputStream out, StringBuilder sb) {
             this.out = out;
-            this.buffer = new LoggingBufferStream(sb);
+            this.buffer = new LoggingBufferStream(sb, 0);
         }
 
         @Override
@@ -150,9 +149,9 @@ public class LoggingFilter extends ClientFilter {
         private final InputStream in;
         private final LoggingBufferStream buffer;
 
-        LoggingInputStream(InputStream in, StringBuilder sb) {
+        LoggingInputStream(InputStream in, StringBuilder sb, long startTime) {
             this.in = in;
-            this.buffer = new LoggingBufferStream(sb);
+            this.buffer = new LoggingBufferStream(sb, startTime);
         }
 
         @Override
@@ -204,10 +203,9 @@ public class LoggingFilter extends ClientFilter {
         }
         long startTime = System.currentTimeMillis();
         ClientResponse response = getNext().handle(request);
-        long deltaTime = System.currentTimeMillis() - startTime;
 
         if (log.isInfoEnabled()) {
-            logResponse(id, response, deltaTime);
+            logResponse(id, response, startTime);
         }
         return response;
     }
@@ -225,14 +223,14 @@ public class LoggingFilter extends ClientFilter {
         }
     }
 
-    private void logResponse(long id, ClientResponse response, long deltaTime) {
+    private void logResponse(long id, ClientResponse response, long startTime) {
         StringBuilder b = new StringBuilder();
 
         String status = Integer.toString(response.getStatus());
-        prefixId(b, id).append(String.format("< %s  took %s ms", status, deltaTime));
+        prefixId(b, id).append(String.format("< %s", status));
 
         InputStream in = response.getEntityInputStream();
-        response.setEntityInputStream(new LoggingInputStream(in, b));
+        response.setEntityInputStream(new LoggingInputStream(in, b, startTime));
     }
 
     private void printEntity(StringBuilder b, byte[] entity, boolean truncated) {

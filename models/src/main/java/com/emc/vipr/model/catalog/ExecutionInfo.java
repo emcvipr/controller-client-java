@@ -5,23 +5,51 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Deprecated
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.PROPERTY)
 public class ExecutionInfo {
-    // Info on the execution state
-    private Date startDate;                         // Date this order started
-    private Date endDate;                           // Date this order completed
-    private String executionStatus;                 // Status of this execution
-    private String currentTask;                     // The current task that is running
-    private List<String> affectedResources;         // Resources that were affected (created/updated/deleted) by this service
-    private List<ExecutionLogInfo> executionLogs;   // Log information for this order execution
-    private List<ExecutionTaskInfo> executionTasks; // Task information for this order execution
+
+    /**
+     * Date this order started
+     */
+    private Date startDate;                         
+    
+    /**
+     * Date this order completed
+     */
+    private Date endDate;                           
+    
+    /**
+     * Status of this execution
+     */
+    private String executionStatus;                 
+    
+    /**
+     * The current task that is running
+     */
+    private String currentTask;                     
+    
+    /**
+     * Resources that were affected (created/updated/deleted) by this service
+     */
+    private List<String> affectedResources;         
+    
+    /**
+     * Log information for this order execution
+     */
+    private List<ExecutionLogInfo> executionLogs;  
+    
+    /**
+     * Task information for this order execution
+     */
+    private List<ExecutionTaskInfo> executionTasks; 
 
     @XmlElementWrapper(name = "affectedResources")
     @XmlElement(name="resource")
     public List<String> getAffectedResources() {
         if (affectedResources == null) {
-            affectedResources = new ArrayList<String>();
+            affectedResources = new ArrayList<>();
         }
         return affectedResources;
     }
@@ -46,7 +74,7 @@ public class ExecutionInfo {
     @XmlElement(name="log")
     public List<ExecutionLogInfo> getExecutionLogs() {
         if (executionLogs == null) {
-            executionLogs = new ArrayList<ExecutionLogInfo>();
+            executionLogs = new ArrayList<>();
         }
         return executionLogs;
     }
@@ -63,7 +91,7 @@ public class ExecutionInfo {
     @XmlElement(name="task")
     public List<ExecutionTaskInfo> getExecutionTasks() {
         if (executionTasks == null) {
-            executionTasks = new ArrayList<ExecutionTaskInfo>();
+            executionTasks = new ArrayList<>();
         }
         return executionTasks;
     }

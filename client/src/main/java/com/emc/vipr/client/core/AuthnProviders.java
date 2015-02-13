@@ -21,7 +21,7 @@ import com.emc.vipr.client.core.util.ResourceUtils;
  * 
  * @see AuthnProviderRestRep
  */
-public class AuthnProviders extends AbstractResources<AuthnProviderRestRep> implements
+public class AuthnProviders extends AbstractCoreResources<AuthnProviderRestRep> implements
         TopLevelResources<AuthnProviderRestRep> {
     public AuthnProviders(ViPRCoreClient parent, RestClient client) {
         super(parent, client, AuthnProviderRestRep.class, PathConstants.AUTHN_PROVIDER_URL);

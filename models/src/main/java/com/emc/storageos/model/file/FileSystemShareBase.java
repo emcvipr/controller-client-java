@@ -59,8 +59,7 @@ public class FileSystemShareBase {
      * is unlimited.
      * @valid none
      */
-    //@XmlElement(name = "max_users")
-    @XmlTransient
+    @XmlElement(name = "max_users")
     public String getMaxUsers() {
         return maxUsers;
     }

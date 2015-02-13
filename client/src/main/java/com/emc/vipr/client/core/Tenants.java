@@ -26,7 +26,7 @@ import com.emc.vipr.client.core.util.ResourceUtils;
  * <p>
  * Base URL: <tt>/tenants</tt>
  */
-public class Tenants extends AbstractBulkResources<TenantOrgRestRep> implements QuotaResources {
+public class Tenants extends AbstractCoreBulkResources<TenantOrgRestRep> implements QuotaResources {
     public Tenants(ViPRCoreClient parent, RestClient client) {
         super(parent, client, TenantOrgRestRep.class, TENANT_URL);
     }

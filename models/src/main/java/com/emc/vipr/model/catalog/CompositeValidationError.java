@@ -29,7 +29,7 @@ public class CompositeValidationError extends ValidationError {
     @XmlElement(name="error")
     public List<ValidationError> getErrors() {
         if (errors == null) {
-            errors = new ArrayList<ValidationError>();
+            errors = new ArrayList<>();
         }
         return errors;
     }

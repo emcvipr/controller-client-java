@@ -59,10 +59,9 @@ public class StoragePortUpdate extends VirtualArrayResourceUpdateParam {
      * 
      * This is only applicable to Cinder storage system
      * as currently there is no API to discover it from Cinder.
-     * 
-     * This is only applicable to FC type of storage ports.
      *
-     * @valid example: FC - port wwn
+     * @valid example: FC - port WWN,
+     *                 IP - iSCSI Qualified Name (IQN) or Extended Unique Identifier (EUI)
      */
     @XmlElement(name = "port_network_id", nillable = true)
     public String getPortNetworkId() {

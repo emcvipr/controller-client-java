@@ -11,6 +11,7 @@
 
 package com.emc.storageos.model;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -24,21 +25,25 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.emc.storageos.model.adapters.CalendarAdapter;
 import com.emc.storageos.model.errorhandling.ServiceErrorRestRep;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 @XmlAccessorType(XmlAccessType.PROPERTY)
 @XmlRootElement(name = "task")
-public class TaskResourceRep {
+public class TaskResourceRep extends DataObjectRestRep {
     private ServiceErrorRestRep serviceError;
     private String opId;
     private RestLinkRep selfLink;
     private NamedRelatedResourceRep resource;
+    private RelatedResourceRep tenant;
     private List<NamedRelatedResourceRep> associatedResources;
     private String message;
-    private String name;
     private String state;
     private String description;
     private Calendar startTime;
     private Calendar endTime;
+    private Calendar lastUpdatedTime;
+    private Integer progress;
+    private RelatedResourceRep workflow;
 
     public TaskResourceRep() {}
     
@@ -60,7 +65,7 @@ public class TaskResourceRep {
         this.endTime = endTime;
     }
 
-    /** 
+    /**
      * The task operation id
      * @valid none
      */
@@ -73,20 +78,18 @@ public class TaskResourceRep {
         this.opId = opId; 
     }
 
-    /** 
+    /**
      * The resource link to the task
-     * @valid none
+     *
+     * @deprecated Use {@link #getLink()}
      */
-    @XmlElement(name = "link")
+    @JsonIgnore
+    @Deprecated
     public RestLinkRep getRestLink() {
         return selfLink;
     }
-    
-    public void setRestLink(RestLinkRep selfLink) { 
-        this.selfLink = selfLink; 
-    }
 
-    /** 
+    /**
      * Resource link representative with name and id attached
      * @valid none
      */
@@ -99,7 +102,19 @@ public class TaskResourceRep {
         this.resource = resource;
     }
 
-    /** 
+    /**
+     * Link to tenant who owns this task.  No tenant means the task is a SYSTEM level task (i.e. discovery etc)
+     */
+    @XmlElement(name = "tenant")
+    public RelatedResourceRep getTenant() {
+        return tenant;
+    }
+
+    public void setTenant(RelatedResourceRep tenant) {
+        this.tenant = tenant;
+    }
+
+    /**
      * A list of links for associated resources
      * @valid none
      */
@@ -157,20 +172,7 @@ public class TaskResourceRep {
         this.description = description;
     }
 
-    /** 
-     * The name of the task (the resource operation type)
-     * @valid none
-     */
-    @XmlElement (name = "name")
-    public String getName() {
-        return name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    /** 
+    /**
      * The service error code when a problem was encountered while processing a request
      * @valid none
      */
@@ -209,5 +211,23 @@ public class TaskResourceRep {
     
     public void setEndTime(Calendar endTime) {
         this.endTime = endTime;
+    }
+
+    @XmlElement(name = "progress")
+    public Integer getProgress() {
+        return progress;
+    }
+
+    public void setProgress(Integer progress) {
+        this.progress = progress;
+    }
+
+    @XmlElement(name = "workflow")
+    public RelatedResourceRep getWorkflow() {
+        return workflow;
+    }
+
+    public void setWorkflow(RelatedResourceRep workflow) {
+        this.workflow = workflow;
     }
 }

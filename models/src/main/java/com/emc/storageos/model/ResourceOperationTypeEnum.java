@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlElement;
 public enum ResourceOperationTypeEnum {
 
     //@todo - update the following enum with more fields (esp description, audit message, event messages(if needed)
-    //@todo- validate the actions/desription (esp controller specific operation) with controller team.
+    //@todo- validate the actions/description (esp controller specific operation) with controller team.
 
     /*                          name                        description               */
     CREATE_TENANT           ("CREATE TENANT",           "create tenant operation"),
@@ -79,14 +79,20 @@ public enum ResourceOperationTypeEnum {
     CREATE_FILE_SYSTEM         ("CREATE FILESYSTEM",     "create filesystem operation"),
     DELETE_FILE_SYSTEM         ("DELETE FILESYSTEM",     "delete filesystem operation"),
     EXPORT_FILE_SYSTEM         ("EXPORT FILESYSTEM",     "export filesystem operation"),
+    UPDATE_EXPORT_RULES_FILE_SYSTEM  ("UPDATE EXPORT RULES FILESYSTEM",     "Update export rules filesystem operation"),
     EXPAND_FILE_SYSTEM         ("EXPAND FILESYSTEM",     "expand filesystem operation"),
     CREATE_FILE_SYSTEM_SHARE   ("CREATE FILESHARE",      "create fileshare operation"),
     CREATE_FILE_SYSTEM_SNAPSHOT("SNAPSHOT FILESYSTEM",   "snapshot filesystem"),
+    CREATE_FILE_SYSTEM_QUOTA_DIR   ("CREATE FILESYSTEM QUOTA DIR",   "create filesystem quota directory"),
+    DELETE_FILE_SYSTEM_QUOTA_DIR  ("DELETE FILESYSTEM QUOTA DIR",   "delete filesystem quota directory"),
+    UPDATE_FILE_SYSTEM_QUOTA_DIR   ("UPDATE FILESYSTEM QUOTA DIR",   "update filesystem quota directory"),
+    
     ASSIGN_FILE_SYSTEM_TAG     ("TAG A FILESYSTEM",      "tag a filesystem"),
     DELETE_FILE_SNAPSHOT       ("DELETE FILESYSTEM SNAPSHOT",   "delete filesystem snapshot"),
     UNEXPORT_FILE_SYSTEM       ("UNEXPORT FILESYSTEM",          "unexport filesystem operation"),
     DELETE_FILE_SYSTEM_SHARE   ("DELETE FILESHARE",             "delete fileshare"),
     EXPORT_FILE_SNAPSHOT       ("EXPORT FILESYSTEM SNAPSHOT",   "export fileshare snapshot"),
+    UPDATE_EXPORT_RULES_FILE_SNAPSHOT       ("UPDATE EXPORT RULES FILESYSTEM SNAPSHOT",   "update export rules fileshare snapshot"),
     CREATE_FILE_SNAPSHOT_SHARE ("SNAPSHOT FILESHARE",           "perform fileshare snapshot"),
     ASSIGN_FILE_SNAPSHOT_TAG   ("TAG A FILESYSTEM SNAPSHOT",    "tag a fileshare snapshot"),
     UNEXPORT_FILE_SNAPSHOT     ("UNEXPORT FILESYSTEM SNAPSHOT", "unexport fileshare snapshot"),
@@ -104,8 +110,8 @@ public enum ResourceOperationTypeEnum {
     MODIFY_VARRAY_ACL          ("UPDATE VARRAY ACL",   "update varray acls"),
     REASSIGN_VARRAY_ACL        ("REPLACE VARRAY ACL",  "overwrite varray acls"),
     CREATE_NETWORK             ("CREATE NETWORK",      "create network operation"),
-    CREATE_DATA_STORE         ("CREATE DATASTORE",     "create data store operation"),
-    DELETE_DATA_STORE         ("DELETE DATASTORE",     "delete data store operation"),
+    CREATE_DATA_STORE          ("CREATE DATASTORE",     "create data store operation"),
+    DELETE_DATA_STORE          ("DELETE DATASTORE",     "delete data store operation"),
     CREATE_SECRET_KEY          ("CREATE SECRET KEY",     "create a secret key for a user"),
     DELETE_SECRET_KEY          ("DELETE SECRET KEY",     "delete a user's secret key"),
     REGISTER_SMISPROVIDER      ("REGISTER SMIS PROVIDER","register smis provider"),
@@ -114,6 +120,7 @@ public enum ResourceOperationTypeEnum {
     SCAN_SMISPROVIDER          ("SCAN SMIS PROVIDER",    "scan smis provider"),
     SCAN_STORAGEPROVIDER       ("SCAN STORAGE PROVIDER",  "scan storage provider"),
     REGISTER_STORAGE_SYSTEM    ("REGISTER SMIS SYSTEM","register sims system"),
+    REGISTER_STORAGEPROVIDER   ("REGISTER STORAGE PROVIDER","register storage provider"),
     UPDATE_STORAGE_POOL        ("UPDATE STORAGEPOOL",     "update storage pool"),
     DELETE_STORAGE_POOL        ("DELETE STORAGEPOOL",     "delete storage pool"),
     DEREGISTER_STORAGE_POOL    ("UNREGISTER STORAGEPOOL", "unregister a storage pool"),
@@ -170,6 +177,7 @@ public enum ResourceOperationTypeEnum {
     PERFORM_PROTECTION_ACTION_STOP                 ("PERFORM PROTECTION ACTION STOP",                 "stop the replication link between source and target"),
     PERFORM_PROTECTION_ACTION_START                ("PERFORM PROTECTION ACTION START",                "start the replication link between source and target"),
     PERFORM_PROTECTION_ACTION_PAUSE                ("PERFORM PROTECTION ACTION PAUSE",                "pause the replication link between source and target"),
+    PERFORM_PROTECTION_ACTION_SUSPEND               ("PERFORM PROTECTION ACTION SUSPEND",               "suspend the replication link between source and target"),
     PERFORM_PROTECTION_ACTION_RESUME               ("PERFORM PROTECTION ACTION RESUME",               "resume the replication link between source and target"),
     CREATE_AUTHPROVIDER        ("CREATE AUTH PROVIDER",     "create an authentication provider"),
     UPDATE_AUTHPROVIDER        ("UPDATE AUTH PROVIDER",     "update an authentication provider"),
@@ -177,9 +185,6 @@ public enum ResourceOperationTypeEnum {
     SSH_LOGIN                   ("SSH LOGIN",                "ssh login"),
     AUTHENTICATION             ("AUTHENTICATION",           "authentication"),
     UPDATE_VERSION             ("UPDATE VERSION",           "upgrade"),
-    INSTALL_IMAGE              ("INSTALL IMAGE",            "upload an image from remote server"),
-    REMOVE_IMAGE               ("REMOVE IMAGE",             "remove an image"),
-    UPLOAD_IMAGE               ("UPLOAD IMAGE",             "upload an image from remote server"),
     WAKEUP_UPGRAGE_MANAGER     ("WAKEUP UPGRADE MANAGER",   "wakeup upgrade manager"),
     UPDATE_SYSTEM_PROPERTY     ("UPDATE SYSTEM PROPERTY",  "update system property"),
     SEND_ALERT                 ("SEND ALERT",               "send an alert"),
@@ -196,6 +201,7 @@ public enum ResourceOperationTypeEnum {
     RESUME_VOLUME_MIRROR            ("RESUME VOLUME MIRROR",            "resume a volume mirror"),
     DEACTIVATE_VOLUME_MIRROR        ("DEACTIVATE VOLUME MIRROR",        "deactivate a volume mirror"),
     DISCOVER_HOST                   ("DISCOVER HOST",                   "discover a compute host"),
+	CREATE_HOST                     ("CREATE HOST",                     "create a compute host"),
     DELETE_CLUSTER                  ("DELETE CLUSTER",                  "delete a compute cluster"),
     DELETE_HOST                     ("DELETE HOST",                     "delete a compute host"),
     DELETE_HOST_IPINTERFACE         ("DELETE HOST IP INTERFACE",        "delete a compute host's IP interface"),
@@ -233,12 +239,19 @@ public enum ResourceOperationTypeEnum {
     DELETE_EXPORT_INITIATOR         ("DELETE INITIATOR FROM EXPORT GROUP",    "delete initiator from export group"),
     ADD_STORAGE_VIEW_INITIATOR      ("ADD INITIATOR TO STORAGE VIEW",         "add initiator to storage view"),
     DELETE_STORAGE_VIEW_INITIATOR   ("DELETE INITIATOR TO STORAGE VIEW",      "delete initiator from storage view"),
+    REMOVE_STORAGE_VIEW_VOLUME   ("REMOVE VOLUME FROM STORAGE VIEW",      "remove volume(s) from storage view"),
     ADD_STORAGE_VIEW_STORAGEPORTS   ("ADD STORAGE PORTS TO STORAGE VIEW",     "add storage ports to storage view"),
     DELETE_STORAGE_VIEW_STORAGEPORTS   ("DELETE STORAGE PORTS FROM STORAGE VIEW",     "delete storage ports from storage view"),
     ROLLBACK_NOOP              ("ROLLBACK NOOP",            "no-op rollback operation"),
     PAUSE_NATIVE_CONTINUOUS_COPIES     ("PAUSE NATIVE CONTINUOUS COPIES", "pause Native Continuous Copies"),
     RESUME_NATIVE_CONTINUOUS_COPIES    ("RESUME NATIVE CONTINUOUS COPIES", "resume Native Continuous Copies"),
     CHECK_SYNC_PROGRESS    ("CHECK SYNC PROGRESS", "check progress between two block objects"),
+    DISCOVER_COMPUTE_SYSTEM    ("DISCOVER COMPUTE SYSTEM",   "discover a compute system."),
+    DELETE_COMPUTE_SYSTEM      ("DELETE COMPUTE SYSTEM",     "delete a compute system."),
+    IMPORT_IMAGE               ("IMPORT IMAGE", "import an image."),
+    UPDATE_IMAGE               ("UPDATE IMAGE", "update an image."),
+    REMOVE_IMAGE               ("REMOVE IMAGE", "remove an image."),
+    INSTALL_OPERATING_SYSTEM   ("INSTALL OPERATING SYSTEM",  "install an operating system."),
     ADD_VDC                ("ADD VDC",          "add a new VDC to ViPR"),
     UPDATE_VDC             ("UPDATE VDC",          "update a VDC info"),
     REMOVE_VDC             ("REMOVE VDC",       "remove a VDC from ViPR"),
@@ -248,7 +261,13 @@ public enum ResourceOperationTypeEnum {
     WAIT_ON_VPLEX_VOLUME_REBUILD    ("WAIT ON VPLEX VOLUME REBUILD",   "Wait on VPLEX volume rebuild"),
     ADD_ALIAS               ("ADD ALIAS",          "add one or more aliases"),
     REMOVE_ALIAS               ("REMOVE ALIAS",          "remove one or more aliases"),
-    UPDATE_ALIAS              ("UPDATE ALIAS",          "update one or more aliases");
+    UPDATE_ALIAS              ("UPDATE ALIAS",          "update one or more aliases"),
+    CREATE_BACKUP ("CREATE BACKUP", "create ViPR backup"),
+    UPLOAD_BACKUP ("UPLOAD BACKUP", "upload ViPR backup to external location"),
+    CREATE_VCENTER_CLUSTER   ("CREATE VCENTER CLUSTER",  "create a cluster in vCenter server"),
+    UPDATE_VCENTER_CLUSTER   ("UPDATE VCENTER CLUSTER",  "update a cluster in vCenter server"),
+    SYS_EVENT                ("SYSTEM EVENT", "System Event");
+
 
 
     private final String name;

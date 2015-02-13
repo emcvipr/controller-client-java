@@ -9,11 +9,28 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.ws.rs.core.UriBuilder;
+
 import com.emc.storageos.model.BulkIdParam;
 import com.emc.storageos.model.NamedRelatedResourceRep;
 import com.emc.storageos.model.TaskList;
 import com.emc.storageos.model.TaskResourceRep;
-import com.emc.storageos.model.block.*;
+import com.emc.storageos.model.block.BlockMirrorRestRep;
+import com.emc.storageos.model.block.BulkDeleteParam;
+import com.emc.storageos.model.block.CopiesParam;
+import com.emc.storageos.model.block.MigrationList;
+import com.emc.storageos.model.block.MigrationParam;
+import com.emc.storageos.model.block.MirrorList;
+import com.emc.storageos.model.block.NamedVolumesList;
+import com.emc.storageos.model.block.VirtualArrayChangeParam;
+import com.emc.storageos.model.block.VolumeBulkRep;
+import com.emc.storageos.model.block.VolumeCreate;
+import com.emc.storageos.model.block.VolumeDeleteTypeEnum;
+import com.emc.storageos.model.block.VolumeExpandParam;
+import com.emc.storageos.model.block.VolumeFullCopyCreateParam;
+import com.emc.storageos.model.block.VolumeRestRep;
+import com.emc.storageos.model.block.VolumeVirtualArrayChangeParam;
+import com.emc.storageos.model.block.VolumeVirtualPoolChangeParam;
 import com.emc.storageos.model.block.export.ExportBlockParam;
 import com.emc.storageos.model.block.export.ExportGroupRestRep;
 import com.emc.storageos.model.block.export.ITLRestRep;
@@ -21,8 +38,8 @@ import com.emc.storageos.model.block.export.ITLRestRepList;
 import com.emc.storageos.model.protection.ProtectionSetRestRep;
 import com.emc.storageos.model.vpool.VirtualPoolChangeList;
 import com.emc.storageos.model.vpool.VirtualPoolChangeRep;
-import com.emc.vipr.client.Task;
 import com.emc.vipr.client.Tasks;
+import com.emc.vipr.client.Task;
 import com.emc.vipr.client.ViPRCoreClient;
 import com.emc.vipr.client.core.filters.ResourceFilter;
 import com.emc.vipr.client.core.impl.PathConstants;
@@ -79,6 +96,19 @@ public class BlockVolumes extends ProjectResources<VolumeRestRep> implements Tas
         return search().byWwn(wwn).run();
     }
 
+    /**
+     * Finds a volume by its name.
+     * <p>
+     * API Call: <tt>GET /block/volumes/search?name={name}</tt>
+     * 
+     * @param name
+     *        the volume name.
+     * @return the list of matching volumes.
+     */
+    public List<VolumeRestRep> findByName(String name) {
+        return search().byName(name).run();
+    }
+    
     /**
      * Begins creating one or more block volumes.
      * <p>
@@ -148,7 +178,6 @@ public class BlockVolumes extends ProjectResources<VolumeRestRep> implements Tas
      *        The IDs of the block volumes to deactivate.
      * @param deletionType
      *        {@code FULL} or {@code VIPR_ONLY}
-     * @return a task for monitoring the progress of the operation.
      * @return tasks for monitoring the progress of the operations.
      *
      * @see com.emc.storageos.model.block.VolumeDeleteTypeEnum
@@ -244,7 +273,8 @@ public class BlockVolumes extends ProjectResources<VolumeRestRep> implements Tas
      * @return tasks for monitoring the progress of the operation(s).
      */
     public Tasks<VolumeRestRep> startContinuousCopies(URI id, CopiesParam input) {
-        return postTasks(input, getContinuousCopiesUrl() + "/start", id);
+        TaskList tasks = client.post(TaskList.class, input, getContinuousCopiesUrl() + "/start", id);
+        return new Tasks<VolumeRestRep>(client, tasks.getTaskList(), BlockMirrorRestRep.class);
     }
 
     /**
@@ -259,7 +289,8 @@ public class BlockVolumes extends ProjectResources<VolumeRestRep> implements Tas
      * @return tasks for monitoring the progress of the operation(s).
      */
     public Tasks<VolumeRestRep> stopContinuousCopies(URI id, CopiesParam input) {
-        return postTasks(input, getContinuousCopiesUrl() + "/stop", id);
+        TaskList tasks = client.post(TaskList.class, input, getContinuousCopiesUrl() + "/stop", id);
+        return new Tasks<VolumeRestRep>(client, tasks.getTaskList(), BlockMirrorRestRep.class);
     }
 
     /**
@@ -274,7 +305,8 @@ public class BlockVolumes extends ProjectResources<VolumeRestRep> implements Tas
      * @return tasks for monitoring the progress if the operations.
      */
     public Tasks<VolumeRestRep> pauseContinuousCopies(URI id, CopiesParam input) {
-        return postTasks(input, getContinuousCopiesUrl() + "/pause", id);
+        TaskList tasks = client.post(TaskList.class, input, getContinuousCopiesUrl() + "/pause", id);
+        return new Tasks<VolumeRestRep>(client, tasks.getTaskList(), BlockMirrorRestRep.class);
     }
 
     /**
@@ -289,7 +321,8 @@ public class BlockVolumes extends ProjectResources<VolumeRestRep> implements Tas
      * @return tasks for monitoring the progress of the operations.
      */
     public Tasks<VolumeRestRep> resumeContinuousCopies(URI id, CopiesParam input) {
-        return postTasks(input, getContinuousCopiesUrl() + "/resume", id);
+        TaskList tasks = client.post(TaskList.class, input, getContinuousCopiesUrl() + "/resume", id);
+        return new Tasks<VolumeRestRep>(client, tasks.getTaskList(), BlockMirrorRestRep.class);
     }
 
     /**
@@ -304,7 +337,8 @@ public class BlockVolumes extends ProjectResources<VolumeRestRep> implements Tas
      * @return tasks for monitoring the progress of the operations.
      */
     public Tasks<VolumeRestRep> swapContinuousCopies(URI id, CopiesParam input) {
-        return postTasks(input, getContinuousCopiesUrl() + "/swap", id);
+        TaskList tasks = client.post(TaskList.class, input, getContinuousCopiesUrl() + "/swap", id);
+        return new Tasks<VolumeRestRep>(client, tasks.getTaskList(), BlockMirrorRestRep.class);
     }
 
 
@@ -557,7 +591,7 @@ public class BlockVolumes extends ProjectResources<VolumeRestRep> implements Tas
      *        the input configuration.
      * @return a task for monitoring the progress of the operation.
      * 
-     * @see #failoverTest(java.net.URI, boolean)
+     * @see #failoverTest(URI, CopiesParam)
      * 
      * @deprecated failover-test-cancel needs to be replaced by failover-cancel.
      *             TO-DO: Add client support for failover-cancel.
@@ -624,41 +658,22 @@ public class BlockVolumes extends ProjectResources<VolumeRestRep> implements Tas
                 .get(VirtualPoolChangeList.class, getIdUrl() + "/vpool-change/vpool", id);
         return defaultList(response.getVirtualPools());
     }
-
+    
     /**
-     * Lists virtual pool change candidates that the given block volume is allowed to change to. This is a convenience
-     * method that calls {@link #listVirtualPoolChangeCandidates(URI)} and strips out disallowed candidates.
-     * 
-     * @param id
-     *        the ID of the block volume.
-     * @return the list of allowed virtual pool change candidates.
+     * Lists volumes in the given project that can potentially be moved to the given virtual array.
+     *
+     * @param projectId
+     *        the ID of the project to search for potential virtual array change volumes
+     * @param varrayId
+     *        the ID of the virtual array to use as a target when searching 
+     * @return the list of volumes that are virtual array change candidates
      */
-    public List<VirtualPoolChangeRep> listAllowedVirtualPoolChangeCandidates(URI id) {
-        List<VirtualPoolChangeRep> candidates = new ArrayList<>();
-        for (VirtualPoolChangeRep candidate : listVirtualPoolChangeCandidates(id)) {
-            if (Boolean.TRUE.equals(candidate.getAllowed())) {
-                candidates.add(candidate);
-            }
-        }
-        return candidates;
+    public NamedVolumesList listVirtualArrayChangeCandidates(URI projectId, URI varrayId) {
+        UriBuilder builder = client.uriBuilder(baseUrl).path("/varray-change");
+        builder.queryParam("project", projectId);
+        builder.queryParam("targetVarray", varrayId);
+        return client.getURI(NamedVolumesList.class, builder.build());
     }
-
-    /**
-     * Changes the virtual pool for the given block volume.
-     * <p>
-     * API Call: <tt>PUT /block/volumes/{id}/vpool</tt>
-     * 
-     * @param id
-     *        the ID of the block volume.
-     * @param input
-     *        the virtual pool change configuration.
-     * @return a task for monitoring the progress of the operation.
-     */
-    @Deprecated
-    public Task<VolumeRestRep> changeVirtualPool(URI id, VirtualPoolChangeParam input) {
-        return putTask(input, getIdUrl() + "/vpool", id);
-    }
-
 
     /**
      * Changes the virtual pool for the given block volume.
@@ -672,20 +687,35 @@ public class BlockVolumes extends ProjectResources<VolumeRestRep> implements Tas
     public Tasks<VolumeRestRep> changeVirtualPool(VolumeVirtualPoolChangeParam input) {
         return postTasks(input, baseUrl + "/vpool-change");
     }
-
+    
     /**
      * Changes the virtual array for the given block volume.
      * <p>
      * API Call: <tt>PUT /block/volumes/{id}/varray</tt>
-     * 
+     *  
      * @param id
-     *        the ID of the block volume.
+     *        the id of the block volume.
      * @param input
      *        the virtual array change configuration.
      * @return a task for monitoring the progress of the operation.
      */
+    @Deprecated
     public Task<VolumeRestRep> changeVirtualArray(URI id, VirtualArrayChangeParam input) {
         return putTask(input, getIdUrl() + "/varray", id);
+    }
+    
+    /**
+     * Changes the virtual array for the given block volumes.
+     * <p>
+     * API Call; <tt>POST /block/volumes/change-varray</tt>
+     * 
+     * @param input
+     *        the VolumeVirtualArrayChangeParam
+     * @return
+     *        a list of tasks for monitoring the progress of the Virtual Array Change operation
+     */
+    public Tasks<VolumeRestRep> changeVirtualArrayForVolumes(VolumeVirtualArrayChangeParam input) {
+        return postTasks(input, baseUrl + "/varray-change");
     }
 
     /**

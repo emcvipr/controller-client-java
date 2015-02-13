@@ -2,14 +2,19 @@ package com.emc.vipr.client.impl;
 
 import com.emc.vipr.client.ClientConfig;
 import com.emc.vipr.client.impl.jersey.*;
-import com.emc.vipr.client.impl.jersey.ValidationErrorFilter;
 import com.sun.jersey.api.client.*;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+
 import org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider;
 import org.slf4j.LoggerFactory;
 import javax.net.ssl.HttpsURLConnection;
 import javax.ws.rs.core.UriBuilder;
+
 import java.net.URI;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.Set;
 
 public class RestClient {
     private ClientConfig config;
@@ -115,6 +120,15 @@ public class RestClient {
         return resource(uri);
     }
 
+    public WebResource.Builder resource(String path, Properties queryParams, Object... args) {
+        UriBuilder builder = uriBuilder(path);
+        for (String prop : queryParams.stringPropertyNames()) {
+            builder = builder.queryParam(prop, queryParams.getProperty(prop));
+        }
+        URI uri = builder.build(args);
+        return resource(uri);
+    }
+
     public WebResource.Builder resource(URI uri) {
         return getClient().resource(uri).accept(config.getMediaType())
             .type(config.getMediaType());
@@ -137,6 +151,10 @@ public class RestClient {
     public <T> T post(Class<T> responseType, Object request, String path, Object... args) {
         return resource(path, args).post(responseType, request);
     }
+    
+    public void post(Object request, String path, Object... args) {
+        resource(path, args).post(request);
+    }    
 
     public <T> T postURI(Class<T> responseType, Object request, URI uri) {
         return resource(uri).post(responseType, request);
@@ -160,6 +178,10 @@ public class RestClient {
 
     public <T> T get(Class<T> responseType, String path, Object... args) {
         return resource(path, args).get(responseType);
+    }
+
+    public <T> T get(Class<T> responseType, String path, Properties queryParams, Object... args) {
+        return resource(path, queryParams, args).get(responseType);
     }
 
     public <T> T get(GenericType<T> responseType, String path, Object... args) {

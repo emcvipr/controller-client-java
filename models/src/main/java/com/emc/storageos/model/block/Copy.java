@@ -21,6 +21,12 @@ public class Copy {
 	private URI copyID;
 	private String name;
     private Integer count;
+    private String syncDirection;
+
+    public enum SyncDirection {
+        SOURCE_TO_TARGET,
+        TARGET_TO_SOURCE
+    }
 
     public Copy() {}
             
@@ -94,6 +100,21 @@ public class Copy {
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    /**
+     * User provided direction for the synchronization.
+     * @valid SOURCE_TO_TARGET
+     * @valid TARGET_TO_SOURCE
+     * @return
+     */
+    @XmlElement(name = "syncDirection", required = false)
+    public String getSyncDirection() {
+        return syncDirection;
+    }
+
+    public void setSyncDirection(String syncDirection) {
+        this.syncDirection = syncDirection;
     }
     
 }

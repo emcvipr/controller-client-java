@@ -193,6 +193,9 @@ public class VirtualPoolCommonRestRep  extends DataObjectRestRep {
      * 
      * List of storage pools manually assigned to this virtual pool.
      * 
+     * Previously assigned storage pools which are no longer matching
+     * to this virtual pool, are not listed.
+     * 
      * @valid none
      */
     @XmlElement(name = "storage_pool")

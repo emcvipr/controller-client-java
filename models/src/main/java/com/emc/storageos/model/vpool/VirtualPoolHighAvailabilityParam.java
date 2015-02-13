@@ -18,7 +18,8 @@ import javax.xml.bind.annotation.XmlElement;
 public class VirtualPoolHighAvailabilityParam {
     
     private String type;
-    private VirtualArrayVirtualPoolMapEntry haVirtualArrayVirtualPool;     
+    private VirtualArrayVirtualPoolMapEntry haVirtualArrayVirtualPool; 
+    private Boolean metroPoint;
     
     public VirtualPoolHighAvailabilityParam() {}
     
@@ -61,7 +62,21 @@ public class VirtualPoolHighAvailabilityParam {
     public void setHaVirtualArrayVirtualPool(
             VirtualArrayVirtualPoolMapEntry haVirtualArrayVirtualPool) {
         this.haVirtualArrayVirtualPool = haVirtualArrayVirtualPool;
-    }   
+    }  
+
+    /**
+     * Flag to specify whether or not MetroPoint configuration will be used.
+     * @valid true
+     * @valid false
+     */
+    @XmlElement(name = "metroPoint", required = false)
+	public Boolean getMetroPoint() {
+		return metroPoint;
+	}
+
+	public void setMetroPoint(Boolean metroPoint) {
+		this.metroPoint = metroPoint;
+	}
 
 	/**
      *  The class provides the REST representation of an entry in a
@@ -71,7 +86,7 @@ public class VirtualPoolHighAvailabilityParam {
  
         private URI virtualArray;
         private URI virtualPool;
-        private Boolean useAsRecoverPointSource;
+        private Boolean activeProtectionAtHASite;
                
         public VirtualArrayVirtualPoolMapEntry() {}
         
@@ -83,7 +98,7 @@ public class VirtualPoolHighAvailabilityParam {
         public VirtualArrayVirtualPoolMapEntry(URI key, URI val, Boolean rp) {
             virtualArray = key;
             virtualPool = val;
-            useAsRecoverPointSource = rp;
+            activeProtectionAtHASite = rp;
         }
 
         /**
@@ -117,20 +132,22 @@ public class VirtualPoolHighAvailabilityParam {
         }
 
         /**
-         * Indicates whether or not to use this varray/vpool as the
-         * RecoverPoint Source in an RP+VPLEX setup.
+         * Indicates whether or not to use the HA side of the VPlex as the
+         * RecoverPoint protected site in an RP+VPLEX setup.  In a MetroPoint
+         * context, if true, this field indicates that the HA VPlex site will be
+         * the active site.
          * 
          * @valid true
          * @valid false
          */
-        @XmlElement(name = "useAsRecoverPointSource", required = false)
-        @JsonProperty("useAsRecoverPointSource")
-		public Boolean getUseAsRecoverPointSource() {
-			return useAsRecoverPointSource;
+        @XmlElement(name = "activeProtectionAtHASite", required = false)
+        @JsonProperty("activeProtectionAtHASite")
+		public Boolean getActiveProtectionAtHASite() {
+			return activeProtectionAtHASite;
 		}
 
-		public void setUseAsRecoverPointSource(Boolean useAsRecoverPointSource) {
-			this.useAsRecoverPointSource = useAsRecoverPointSource;
+		public void setActiveProtectionAtHASite(Boolean activeProtectionAtHASite) {
+			this.activeProtectionAtHASite = activeProtectionAtHASite;
 		}        
     }
 }

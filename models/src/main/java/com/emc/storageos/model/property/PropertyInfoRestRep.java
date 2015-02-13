@@ -11,6 +11,8 @@
 
 package com.emc.storageos.model.property;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import java.util.TreeMap;
@@ -138,6 +140,7 @@ public class PropertyInfoRestRep extends PropertyInfo {
         getProperties().put(propName, propValue);
     }
 
+    @JsonIgnore
     public boolean isEmpty() {
         return getProperties().isEmpty();
     }

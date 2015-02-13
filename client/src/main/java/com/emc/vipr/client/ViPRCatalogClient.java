@@ -2,7 +2,13 @@ package com.emc.vipr.client;
 
 import com.emc.vipr.client.catalog.*;
 import com.emc.vipr.client.impl.RestClient;
-
+/**
+ * The Catalog APIs have been moved from the portal to the a back end ViPR service.
+ * 
+ * @deprecated Replaced by 
+ * @see ViPRCatalogClient2
+ */
+@Deprecated
 public class ViPRCatalogClient {
     protected RestClient client;
 
@@ -50,23 +56,28 @@ public class ViPRCatalogClient {
         return this;
     }
 
+    @Deprecated
     public Orders orders() {
         return new Orders(this, client);
     }
 
+    @Deprecated
     public Approvals approvals() {
         return new Approvals(this, client);
     }
 
+    @Deprecated
     public Catalog catalog() {
         return new Catalog(this, client);
     }
 
+    @Deprecated
     public ExecutionWindows executionWindows() {
         return new ExecutionWindows(this, client);
     }
 
+    @Deprecated
     public Setup setup() {
-        return new Setup(this, client);
+        return new Setup(client);
     }
 }

@@ -16,6 +16,7 @@ import com.emc.vipr.client.Task;
 import com.emc.vipr.client.ViPRCoreClient;
 import com.emc.vipr.client.core.filters.ResourceFilter;
 import com.emc.vipr.client.core.impl.PathConstants;
+import com.emc.vipr.client.core.search.ClusterSearchBuilder;
 import com.emc.vipr.client.impl.RestClient;
 
 /**
@@ -23,7 +24,7 @@ import com.emc.vipr.client.impl.RestClient;
  * <p>
  * Base URL: <tt>/compute/clusters</tt>
  */
-public class Clusters extends AbstractBulkResources<ClusterRestRep> implements TenantResources<ClusterRestRep> {
+public class Clusters extends AbstractCoreBulkResources<ClusterRestRep> implements TenantResources<ClusterRestRep> {
     public Clusters(ViPRCoreClient parent, RestClient client) {
         super(parent, client, ClusterRestRep.class, PathConstants.CLUSTER_URL);
     }
@@ -189,12 +190,14 @@ public class Clusters extends AbstractBulkResources<ClusterRestRep> implements T
     }
     
     /**
-     * Deactivates a cluster by ID.
+     * Deactivates a cluster by ID if cluster hosts do not have block or file exports.
+     * 
      * <p>
      * API Call: <tt>POST /compute/clusters/{id}/deactivate</tt>
      * 
      * @param id
      *        the ID of the cluster to deactivate.
+     * @prereq The cluster hosts must not have block or file exports
      */
     public Task<ClusterRestRep> deactivate(URI id) {
         return deactivate(id, false);
@@ -226,4 +229,29 @@ public class Clusters extends AbstractBulkResources<ClusterRestRep> implements T
     public Task<ClusterRestRep> detachStorage(URI id) {
         return postTask(PathConstants.CLUSTER_DETACH_STORAGE_URL, id);
     }
+
+    /**
+     * Lists the clusters for the given name.
+     * <p>
+     * API Call: <tt>GET /compute/clusters/search?name={name}</tt>
+     * 
+     * @param clusterName
+     *        the name of the cluster.
+     * @return the list of cluster references.
+     */
+    public List<ClusterRestRep> searchByName(String clusterName) {  
+    	return search().byName(clusterName).run();
+    }
+    
+    /**
+     * Creates a search builder specifically for creating cluster search queries.
+     * 
+     * @return a cluster search builder.
+     */
+    @Override
+    public ClusterSearchBuilder search() {
+        return new ClusterSearchBuilder(this);
+    }
+
+    
 }

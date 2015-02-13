@@ -25,8 +25,8 @@ import com.emc.vipr.client.impl.RestClient;
 public abstract class AbstractBulkResources<T extends DataObjectRestRep> extends AbstractResources<T> implements
         BulkResources<T> {
 
-    public AbstractBulkResources(ViPRCoreClient parent, RestClient client, Class<T> resourceClass, String baseUrl) {
-        super(parent, client, resourceClass, baseUrl);
+    public AbstractBulkResources(RestClient client, Class<T> resourceClass, String baseUrl) {
+        super(client, resourceClass, baseUrl);
     }
 
     /**
@@ -36,6 +36,10 @@ public abstract class AbstractBulkResources<T extends DataObjectRestRep> extends
      */
     protected String getBulkUrl() {
         return String.format(PathConstants.BULK_URL_FORMAT, baseUrl);
+    }
+
+    protected String getSearchUrl() {
+        return String.format(PathConstants.SEARCH_URL_FORMAT, baseUrl);
     }
 
     @Override

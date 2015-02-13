@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlElement;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 public class UserMappingAttributeParam {
@@ -25,7 +26,7 @@ public class UserMappingAttributeParam {
 
     public UserMappingAttributeParam(String key, List<String> values) {
         this.key = key;
-        this.values = values;
+        this.values = this.removeDuplicate(values);
     }
 
     /**
@@ -59,6 +60,66 @@ public class UserMappingAttributeParam {
     }
 
     public void setValues(List<String> values) {
-        this.values = values;
+        this.values = removeDuplicate(values);
+    }
+
+    /**
+     * Removes the duplicate entries from the collection (List<T>)
+     * and returns the list with unique entries.
+     *
+     * @valid none
+     */
+    private <T> List<T> removeDuplicate(List<T> listWithDuplicates){
+        List<T> uniqueList = new ArrayList<T>(new LinkedHashSet<T>(listWithDuplicates));
+        return uniqueList;
+    }
+
+    @Override
+    /**
+     * Overridden equals method from Object for the specific purpose
+     * of using the HashSet collection.
+     * Compares the individual properties of two objects.
+     */
+    public boolean equals(Object obj){
+        boolean isEqual = false;
+
+        if (obj != null && obj instanceof UserMappingAttributeParam){
+            if(this == obj){
+                isEqual = true;
+            }
+            else if (!key.equals(((UserMappingAttributeParam) obj).key)){
+                isEqual = false;
+            }
+            else if (values.size() != ((UserMappingAttributeParam) obj).values.size()){
+                isEqual = false;
+            }
+            else{
+                isEqual = values.equals(((UserMappingAttributeParam) obj).values);
+            }
+        }
+
+        return isEqual;
+    }
+
+    @Override
+    /**
+     * Overridden hashCode method from Object for the specific purpose
+     * of using the HashSet collection.
+     * Computes the hashCode for the object based on the hashCode
+     * of the properties. There is very rare chance of hash collision
+     * but hopping, will not happen in the regular operations.
+     * If not this solution, the other possible solution is going to
+     * be in the order of quadrant O(n^2), so trying to avoid that.
+     *
+     * @valid none
+     */
+    public int hashCode(){
+        int hash = key.hashCode();
+
+        for(String value : values){
+            hash = hash + value.hashCode();
+        }
+
+        return hash;
     }
 }

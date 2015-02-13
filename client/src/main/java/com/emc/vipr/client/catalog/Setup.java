@@ -1,15 +1,12 @@
 package com.emc.vipr.client.catalog;
 
-import com.emc.vipr.client.ViPRCatalogClient;
 import com.emc.vipr.client.impl.RestClient;
 import static com.emc.vipr.client.catalog.impl.PathConstants.SETUP_SKIP_URL;
 
 public class Setup {
-    protected final ViPRCatalogClient parent;
     protected final RestClient client;
 
-    public Setup(ViPRCatalogClient parent, RestClient client) {
-        this.parent = parent;
+    public Setup(RestClient client) {
         this.client = client;
     }
 

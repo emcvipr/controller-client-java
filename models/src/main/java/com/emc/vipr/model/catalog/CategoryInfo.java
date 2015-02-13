@@ -7,20 +7,45 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+@Deprecated
 @XmlRootElement
 public class CategoryInfo extends ModelInfo {
-    private String name;                            // Name of this category
-    private String title;                           // Title of this category. Used as the title in the UI
-    private String description;                     // Description of this category. Used as the description in the UI
-    private String image;                           // Icon to show for this category.
-    private List<NamedReference> subCategories;     // Child categories that this category contains
-    private List<ServiceInfo> services;             // Child services that this category contains
+    
+    /**
+     * Name of this category
+     */
+    private String name;
+    
+    /**
+     * Title of this category. Used as the title in the UI
+     */
+    private String title;                           
+    
+    /**
+     * Description of this category. Used as the description in the UI
+     */
+    private String description;                     
+    
+    /**
+     * Icon to show for this category.
+     */
+    private String image;             
+    
+    /**
+     * Child categories that this category contains
+     */
+    private List<NamedReference> subCategories;    
+    
+    /**
+     * Child services that this category contains
+     */
+    private List<ServiceInfo> services;             
 
     @XmlElementWrapper(name = "sub_categories")
     @XmlElement(name = "category")
     public List<NamedReference> getSubCategories() {
         if (subCategories == null) {
-            subCategories = new ArrayList<NamedReference>();
+            subCategories = new ArrayList<>();
         }
         return subCategories;
     }
@@ -29,7 +54,7 @@ public class CategoryInfo extends ModelInfo {
     @XmlElement(name = "service")
     public List<ServiceInfo> getServices() {
         if (services == null) {
-            services = new ArrayList<ServiceInfo>();
+            services = new ArrayList<>();
         }
         return services;
     }

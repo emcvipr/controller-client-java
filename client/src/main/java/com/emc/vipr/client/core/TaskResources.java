@@ -3,8 +3,8 @@ package com.emc.vipr.client.core;
 import java.net.URI;
 
 import com.emc.storageos.model.DataObjectRestRep;
-import com.emc.vipr.client.Task;
 import com.emc.vipr.client.Tasks;
+import com.emc.vipr.client.Task;
 
 /**
  * Interface for resources that support tasks. The type of task/tasks returned are typed to the resource.

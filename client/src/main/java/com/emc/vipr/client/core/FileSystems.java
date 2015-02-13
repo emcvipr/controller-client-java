@@ -5,11 +5,20 @@ import static com.emc.vipr.client.core.util.ResourceUtils.defaultList;
 import java.net.URI;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 
 import com.emc.storageos.model.BulkIdParam;
+import com.emc.storageos.model.file.ExportRule;
+import com.emc.storageos.model.file.ExportRules;
+import com.emc.storageos.model.TaskResourceRep;
 import com.emc.storageos.model.file.FileExportUpdateParam;
 import com.emc.storageos.model.file.FileShareBulkRep;
+import com.emc.storageos.model.file.FileShareExportUpdateParams;
 import com.emc.storageos.model.file.FileShareRestRep;
 import com.emc.storageos.model.file.FileSystemDeleteParam;
 import com.emc.storageos.model.file.FileSystemExpandParam;
@@ -18,6 +27,8 @@ import com.emc.storageos.model.file.FileSystemExportParam;
 import com.emc.storageos.model.file.FileSystemParam;
 import com.emc.storageos.model.file.FileSystemShareList;
 import com.emc.storageos.model.file.FileSystemShareParam;
+import com.emc.storageos.model.file.QuotaDirectoryCreateParam;
+import com.emc.storageos.model.file.QuotaDirectoryRestRep;
 import com.emc.storageos.model.file.SmbShareResponse;
 import com.emc.vipr.client.Task;
 import com.emc.vipr.client.Tasks;
@@ -33,6 +44,8 @@ import com.emc.vipr.client.impl.RestClient;
 public class FileSystems extends ProjectResources<FileShareRestRep> implements TaskResources<FileShareRestRep> {
     private static final String PROJECT_PARAM = "project";
     private static final String SUBDIRECTORY_PARAM = "subDirectory";
+    private static final String SUBDIR_PARAM = "subDir";
+    private static final String ALLDIR_PARAM = "allDirs";
 
     public FileSystems(ViPRCoreClient parent, RestClient client) {
         super(parent, client, FileShareRestRep.class, PathConstants.FILESYSTEM_URL);
@@ -50,7 +63,7 @@ public class FileSystems extends ProjectResources<FileShareRestRep> implements T
 
     /**
      * Gets the base URL for exports for a single filesystem: <tt>/file/filesystems/{id}/exports</tt>
-     * 
+     *
      * @return the exports URL.
      */
     protected String getExportsUrl() {
@@ -58,8 +71,17 @@ public class FileSystems extends ProjectResources<FileShareRestRep> implements T
     }
 
     /**
+     * Gets the base URL for export for a single filesystem: <tt>/file/filesystems/{id}/export</tt>
+     *
+     * @return the export URL.
+     */
+    protected String getExportUrl() {
+        return getIdUrl() + "/export";
+    }
+
+    /**
      * Gets the base URL for shares for a single snapshot: <tt>/file/filesystems/{id}/shares</tt>
-     * 
+     *
      * @return the shares URL.
      */
     protected String getSharesUrl() {
@@ -81,12 +103,12 @@ public class FileSystems extends ProjectResources<FileShareRestRep> implements T
     public Task<FileShareRestRep> getTask(URI id, URI taskId) {
         return doGetTask(id, taskId);
     }
-
+    
     /**
      * Begins creating a file system in the given project.
      * <p>
      * API Call: <tt>POST /file/filesystems?project={projectId}</tt>
-     * 
+     *
      * @param projectId
      *        the ID of the project.
      * @param input
@@ -102,7 +124,7 @@ public class FileSystems extends ProjectResources<FileShareRestRep> implements T
      * Begins expanding the given file system by ID.
      * <p>
      * API Call: <tt>POST /file/filesystems/{id}/expand</tt>
-     * 
+     *
      * @param id
      *        the ID of the file system to expand.
      * @param input
@@ -117,7 +139,7 @@ public class FileSystems extends ProjectResources<FileShareRestRep> implements T
      * Begins deactivating the given file system by ID.
      * <p>
      * API Call: <tt>POST /file/filesystems/{id}/deactivate</tt>
-     * 
+     *
      * @param id
      *        the ID of the file system to deactivate.
      * @param input
@@ -132,7 +154,7 @@ public class FileSystems extends ProjectResources<FileShareRestRep> implements T
      * Gets the list of exports for the given file system by ID.
      * <p>
      * API Call: <tt>GET /file/filesystems/{id}/exports</tt>
-     * 
+     *
      * @param id
      *        the ID of the file system.
      * @return the list of exports for the file system.
@@ -143,10 +165,36 @@ public class FileSystems extends ProjectResources<FileShareRestRep> implements T
     }
 
     /**
+     * Gets the list of export rules for the given file system by ID.
+     * <p>
+     * API Call: <tt>GET /file/filesystems/{id}/export</tt>
+     *
+     * @param id
+     *        the ID of the file system.
+     * @param allDirs
+     * 		  boolean value for indicating for all directories
+     * @param subDir
+     * 		  string indicating on what subdirectory to query
+     * @return the list of export rules for the file system.
+     */
+    public List<ExportRule> getExport(URI id, boolean allDirs, String subDir) {
+        UriBuilder builder = client.uriBuilder(getExportUrl());
+        if (allDirs) {
+            builder.queryParam(ALLDIR_PARAM, allDirs);
+        }
+        else if (subDir != null) {
+            builder.queryParam(SUBDIR_PARAM, subDir);
+        }
+        URI targetUri = builder.build(id);
+	ExportRules response = client.getURI(ExportRules.class, targetUri);
+        return defaultList(response.getExportRules());
+    }
+
+    /**
      * Exports the given file system by ID.
      * <p>
      * API Call: <tt>POST /file/filesystems/{id}/exports</tt>
-     * 
+     *
      * @param id
      *        the ID of the file system.
      * @param input
@@ -161,7 +209,7 @@ public class FileSystems extends ProjectResources<FileShareRestRep> implements T
      * Removes an export from the given file system by ID.
      * <p>
      * API Call: <tt>DELETE /file/filesystems/{id}/exports/{protocol},{securityType},{permissions},{rootUserMapping}</tt>
-     * 
+     *
      * @param id
      *        the ID of the file system.
      * @param protocol
@@ -184,7 +232,7 @@ public class FileSystems extends ProjectResources<FileShareRestRep> implements T
      * <p>
      * API Call:
      * <tt>DELETE /file/filesystems/{id}/exports/{protocol},{securityType},{permissions},{rootUserMapping}?subDirectory={subDirectory}</tt>
-     * 
+     *
      * @param id
      *        the ID of the file system.
      * @param protocol
@@ -213,7 +261,7 @@ public class FileSystems extends ProjectResources<FileShareRestRep> implements T
      * Updates an export from the given file system by ID.
      * <p>
      * API Call: <tt>PUT /file/filesystems/{id}/exports/{protocol},{securityType},{permissions},{rootUserMapping}</tt>
-     * 
+     *
      * @param id
      *        the ID of the file system.
      * @param protocol
@@ -238,7 +286,7 @@ public class FileSystems extends ProjectResources<FileShareRestRep> implements T
      * Gets the shares for the given file system by ID.
      * <p>
      * API Call: <tt>GET /file/filesystems/{id}/shares</tt>
-     * 
+     *
      * @param id
      *        the ID of the file system.
      * @return the list of shares for the given file system.
@@ -252,7 +300,7 @@ public class FileSystems extends ProjectResources<FileShareRestRep> implements T
      * Begins sharing a file system by ID.
      * <p>
      * API Call: <tt>POST /file/filesystems/{id}/shares</tt>
-     * 
+     *
      * @param id
      *        the ID of the file system.
      * @param input
@@ -267,7 +315,7 @@ public class FileSystems extends ProjectResources<FileShareRestRep> implements T
      * Begins removing a share from the given file system by ID.
      * <p>
      * API Call: <tt>POST /file/filesystems/{id}/shares/{shareName}</tt>
-     * 
+     *
      * @param id
      *        the ID of the file system.
      * @param shareName
@@ -276,5 +324,52 @@ public class FileSystems extends ProjectResources<FileShareRestRep> implements T
      */
     public Task<FileShareRestRep> removeShare(URI id, String shareName) {
         return deleteTask(getSharesUrl() + "/{shareName}", id, shareName);
+    }
+
+    /**
+     * Update file system exports
+     *
+     * API Call: <tt>PUT /file/filesystems/{id}/export</tt>
+     *
+     * @param id
+     *        the ID of the filesystem.
+     * @param subDirectory
+     *        the subdirectory to be exported
+     * @param input
+     *        the update/create configuration 
+     */
+    public Task<FileShareRestRep> updateExport(URI id, String subDirectory, FileShareExportUpdateParams input) {
+        UriBuilder builder = client.uriBuilder(getExportUrl());
+        if (subDirectory != null) {
+            builder.queryParam(SUBDIR_PARAM, subDirectory);
+        }
+        URI targetUri = builder.build(id);
+        return putTaskURI(input, targetUri);
+    }
+
+    /**
+     * Delete file system export rules
+     *
+     * API Call: <tt>DELETE /file/filesystems/{id}/export</tt>
+     *
+     * @param id
+     *        the ID of the file system
+     * @param allDir
+     *        Boolean to specify all directories
+     * @param subDir
+     *        specific directory to delete export rules
+     */
+    public Task<FileShareRestRep> deleteExport(URI id, Boolean allDir, String subDir) {
+        UriBuilder builder = client.uriBuilder(getExportUrl());
+        if (subDir != null) {
+            builder.queryParam(SUBDIR_PARAM, subDir);
+        }
+        URI targetUri = builder.build(id);
+        return deleteTaskURI(targetUri);
+    }
+
+    public Task<FileShareRestRep> deleteAllExport(URI id, Boolean allDir) {
+        URI targetUri = client.uriBuilder(getExportUrl()).queryParam(ALLDIR_PARAM, allDir).build(id);
+        return deleteTaskURI(targetUri);
     }
 }

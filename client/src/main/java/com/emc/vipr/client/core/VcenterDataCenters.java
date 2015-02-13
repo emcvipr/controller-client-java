@@ -7,12 +7,13 @@ import java.util.List;
 
 import com.emc.storageos.model.BulkIdParam;
 import com.emc.storageos.model.NamedRelatedResourceRep;
+import com.emc.storageos.model.TaskResourceRep;
+import com.emc.storageos.model.compute.VcenterClusterParam;
 import com.emc.storageos.model.host.vcenter.VcenterDataCenterBulkRep;
 import com.emc.storageos.model.host.vcenter.VcenterDataCenterCreate;
 import com.emc.storageos.model.host.vcenter.VcenterDataCenterList;
 import com.emc.storageos.model.host.vcenter.VcenterDataCenterRestRep;
 import com.emc.storageos.model.host.vcenter.VcenterDataCenterUpdate;
-import com.emc.storageos.model.host.vcenter.VcenterRestRep;
 import com.emc.vipr.client.Task;
 import com.emc.vipr.client.ViPRCoreClient;
 import com.emc.vipr.client.core.impl.PathConstants;
@@ -24,7 +25,7 @@ import com.emc.vipr.client.core.util.ResourceUtils;
  * <p>
  * Base URL: <tt>/compute/vcenter-data-centers</tt>
  */
-public class VcenterDataCenters extends AbstractBulkResources<VcenterDataCenterRestRep> {
+public class VcenterDataCenters extends AbstractCoreBulkResources<VcenterDataCenterRestRep> {
     public VcenterDataCenters(ViPRCoreClient parent, RestClient client) {
         super(parent, client, VcenterDataCenterRestRep.class, PathConstants.DATACENTER_URL);
     }
@@ -144,4 +145,37 @@ public class VcenterDataCenters extends AbstractBulkResources<VcenterDataCenterR
     public Task<VcenterDataCenterRestRep> detachStorage(URI id) {
         return postTask(PathConstants.DATACENTER_DETACH_STORAGE_URL, id);
     }
+    
+    /**
+     * Create a vCenter cluster in a datacenter.
+     * <p>
+     * API Call: <tt>POST /compute/vcenter-data-centers/{id}/create-vcenter-cluster</tt>
+     * 
+     * @param id
+     *        the id of the data center.
+     * @param clusterParam
+     *        VcenterClusterParam id of the selected cluster       
+     * @return a task for monitoring the progress of the operation.
+     */
+    public Task<VcenterDataCenterRestRep> createVcenterCluster(URI dataCenterId, VcenterClusterParam clusterParam) {
+        TaskResourceRep response = client.post(TaskResourceRep.class, clusterParam, PathConstants.DATACENTER_CREATE_CLUSTER_URL, dataCenterId);
+        return new Task<VcenterDataCenterRestRep>(client, response, resourceClass);
+    }
+
+    /**
+     * Update and existing vCenter cluster.
+     * <p>
+     * API Call: <tt>PUT /compute/vcenter-data-centers/{id}/update-vcenter-cluster</tt>
+     * 
+     * @param id
+     *        the id of the data center.
+     * @param clusterParam
+     *        VcenterClusterParam id of the selected cluster       
+     * @return a task for monitoring the progress of the operation.
+     */
+    public Task<VcenterDataCenterRestRep> updateVcenterCluster(URI dataCenterId, VcenterClusterParam clusterParam) {
+        TaskResourceRep response = client.post(TaskResourceRep.class, clusterParam, PathConstants.DATACENTER_UPDATE_CLUSTER_URL, dataCenterId);
+        return new Task<VcenterDataCenterRestRep>(client, response, resourceClass);
+    }
+    
 }

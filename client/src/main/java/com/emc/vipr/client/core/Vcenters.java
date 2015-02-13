@@ -1,9 +1,12 @@
 package com.emc.vipr.client.core;
 
+import static com.emc.vipr.client.core.impl.SearchConstants.VALIDATE_CONNECTION_PARAM;
 import static com.emc.vipr.client.core.util.ResourceUtils.defaultList;
 
 import java.net.URI;
 import java.util.List;
+
+import javax.ws.rs.core.UriBuilder;
 
 import com.emc.storageos.model.BulkIdParam;
 import com.emc.storageos.model.NamedRelatedResourceRep;
@@ -25,7 +28,7 @@ import com.emc.vipr.client.core.util.ResourceUtils;
  * <p>
  * Base URL: <tt>/compute/vcenters</tt>
  */
-public class Vcenters extends AbstractBulkResources<VcenterRestRep> implements TenantResources<VcenterRestRep>,
+public class Vcenters extends AbstractCoreBulkResources<VcenterRestRep> implements TenantResources<VcenterRestRep>,
         TaskResources<VcenterRestRep> {
     public Vcenters(ViPRCoreClient parent, RestClient client) {
         super(parent, client, VcenterRestRep.class, PathConstants.VCENTER_URL);
@@ -123,9 +126,17 @@ public class Vcenters extends AbstractBulkResources<VcenterRestRep> implements T
      * @return a task for monitoring the progress of the operation.
      */
     public Task<VcenterRestRep> create(URI tenantId, VcenterCreateParam input) {
-        return postTask(input, PathConstants.VCENTER_BY_TENANT_URL, tenantId);
+        return create(tenantId, input, false);
     }
-
+    
+    public Task<VcenterRestRep> create(URI tenantId, VcenterCreateParam input, Boolean validateConnection) {
+        UriBuilder uriBuilder = client.uriBuilder(PathConstants.VCENTER_BY_TENANT_URL);
+        if (validateConnection) {
+            uriBuilder.queryParam(VALIDATE_CONNECTION_PARAM, Boolean.TRUE);
+        }
+        return postTaskURI(input, uriBuilder.build(tenantId));         
+    }    
+    
     /**
      * Begins updating the given vCenter by ID.
      * <p>
@@ -138,8 +149,16 @@ public class Vcenters extends AbstractBulkResources<VcenterRestRep> implements T
      * @return a task for monitoring the progress of the operation.
      */
     public Task<VcenterRestRep> update(URI id, VcenterUpdateParam input) {
-        return putTask(input, getIdUrl(), id);
+        return update(id, input, false);
     }
+    
+    public Task<VcenterRestRep> update(URI id, VcenterUpdateParam input, boolean validateConnection) {
+        UriBuilder uriBuilder = client.uriBuilder(getIdUrl());
+        if (validateConnection) {
+            uriBuilder.queryParam(VALIDATE_CONNECTION_PARAM, Boolean.TRUE);
+        }
+        return putTaskURI(input, uriBuilder.build(id));        
+    }    
 
     /**
      * Deactivates the given vCenter by ID.

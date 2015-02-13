@@ -39,7 +39,7 @@ import static com.emc.vipr.client.core.util.VirtualPoolUtils.*;
  * <p>
  * Base URL: <tt>/file/vpools</tt>
  */
-public class FileVirtualPools extends AbstractBulkResources<FileVirtualPoolRestRep> implements
+public class FileVirtualPools extends AbstractCoreBulkResources<FileVirtualPoolRestRep> implements
         TopLevelResources<FileVirtualPoolRestRep>, ACLResources, QuotaResources {
     public FileVirtualPools(ViPRCoreClient parent, RestClient client) {
         super(parent, client, FileVirtualPoolRestRep.class, PathConstants.FILE_VPOOL_URL);

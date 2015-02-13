@@ -18,9 +18,9 @@ import java.util.List;
 public class Task<R> {
     private RestClient client;
     private TaskResourceRep task;
-    private Class<R> resourceClass;
+    private Class<? extends R> resourceClass;
 
-    public Task(RestClient client, TaskResourceRep task, Class<R> resourceClass) {
+    public Task(RestClient client, TaskResourceRep task, Class<? extends R> resourceClass) {
         this.client = client;
         this.task = task;
         this.resourceClass = resourceClass;

@@ -5,9 +5,13 @@ import static com.emc.vipr.client.core.util.ResourceUtils.defaultList;
 import java.net.URI;
 import java.util.List;
 
+import javax.ws.rs.core.UriBuilder;
+
 import com.emc.storageos.model.BulkIdParam;
 import com.emc.storageos.model.NamedRelatedResourceRep;
 import com.emc.storageos.model.SnapshotList;
+import com.emc.storageos.model.file.ExportRule;
+import com.emc.storageos.model.file.ExportRules;
 import com.emc.storageos.model.file.FileSnapshotBulkRep;
 import com.emc.storageos.model.file.FileSnapshotRestRep;
 import com.emc.storageos.model.file.FileSystemExportList;
@@ -16,6 +20,7 @@ import com.emc.storageos.model.file.FileSystemShareList;
 import com.emc.storageos.model.file.FileSystemShareParam;
 import com.emc.storageos.model.file.FileSystemSnapshotParam;
 import com.emc.storageos.model.file.SmbShareResponse;
+import com.emc.storageos.model.file.SnapshotExportUpdateParams;
 import com.emc.vipr.client.Task;
 import com.emc.vipr.client.Tasks;
 import com.emc.vipr.client.ViPRCoreClient;
@@ -30,6 +35,9 @@ import com.emc.vipr.client.impl.RestClient;
  */
 public class FileSnapshots extends ProjectResources<FileSnapshotRestRep> implements
         TaskResources<FileSnapshotRestRep> {
+    private static final String SUBDIR_PARAM = "subDir";
+    private static final String ALLDIR_PARAM = "allDir";
+    
     public FileSnapshots(ViPRCoreClient parent, RestClient client) {
         super(parent, client, FileSnapshotRestRep.class, PathConstants.FILE_SNAPSHOT_URL);
     }
@@ -51,6 +59,15 @@ public class FileSnapshots extends ProjectResources<FileSnapshotRestRep> impleme
      */
     protected String getExportsUrl() {
         return getIdUrl() + "/exports";
+    }
+    
+    /**
+     * Gets the base URL for exports for a single snapshot: <tt>/file/snapshots/{id}/export</tt>
+     * 
+     * @return the exports URL.
+     */
+    protected String getExportUrl() {
+        return getIdUrl() + "/export";
     }
 
     /**
@@ -103,7 +120,7 @@ public class FileSnapshots extends ProjectResources<FileSnapshotRestRep> impleme
     public Task<FileSnapshotRestRep> deactivate(URI id) {
         return doDeactivateWithTask(id);
     }
-
+    
     /**
      * Gets the exports for the given file snapshot by ID.
      * <p>
@@ -116,6 +133,32 @@ public class FileSnapshots extends ProjectResources<FileSnapshotRestRep> impleme
     public List<FileSystemExportParam> getExports(URI id) {
         FileSystemExportList response = client.get(FileSystemExportList.class, getExportsUrl(), id);
         return defaultList(response.getExportList());
+    }
+    
+    /**
+     * Gets the list of export rules for the given file system by ID.
+     * <p>
+     * API Call: <tt>GET /file/snapshots/{id}/exports</tt>
+     * 
+     * @param id
+     *        the ID of the snapshot.
+     * @param allDirs
+     *            boolean value for indicating for all directories
+     * @param subDir
+     *            string indicating on what subdirectory to query
+     * @return the list of export rules for the file system.
+     */
+    public List<ExportRule> getExport(URI id, boolean allDirs, String subDir) {
+        UriBuilder builder = client.uriBuilder(getExportUrl());
+        if (allDirs) {
+            builder.queryParam(ALLDIR_PARAM, allDirs);
+        }
+        else if (subDir != null) {
+            builder.queryParam(SUBDIR_PARAM, subDir);
+        }
+        URI targetUri = builder.build(id);
+        ExportRules response = client.getURI(ExportRules.class, targetUri);
+        return defaultList(response.getExportRules());
     }
 
     /**
@@ -266,5 +309,52 @@ public class FileSnapshots extends ProjectResources<FileSnapshotRestRep> impleme
      */
     public Task<FileSnapshotRestRep> createForFileSystem(URI fileSystemId, FileSystemSnapshotParam input) {
         return postTask(input, getByFileSystemUrl(), fileSystemId);
+    }
+    
+    /**
+     * Update file system exports
+     * 
+     * API Call: <tt>PUT /file/snapshots/{id}/export</tt>
+     * 
+     * @param id
+     *        the ID of the snapshot
+     * @param subDirectory
+     *        the subdirectory to be exported
+     * @param input
+     *        the update/create configuration 
+     */
+    public Task<FileSnapshotRestRep> updateExport(URI id, String subDirectory, SnapshotExportUpdateParams input) {
+        UriBuilder builder = client.uriBuilder(getExportUrl());
+        if (subDirectory != null) {
+            builder.queryParam(SUBDIR_PARAM, subDirectory);
+        }
+        URI targetUri = builder.build(id);
+        return putTaskURI(input, targetUri);
+    }
+    
+    /**
+     * Delete file system export rules
+     * 
+     * API Call: <tt>DELETE /file/snapshots/{id}/export</tt>
+     * 
+     * @param id
+     *        the ID of the snapshot
+     * @param allDir
+     *        Boolean to specify all directories
+     * @param subDir
+     *        specific directory to delete export rules
+     */
+    public Task<FileSnapshotRestRep> deleteExport(URI id, Boolean allDir, String subDir) {
+        UriBuilder builder = client.uriBuilder(getExportUrl());
+        if (subDir != null) {
+            builder.queryParam(SUBDIR_PARAM, subDir);
+        }
+        URI targetUri = builder.build(id);
+        return deleteTaskURI(targetUri);
+    }
+    
+    public Task<FileSnapshotRestRep> deleteAllExport(URI id, Boolean allDir) {
+        URI targetUri = client.uriBuilder(getExportUrl()).queryParam(ALLDIR_PARAM, allDir).build(id);
+        return deleteTaskURI(targetUri);
     }
 }

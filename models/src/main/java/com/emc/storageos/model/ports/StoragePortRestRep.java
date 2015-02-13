@@ -40,6 +40,13 @@ public class StoragePortRestRep extends VirtualArrayResourceRestRep {
     private String registrationStatus;
     private String operationalStatus;
     private String compatibilityStatus;
+    private Double allocationMetric;
+    private Double portPercentBusy;
+    private Double cpuPercentBusy;
+    private Long initiatorLoad;
+    private Long volumeLoad;
+    private Boolean allocationDisqualified;
+    private String discoveryStatus;
 
     public StoragePortRestRep() {}
     
@@ -91,7 +98,7 @@ public class StoragePortRestRep extends VirtualArrayResourceRestRep {
      * of ports, a collection of volumes and a collection of  hosts
      * that use those volumes. This name is what the storage system
      * uses to identify the port group.
-     *
+     *mapped known by Vipr to this port
      * @valid none
      */
     @XmlElement(name = "port_group")
@@ -303,4 +310,97 @@ public class StoragePortRestRep extends VirtualArrayResourceRestRep {
     public void setCompatibilityStatus(String compatibilityStatus) {
         this.compatibilityStatus = compatibilityStatus;
     }
+    
+    /**
+     * The metric for the Storage Port Allocator.
+     * Lower metric numbers are preferred over higher metric numbers for allocation.
+     */
+    @XmlElement(name = "allocation_metric")
+    public Double getAllocationMetric() {
+        return allocationMetric;
+    }
+
+    public void setAllocationMetric(Double allocationMetric) {
+        this.allocationMetric = allocationMetric;
+    }
+
+    /**
+     * The port percent busy as computed by the kbytes transferred per a given 
+     * unit of time versus the maximum number of kbytes that could be transferred
+     * as computed from the port speed.
+     */
+    @XmlElement(name = "port_percent_busy")
+    public Double getPortPercentBusy() {
+        return portPercentBusy;
+    }
+
+    public void setPortPercentBusy(Double portPercentBusy) {
+        this.portPercentBusy = portPercentBusy;
+    }
+
+    /**
+     * The number of non-idle ticks for the cpu that is hosting the port
+     * versus the total number of possible ticks.
+     */
+    @XmlElement(name = "cpu_percent_busy")
+    public Double getCpuPercentBusy() {
+        return cpuPercentBusy;
+    }
+   
+    public void setCpuPercentBusy(Double cpuPercentBusy) {
+        this.cpuPercentBusy = cpuPercentBusy;
+    }
+
+    /**
+     * The number of Initiators known by ViPR to be mapped to this port.
+     */
+    @XmlElement(name = "initiator_load")
+    public Long getInitiatorLoad() {
+        return initiatorLoad;
+    }
+
+    public void setInitiatorLoad(Long initiatorLoad) {
+        this.initiatorLoad = initiatorLoad;
+    }
+
+    /**
+     * The number of Volumes known by ViPR to be accessible via this port.
+     */
+    @XmlElement(name = "volume_load")
+    public Long getVolumeLoad() {
+        return volumeLoad;
+    }
+
+    public void setVolumeLoad(Long volumeLoad) {
+        this.volumeLoad = volumeLoad;
+    }
+
+    /**
+     * True if at least one of the port metrics is above its limit value.
+     * This will prevent allocation of the port.
+     */
+    @XmlElement(name = "allocation_disqualified")
+    public Boolean getAllocationDisqualified() {
+        return allocationDisqualified;
+    }
+
+    public void setAllocationDisqualified(Boolean allocationDisqualified) {
+        this.allocationDisqualified = allocationDisqualified;
+    }
+
+    /**
+     * Whether or not this storage pool is visible in discovery
+     * @valid VISIBLE
+     * @valid NOTVISIBLE
+     */
+    @XmlElement(name = "discovery_status")
+    public String getDiscoveryStatus() {
+        return discoveryStatus;
+    }
+
+    public void setDiscoveryStatus(String discoveryStatus) {
+        this.discoveryStatus = discoveryStatus;
+    }
+    
+    
 }

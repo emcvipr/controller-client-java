@@ -30,10 +30,16 @@ public class HostRestRep extends ComputeSystemRestRep {
     private Integer portNumber;
     private RelatedResourceRep cluster;
     private RelatedResourceRep project;
+    private RelatedResourceRep computeElement;
+    private RelatedResourceRep bootVolume;
     private String osVersion;
     private Boolean useSsl;
     private RelatedResourceRep vCenterDataCenter;
     private Boolean discoverable;
+    private String provisioningJobStatus;
+    
+    
+    
 
     public HostRestRep() {}
     
@@ -100,6 +106,15 @@ public class HostRestRep extends ComputeSystemRestRep {
 
     public void setProject(RelatedResourceRep project) {
         this.project = project;
+    }
+
+    @XmlElement(name="compute_element")
+    public RelatedResourceRep getComputeElement() {
+        return computeElement;
+    }
+
+    public void setComputeElement(RelatedResourceRep computeElement) {
+        this.computeElement = computeElement;
     }
 
     /**
@@ -171,5 +186,36 @@ public class HostRestRep extends ComputeSystemRestRep {
     public void setDiscoverable(Boolean discoverable) {
         this.discoverable = discoverable;
     }
+
+    /**
+     * The id of boot volume.
+     * 
+     * @return
+     */
+    @XmlElement(name = "boot_volume")
+    public RelatedResourceRep getBootVolume() {
+        return bootVolume;
+    }
+
+    public void setBootVolume(RelatedResourceRep bootVolume) {
+        this.bootVolume = bootVolume;
+    }
+
+    /**
+     * The state of the most recent provisioning Job (can be one of these values
+     * : IN_PROGRESS / COMPLETE / ERROR. These statuses correspond to the task
+     * status, which can be pending,ready or error.
+     * 
+     * @return
+     */
+    @XmlElement(name = "provisioning_job_status")
+    public String getProvisioningJobStatus() {
+        return provisioningJobStatus;
+    }
+
+    public void setProvisioningJobStatus(String provisioningJobStatus) {
+        this.provisioningJobStatus = provisioningJobStatus;
+    }
+ 
 }
 

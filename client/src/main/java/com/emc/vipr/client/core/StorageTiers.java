@@ -21,7 +21,7 @@ import com.emc.vipr.client.core.util.ResourceUtils;
  * <p>
  * Base URL: <tt>/vdc/storage-tiers</tt>
  */
-public class StorageTiers extends AbstractBulkResources<StorageTierRestRep> implements
+public class StorageTiers extends AbstractCoreBulkResources<StorageTierRestRep> implements
         TopLevelResources<StorageTierRestRep> {
     public StorageTiers(ViPRCoreClient parent, RestClient client) {
         super(parent, client, StorageTierRestRep.class, PathConstants.STORAGE_TIER_URL);

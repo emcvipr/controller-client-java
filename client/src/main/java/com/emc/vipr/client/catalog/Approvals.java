@@ -6,11 +6,20 @@ import com.emc.vipr.client.ViPRCatalogClient;
 import com.emc.vipr.client.impl.RestClient;
 import com.emc.vipr.client.catalog.impl.PathConstants;
 import com.sun.jersey.api.client.GenericType;
+
 import javax.ws.rs.core.UriBuilder;
+
 import java.util.List;
+
 import static com.emc.vipr.client.catalog.impl.ApiListUtils.getApiList;
 import static com.emc.vipr.client.catalog.impl.PathConstants.*;
 
+/**
+ * 
+ * @deprecated Replaced by
+ * @see Approvals2
+ */
+@Deprecated
 public class Approvals extends AbstractResources<ApprovalInfo> {
     public Approvals(ViPRCatalogClient parent, RestClient client) {
         super(parent, client, ApprovalInfo.class, APPROVALS_URL);
@@ -23,6 +32,7 @@ public class Approvals extends AbstractResources<ApprovalInfo> {
      *
      * @return References to approval requests.
      */
+    @Deprecated
     public List<Reference> list() {
         return doList();
     }
@@ -36,6 +46,7 @@ public class Approvals extends AbstractResources<ApprovalInfo> {
      * @see #getByRefs(java.util.Collection)
      * @return All approval requests
      */
+    @Deprecated
     public List<ApprovalInfo> getAll() {
         return doGetAll();
     }
@@ -47,6 +58,7 @@ public class Approvals extends AbstractResources<ApprovalInfo> {
      *
      * @return Pending approval request references.
      */
+    @Deprecated
     public List<Reference> listPending() {
         List<Reference> apiList = getApiList(client, new GenericType<List<Reference>>() {}, APPROVALS_PENDING_URL);
         return apiList;
@@ -59,6 +71,7 @@ public class Approvals extends AbstractResources<ApprovalInfo> {
      *
      * @return All pending approval requests.
      */
+    @Deprecated
     public List<ApprovalInfo> getPending() {
         return getByRefs(listPending());
     }
@@ -72,6 +85,7 @@ public class Approvals extends AbstractResources<ApprovalInfo> {
      * @param message Approval message.
      * @return Approval request information.
      */
+    @Deprecated
     public ApprovalInfo approve(String id, String message) {
         UriBuilder uriBuilder = client.uriBuilder(PathConstants.APPROVE_URL);
         if (message != null) {
@@ -89,6 +103,7 @@ public class Approvals extends AbstractResources<ApprovalInfo> {
      * @param message Rejection message.
      * @return Approval request information.
      */
+    @Deprecated
     public ApprovalInfo reject(String id, String message) {
         UriBuilder uriBuilder = client.uriBuilder(PathConstants.REJECT_URL);
         if (message != null) {

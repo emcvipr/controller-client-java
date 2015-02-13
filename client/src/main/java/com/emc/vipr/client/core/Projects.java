@@ -24,7 +24,7 @@ import com.emc.vipr.client.core.util.ResourceUtils;
  * <p>
  * Base URL: <tt>/projects</tt>
  */
-public class Projects extends AbstractBulkResources<ProjectRestRep> implements ACLResources, QuotaResources,
+public class Projects extends AbstractCoreBulkResources<ProjectRestRep> implements ACLResources, QuotaResources,
         TenantResources<ProjectRestRep> {
     public Projects(ViPRCoreClient parent, RestClient client) {
         super(parent, client, ProjectRestRep.class, PathConstants.PROJECT_URL);

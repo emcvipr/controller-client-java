@@ -4,16 +4,56 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class ExecutionWindowInfo extends ModelInfo {
-    private Integer hourOfDayInUTC;                     // Hour of the day for this execution window
-    private Integer minuteOfHourInUTC;                  // Minute of the day for this execution window
-    private Integer executionWindowLength;              // Length of this execution window
-    private String executionWindowLengthType;           // Length type of the execution window: MINUTES, HOURS, DAYS
-    private String executionWindowType;                 // Type of the execution window: DAILY, WEEKLY, MONTHLY
-    private Integer dayOfWeek;                          // Day of the week for this execution window
-    private Integer dayOfMonth;                         // Day of the month for this execution window
-    private Boolean lastDayOfMonth = Boolean.FALSE;     // Indicates the day of the week is the last day of the month
-    private String tenant;                              // Tenant that this execution window applies to
-    private String label;                               // Label for this execution window
+    
+    /**
+     * Hour of the day for this execution window
+     */
+    private Integer hourOfDayInUTC;                    
+    
+    /**
+     * Minute of the day for this execution window
+     */
+    private Integer minuteOfHourInUTC;            
+    
+    /**
+     * Length of this execution window
+     */
+    private Integer executionWindowLength;
+    
+    /**
+     * Length type of the execution window: MINUTES, HOURS, DAYS
+     */
+    private String executionWindowLengthType;          
+    
+    /**
+     * Type of the execution window: DAILY, WEEKLY, MONTHLY
+     */
+    private String executionWindowType;                
+    
+    /**
+     * Day of the week for this execution window
+     */
+    private Integer dayOfWeek;                        
+    
+    /**
+     * Day of the month for this execution window
+     */
+    private Integer dayOfMonth;                  
+    
+    /**
+     * Indicates the day of the week is the last day of the month
+     */
+    private Boolean lastDayOfMonth = Boolean.FALSE;     
+    
+    /**
+     * Tenant that this execution window applies to
+     */
+    private String tenant;                             
+    
+    /**
+     * Label for this execution window
+     */
+    private String label;                                
 
     public Integer getHourOfDayInUTC() {
         return hourOfDayInUTC;

@@ -16,6 +16,9 @@ public class StorageProviderUpdateParam {
     private String password;
     private Boolean useSSL;
     private String interfaceType;
+    private String secondaryUsername;
+    private String secondaryPassword;
+    private String elementManagerURL;
 
     public StorageProviderUpdateParam() {}
     
@@ -111,7 +114,7 @@ public class StorageProviderUpdateParam {
     
     /**
      * Interface type of the Storage Provider
-     * @valid example: hicommand,smis,vplex,cinder,scaleio
+     * @valid example: hicommand,smis,vplex,cinder,scaleio,ddmc,ibmxiv
      */
     @XmlElement(name = "interface_type")
     public String getInterfaceType() {
@@ -122,4 +125,43 @@ public class StorageProviderUpdateParam {
         this.interfaceType = interfaceType;
     }
 
+    /**
+     * Secondary credentials that may be required for management
+     * @valid none
+     */
+    @XmlElement(required = false, name = "secondary_username")
+    public String getSecondaryUsername() {
+        return secondaryUsername;
+    }
+
+    /**
+     * Secondary credentials that may be required for management
+     * @valid none
+     */
+    public void setSecondaryUsername(String secondaryUsername) {
+        this.secondaryUsername = secondaryUsername;
+    }
+
+    @XmlElement(required = false, name = "secondary_password")
+    public String getSecondaryPassword() {
+        return secondaryPassword;
+    }
+
+    public void setSecondaryPassword(String secondaryPassword) {
+        this.secondaryPassword = secondaryPassword;
+    }
+
+    /**
+     * URL of the Element Management system that is associated with the Provider.
+     *
+     * @valid none
+     */
+    @XmlElement(required = false, name = "element_manager_url")
+    public String getElementManagerURL() {
+        return elementManagerURL;
+    }
+
+    public void setElementManagerURL(String elementManagerURL) {
+        this.elementManagerURL = elementManagerURL;
+    }
 }

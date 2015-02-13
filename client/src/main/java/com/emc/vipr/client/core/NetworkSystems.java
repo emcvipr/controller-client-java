@@ -1,10 +1,5 @@
 package com.emc.vipr.client.core;
 
-import static com.emc.vipr.client.core.util.ResourceUtils.defaultList;
-
-import java.net.URI;
-import java.util.List;
-
 import com.emc.storageos.model.BulkIdParam;
 import com.emc.storageos.model.NamedRelatedResourceRep;
 import com.emc.storageos.model.network.FCEndpointRestRep;
@@ -16,21 +11,35 @@ import com.emc.storageos.model.network.NetworkSystemList;
 import com.emc.storageos.model.network.NetworkSystemRestRep;
 import com.emc.storageos.model.network.NetworkSystemUpdate;
 import com.emc.storageos.model.network.SanZone;
+import com.emc.storageos.model.network.SanZoneCreateParam;
+import com.emc.storageos.model.network.SanZoneUpdateParams;
 import com.emc.storageos.model.network.SanZones;
+import com.emc.storageos.model.network.SanZonesDeleteParam;
+import com.emc.storageos.model.network.WwnAliasParam;
+import com.emc.storageos.model.network.WwnAliasesParam;
+import com.emc.storageos.model.network.WwnAliasesCreateParam;
+import com.emc.storageos.model.network.WwnAliasesDeleteParam;
+import com.emc.storageos.model.network.WwnAliasUpdateParams;
 import com.emc.vipr.client.Task;
 import com.emc.vipr.client.Tasks;
 import com.emc.vipr.client.ViPRCoreClient;
 import com.emc.vipr.client.core.filters.ResourceFilter;
 import com.emc.vipr.client.core.impl.PathConstants;
-import com.emc.vipr.client.impl.RestClient;
 import com.emc.vipr.client.core.util.ResourceUtils;
+import com.emc.vipr.client.impl.RestClient;
+
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
+import java.util.List;
+
+import static com.emc.vipr.client.core.util.ResourceUtils.defaultList;
 
 /**
  * Network Systems resources.
  * <p>
  * Base URL: <tt>/vdc/network-systems</tt>
  */
-public class NetworkSystems extends AbstractBulkResources<NetworkSystemRestRep> implements
+public class NetworkSystems extends AbstractCoreBulkResources<NetworkSystemRestRep> implements
         TopLevelResources<NetworkSystemRestRep>, TaskResources<NetworkSystemRestRep> {
     public NetworkSystems(ViPRCoreClient parent, RestClient client) {
         super(parent, client, NetworkSystemRestRep.class, PathConstants.NETWORK_SYSTEM_URL);
@@ -182,35 +191,41 @@ public class NetworkSystems extends AbstractBulkResources<NetworkSystemRestRep> 
     /**
      * Gets the list of FC endpoints in the given network system by ID.
      * <p>
-     * API Call: <tt>GET /vdc/network-systems/{id}/fc-endpoints</tt>
-     * 
+     * API Call: <tt>GET {@value PathConstants#FC_ENDPOINT_URL}[?fabric-id={fabric-id}]</tt>
+     *
      * @param id
      *        the ID of the network system.
+     * @param fabricId
+     *        the fabric ID, or {@code null} if there is no fabric.
      * @return the list of FC endpoints.
      */
-    public List<FCEndpointRestRep> getFCEndpoints(URI id) {
-        FCEndpoints response = client.get(FCEndpoints.class, getIdUrl() + "/fc-endpoints", id);
+    public List<FCEndpointRestRep> getFCEndpoints(URI id, String fabricId) {
+        UriBuilder builder = client.uriBuilder(PathConstants.FC_ENDPOINT_URL);
+        if (fabricId != null) {
+            builder.queryParam("fabric-id", fabricId);
+        }
+        FCEndpoints response = client.getURI(FCEndpoints.class, builder.build(id));
         return defaultList(response.getConnections());
     }
 
     /**
      * Gets the list of SAN fabric names in the given network system by ID.
      * <p>
-     * API Call: <tt>GET /vdc/network-systems/{id}/san-fabrics</tt>
+     * API Call: <tt>GET {@value PathConstants#SAN_FABRIC_URL}</tt>
      * 
      * @param id
      *        the ID of the network system.
      * @return the list of SAN fabric names.
      */
     public List<String> getSanFabrics(URI id) {
-        Fabrics response = client.get(Fabrics.class, getIdUrl() + "/san-fabrics", id);
+        Fabrics response = client.get(Fabrics.class, PathConstants.SAN_FABRIC_URL, id);
         return defaultList(response.getFabricIds());
     }
 
     /**
      * Gets the list of SAN zones in the given network system by ID and fabric name.
      * <p>
-     * API Call: <tt>GET /vdc/network-systems/{id}/san-fabrics/{fabric}</tt>
+     * API Call: <tt>GET {@value PathConstants#SAN_ZONE_URL}</tt>
      * 
      * @param id
      *        the ID of the network system.
@@ -219,14 +234,14 @@ public class NetworkSystems extends AbstractBulkResources<NetworkSystemRestRep> 
      * @return the list of SAN zones.
      */
     public List<SanZone> getSanZones(URI id, String fabric) {
-        SanZones response = client.get(SanZones.class, getIdUrl() + "/san-fabrics/{fabric}", id, fabric);
+        SanZones response = client.get(SanZones.class, PathConstants.SAN_ZONE_URL, id, fabric);
         return defaultList(response.getZones());
     }
 
     /**
      * Adds SAN zones to the given network system by ID and fabric name.
      * <p>
-     * API Call: <tt>POST /vdc/network-systems/{id}/add-san-zones/{fabric}</tt>
+     * API Call: <tt>POST {@value PathConstants#SAN_ZONE_URL}</tt>
      * 
      * @param id
      *        the ID of the network system.
@@ -236,14 +251,14 @@ public class NetworkSystems extends AbstractBulkResources<NetworkSystemRestRep> 
      *        the SAN zones configuration.
      * @return a task for monitoring the progress of the operation.
      */
-    public Task<NetworkSystemRestRep> addSanZones(URI id, String fabric, SanZones input) {
-        return postTask(input, getIdUrl() + "/add-san-zones/{fabric}", id, fabric);
+    public Task<NetworkSystemRestRep> addSanZones(URI id, String fabric, SanZoneCreateParam input) {
+        return postTask(input, PathConstants.SAN_ZONE_URL, id, fabric);
     }
 
     /**
      * Removes a SAN zone from the given network system by ID and fabric name.
      * <p>
-     * API Call: <tt>POST /vdc/network-systems/{id}/remove-san-zones/{fabric}</tt>
+     * API Call: <tt>POST {@value PathConstants#SAN_ZONE_URL}/remove</tt>
      * 
      * @param id
      *        the ID of the network system.
@@ -253,7 +268,108 @@ public class NetworkSystems extends AbstractBulkResources<NetworkSystemRestRep> 
      *        the SAN zones configuration.
      * @return a task for monitoring the progress of the operation.
      */
-    public Task<NetworkSystemRestRep> removeSanZones(URI id, String fabric, SanZones input) {
-        return postTask(input, getIdUrl() + "/remove-san-zones/{fabric}", id, fabric);
+    public Task<NetworkSystemRestRep> removeSanZones(URI id, String fabric, SanZonesDeleteParam input) {
+        return postTask(input, PathConstants.SAN_ZONE_URL + "/remove", id, fabric);
+    }
+
+    /**
+     * Updates a SAN zone from the given network system by ID and fabric name.
+     * <p>
+     * API Call: <tt>PUT {@value PathConstants#SAN_ZONE_URL}</tt>
+     *
+     * @param id
+     *        the ID of the network system.
+     * @param fabric
+     *        the name of the fabric.
+     * @param input
+     *        the SAN zones configuration.
+     * @return a task for monitoring the progress of the operation.
+     */
+    public Task<NetworkSystemRestRep> updateSanZones(URI id, String fabric, SanZoneUpdateParams input) {
+        return putTask(input, PathConstants.SAN_ZONE_URL, id, fabric);
+    }
+
+    /**
+     * Activates the current active zoneset of the fabric. This API assumes an
+     * active zoneset already exists. If the active zoneset became empty, this
+     * API deactivates it.
+     * <p>
+     * API Call: <tt>POST {@value PathConstants#SAN_ZONE_URL}/activate</tt>
+     *
+     * @param id
+     *        the ID of the network system.
+     * @param fabric
+     *        the name of the fabric.
+     * @param input
+     *        the SAN zones configuration.
+     * @return a task for monitoring the progress of the operation.
+     */
+    public Task<NetworkSystemRestRep> activateSanZones(URI id, String fabric, SanZones input) {
+        return postTask(input, PathConstants.SAN_ZONE_URL + "/activate", id, fabric);
+    }
+
+    /**
+     * Gets the list of WWN Aliases in the given network system by ID and fabric name.
+     * <p>
+     * API Call: <tt>GET {@value PathConstants#SAN_ALIAS_URL}[?fabric-id={fabric}]</tt>
+     *
+     * @param id
+     *        the ID of the network system.
+     * @param fabric
+     *        the name of the fabric, or {@code null} if there is no fabric.
+     * @return the list of WWN Aliases.
+     */
+    public List<? extends WwnAliasParam> getAliases(URI id, String fabric) {
+        UriBuilder builder = client.uriBuilder(PathConstants.SAN_ALIAS_URL);
+        if (fabric != null) {
+            builder.queryParam("fabric-id", fabric);
+        }
+        WwnAliasesParam response = client.getURI(WwnAliasesParam.class, builder.build(id));
+        return defaultList(response.getAliases());
+    }
+
+    /**
+     * Adds WWN Aliases to the given network system by ID and fabric name.
+     * <p>
+     * API Call: <tt>POST {@value PathConstants#SAN_ALIAS_URL}</tt>
+     *
+     * @param id
+     *        the ID of the network system.
+     * @param input
+     *        the WWN Aliases configuration.
+     * @return a task for monitoring the progress of the operation.
+     */
+    public Task<NetworkSystemRestRep> addAliases(URI id, WwnAliasesCreateParam input) {
+        return postTask(input, PathConstants.SAN_ALIAS_URL, id);
+    }
+
+    /**
+     * Removes WWN Aliases from the given network system by ID.
+     * <p>
+     * API Call: <tt>POST {@value PathConstants#SAN_ALIAS_URL}/remove</tt>
+     *
+     * @param id
+     *        the ID of the network system.
+     * @param input
+     *        the WWN Aliases configuration.
+     * @return a task for monitoring the progress of the operation.
+     */
+    public Task<NetworkSystemRestRep> deleteAliases(URI id, WwnAliasesDeleteParam input) {
+        return postTask(input, PathConstants.SAN_ALIAS_URL + "/remove", id);
+    }
+
+    /**
+     * Updates WWN Aliases from the given network system by ID.
+     * <p>
+     * API Call: <tt>PUT {@value PathConstants#SAN_ALIAS_URL}</tt>
+     *
+     * @param id
+     *        the ID of the network system.
+     * @param input
+     *        the WWN Aliases configuration.
+     * @return a task for monitoring the progress of the operation.
+     */
+    public Task<NetworkSystemRestRep> updateAliases(URI id, WwnAliasUpdateParams input) {
+        return putTask(input, PathConstants.SAN_ALIAS_URL, id);
     }
 }

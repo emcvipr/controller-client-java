@@ -82,6 +82,9 @@ public class ExportUpdateParam {
      */
     @XmlElement(name="volume_changes")
     public VolumeUpdateParam getVolumes() {
+        if (volumes == null) {
+            volumes = new VolumeUpdateParam();
+        }
         return volumes;
     }
 

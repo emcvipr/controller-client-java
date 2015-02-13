@@ -17,11 +17,11 @@ import java.util.List;
 public class Tasks<R> {
     private List<Task<R>> tasks;
 
-    public Tasks(RestClient client, List<TaskResourceRep> tasks, Class<R> resourceClass) {
-        this.tasks = new ArrayList<Task<R>>();
+    public Tasks(RestClient client, List<TaskResourceRep> tasks, Class<? extends R> resourceClass) {
+        this.tasks = new ArrayList<>();
         if (tasks != null) {
             for (TaskResourceRep task : tasks) {
-                this.tasks.add(new Task<R>(client, task, resourceClass));
+                this.tasks.add(new Task<>(client, task, resourceClass));
             }
         }
     }
@@ -84,7 +84,7 @@ public class Tasks<R> {
      * @return This tasks.
      */
     public Tasks<R> waitFor(long timeoutMillis) throws ViPRException {
-        List<TaskResourceRep> taskImpls = new ArrayList<TaskResourceRep>();
+        List<TaskResourceRep> taskImpls = new ArrayList<>();
         for (Task<R> task : tasks) {
             task.doTaskWait(timeoutMillis);
             taskImpls.add(task.getTaskResource());
@@ -123,8 +123,8 @@ public class Tasks<R> {
     }
 
     private List<R> doGetResources() {
-        List<R> resources = new ArrayList<R>();
-        for (Task<R> task: tasks) {
+        List<R> resources = new ArrayList<>();
+        for (Task<R> task : tasks) {
             resources.add(task.doGetResource());
         }
         return resources;

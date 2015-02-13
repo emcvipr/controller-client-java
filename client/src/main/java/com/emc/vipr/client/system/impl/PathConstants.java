@@ -15,6 +15,7 @@ public class PathConstants {
     public static final String PASSWORD_URL = "/password";
     public static final String UPDATE_AUTH_KEY_URL = PASSWORD_URL + "/authorizedkey2";
     public static final String UPDATE_PASSWORD_URL = PASSWORD_URL + "/reset";
+    public static final String VALIDATE_PASSWORD_URL = PASSWORD_URL + "/validate";
     
     public static final String LICENSE_URL = "/license";
 
@@ -35,8 +36,6 @@ public class PathConstants {
     public static final String CONFIG_CONNECT_EMC_FTPS_URL = CONFIG_URL + "/connectemc/ftps";
     public static final String CONFIG_CONNECT_EMC_EMAIL_URL = CONFIG_URL + "/connectemc/email";
     public static final String CONFIG_PROP_RESET_URL = CONFIG_URL + "/properties/reset";
-    public static final String CONFIG_DATA_NODE_URL = CONFIG_URL + "/datanode-config";
-    public static final String CONFIG_EXTRA_NODES_UPGRADE_LOCK_URL = CONFIG_URL + "/extranodes-upgradelock/reset";
     
     public static final String CALLHOME_URL = "/callhome";
     public static final String CALLHOME_REGISTRATION_URL = CALLHOME_URL + "/registration";

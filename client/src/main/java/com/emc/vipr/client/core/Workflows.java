@@ -18,7 +18,7 @@ import com.emc.vipr.client.impl.RestClient;
  * <p>
  * Base URL: <tt>/vdc/workflows</tt>
  */
-public class Workflows extends AbstractResources<WorkflowRestRep> {
+public class Workflows extends AbstractCoreResources<WorkflowRestRep> {
 
     public Workflows(ViPRCoreClient parent, RestClient client) {
         super(parent, client, WorkflowRestRep.class, PathConstants.WORKFLOW_URL);

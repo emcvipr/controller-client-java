@@ -24,7 +24,7 @@ import com.emc.vipr.client.impl.RestClient;
  * 
  * @see MigrationRestRep
  */
-public class BlockMigrations extends AbstractBulkResources<MigrationRestRep> implements
+public class BlockMigrations extends AbstractCoreBulkResources<MigrationRestRep> implements
         TopLevelResources<MigrationRestRep>, TaskResources<MigrationRestRep> {
     public BlockMigrations(ViPRCoreClient parent, RestClient client) {
         super(parent, client, MigrationRestRep.class, PathConstants.MIGRATION_URL);

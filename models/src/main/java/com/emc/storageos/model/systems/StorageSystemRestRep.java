@@ -56,6 +56,7 @@ public class StorageSystemRestRep extends DiscoveredSystemObjectRestRep {
     private Set<String> supportedReplicationTypes;
     private Set<String> remotelyConnectedTo;
     private Boolean hasSRDFActiveRAGroups;
+    private Double averagePortMetrics;
 
     public StorageSystemRestRep() {}
     
@@ -70,7 +71,7 @@ public class StorageSystemRestRep extends DiscoveredSystemObjectRestRep {
     }
 
     @Deprecated
-    @XmlElementWrapper(name = "assocociated_systems")
+    @XmlElementWrapper(name = "associated_systems")
     @XmlElement(name = "associated_system")
     public Set<String> getAssociatedSystems() {
         if (associatedSystems == null) {
@@ -336,4 +337,12 @@ public class StorageSystemRestRep extends DiscoveredSystemObjectRestRep {
         this.hasSRDFActiveRAGroups = hasSRDFRAGroups;
     }
 
+    @XmlElement(name = "average_port_metrics")
+    public Double getAveragePortMetrics() {
+        return averagePortMetrics;
+    }
+
+    public void setAveragePortMetrics(Double averagePortMetrics) {
+        this.averagePortMetrics = averagePortMetrics;
+    }
 }

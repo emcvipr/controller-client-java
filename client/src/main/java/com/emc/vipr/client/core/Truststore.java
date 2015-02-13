@@ -17,10 +17,8 @@ import static com.emc.vipr.client.core.util.ResourceUtils.defaultList;
 import java.util.List;
 
 import com.emc.vipr.client.impl.RestClient;
-import com.emc.vipr.model.keystore.TrustedCertificateChanges;
-import com.emc.vipr.model.keystore.TrustedCertificates;
-import com.emc.vipr.model.keystore.TruststoreSettings;
-import com.emc.vipr.model.keystore.TruststoreSettingsChanges;
+import com.emc.vipr.model.keystore.*;
+
 /**
  * Truststore resource.
  * <p>
@@ -42,7 +40,7 @@ public class Truststore {
      * 
      * @return The list of trusted certificates
      */
-    public List<String> getTrustedCertificates() {
+    public List<TrustedCertificate> getTrustedCertificates() {
         TrustedCertificates response =
                 client.get(TrustedCertificates.class, TRUSTSTORE_URL);
         return defaultList(response.getTrustedCertificates());
@@ -57,7 +55,7 @@ public class Truststore {
      *            trusted certificates changes
      * @return The list of trusted certificates
      */
-    public List<String> updateTrustedCertificate(
+    public List<TrustedCertificate> updateTrustedCertificate(
             TrustedCertificateChanges trustedCertificateChanges) {
         TrustedCertificates response =
                 client.put(TrustedCertificates.class, trustedCertificateChanges,

@@ -3,13 +3,9 @@ package com.emc.vipr.client.system;
 import static com.emc.vipr.client.impl.jersey.ClientUtils.addQueryParam;
 import static com.emc.vipr.client.system.impl.PathConstants.CONFIG_CONNECT_EMC_EMAIL_URL;
 import static com.emc.vipr.client.system.impl.PathConstants.CONFIG_CONNECT_EMC_FTPS_URL;
-import static com.emc.vipr.client.system.impl.PathConstants.CONFIG_DATA_NODE_URL;
-import static com.emc.vipr.client.system.impl.PathConstants.CONFIG_EXTRA_NODES_UPGRADE_LOCK_URL;
 import static com.emc.vipr.client.system.impl.PathConstants.CONFIG_PROPERTIES_URL;
 import static com.emc.vipr.client.system.impl.PathConstants.CONFIG_PROP_METADATA_URL;
 import static com.emc.vipr.client.system.impl.PathConstants.CONFIG_PROP_RESET_URL;
-
-import java.io.InputStream;
 
 import javax.ws.rs.core.UriBuilder;
 
@@ -21,31 +17,43 @@ import com.emc.vipr.client.impl.RestClient;
 import com.emc.vipr.model.sys.ClusterInfo;
 import com.emc.vipr.model.sys.eventhandler.ConnectEmcEmail;
 import com.emc.vipr.model.sys.eventhandler.ConnectEmcFtps;
-import com.sun.jersey.api.client.ClientResponse;
 
 public class Config {
-	
-	private static final String REMOVE_OBSOLETE_PARAM = "removeObsolete";
-	private static final String REMOVE_OBSOLETE = "1";
-	
-	private RestClient client;
-	
-	private enum UserScopeType {GLOBAL, NAMESPACE};
-	
-	public Config(RestClient client) {
+    private static final String PROPERTY_CATEGORY = "category";
+    private static final String REMOVE_OBSOLETE_PARAM = "removeObsolete";
+    private static final String REMOVE_OBSOLETE = "1";
+
+    private RestClient client;
+
+    public Config(RestClient client) {
         this.client = client;
+    }	
+
+    /**
+     * Get system configuration properties.
+     * <p>
+     * API Call: GET /config/properties
+     * 
+     * @return Property information
+     */
+    public PropertyInfoRestRep getProperties() {
+        return getProperties(null);
     }
-	
-	/**
-	 * Get system configuration properties.
-	 * <p>
-	 * API Call: GET /config/properties
-	 * 
-	 * @return Property information
-	 */
-	public PropertyInfoRestRep getProperties() {
-		return client.get(PropertyInfoRestRep.class, CONFIG_PROPERTIES_URL);
-	}
+
+    /**
+     * Get system configuration properties.
+     * <p>
+     * API Call: GET /config/properties[?category={category}]
+     * 
+     * @return Property information
+     */
+    public PropertyInfoRestRep getProperties(String category) {
+        UriBuilder builder = client.uriBuilder(CONFIG_PROPERTIES_URL);
+        if ((category != null) && !category.isEmpty()) {
+            addQueryParam(builder, PROPERTY_CATEGORY, category);
+        }
+        return client.getURI(PropertyInfoRestRep.class, builder.build());
+    }
 	
 	/**
 	 * Update system configuration properties
@@ -123,31 +131,4 @@ public class Config {
 	public ClusterInfo resetProps(PropertyList propertyList) {
 		return resetProps(propertyList, true);
 	}
-	
-	/**
-	 * Get ISO9660 image with one file (under root directory) having system properties 
-	 * that are visible on all nodes (includes control& object). This is required for 
-	 * data service VM deployment.
-	 * <p>
-	 * API Call: GET /config/datanode-config
-	 * 
-	 * @return The ISO image byte stream with 48KB size.
-	 */
-	public InputStream getVisiblePropertiesISO() {
-		ClientResponse response = client.get(ClientResponse.class, CONFIG_DATA_NODE_URL);
-		return response.getEntityInputStream();
-	}
-	
-	/**
-	 * Reset extra nodes' upgrade lock After starting reboot, an extra node will hold 
-	 * the upgrade lock until the node comes back again. If it doesn't come back in a 
-	 * long time, we have to release the lock. Otherwise, the cluster state will be 
-	 * shown as 'DEGRADED', which prevents us from doing any other operations.
-	 * <p>
-	 * API Call: POST /config/extranodes-upgradelock/reset
-	 */
-	public void resetExtraNodesUpgradeLock() {
-		client.post(String.class, CONFIG_EXTRA_NODES_UPGRADE_LOCK_URL);
-	}
-	
 }

@@ -3,13 +3,10 @@ package com.emc.vipr.client.core;
 import static com.emc.vipr.client.core.util.ResourceUtils.defaultList;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.emc.storageos.model.BulkIdParam;
 import com.emc.storageos.model.NamedRelatedResourceRep;
-import com.emc.storageos.model.smis.SMISProviderBulkRep;
-import com.emc.storageos.model.smis.SMISProviderRestRep;
 import com.emc.storageos.model.smis.StorageProviderBulkRep;
 import com.emc.storageos.model.smis.StorageProviderCreateParam;
 import com.emc.storageos.model.smis.StorageProviderList;
@@ -30,7 +27,7 @@ import com.emc.vipr.client.impl.RestClient;
  * <p>
  * Base URL: <tt>/vdc/storage-providers</tt>
  */
-public class StorageProviders extends AbstractBulkResources<StorageProviderRestRep> implements
+public class StorageProviders extends AbstractCoreBulkResources<StorageProviderRestRep> implements
         TopLevelResources<StorageProviderRestRep>, TaskResources<StorageProviderRestRep> {
     public StorageProviders(ViPRCoreClient parent, RestClient client) {
         super(parent, client, StorageProviderRestRep.class, PathConstants.STORAGE_PROVIDER_URL);

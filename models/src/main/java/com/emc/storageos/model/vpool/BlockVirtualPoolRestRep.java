@@ -11,14 +11,12 @@
 
 package com.emc.storageos.model.vpool;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.codehaus.jackson.annotate.JsonProperty;
-
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @XmlRootElement(name = "block_vpool")
 public class BlockVirtualPoolRestRep extends VirtualPoolCommonRestRep {
@@ -35,6 +33,10 @@ public class BlockVirtualPoolRestRep extends VirtualPoolCommonRestRep {
     private Integer maxPaths;
     private Integer minPaths;
     private Integer pathsPerInitiator;
+    
+    // VMAX Host IO Limits attributes
+    private Integer hostIOLimitBandwidth; // Host Front End limit bandwidth.  If not specified or 0, indicated unlimited
+    private Integer hostIOLimitIOPs; // Host Front End limit I/O.  If not specified or 0, indicated unlimited    
 
     public BlockVirtualPoolRestRep() {}
     
@@ -267,5 +269,23 @@ public class BlockVirtualPoolRestRep extends VirtualPoolCommonRestRep {
     public void setPathsPerInitiator(Integer pathsPerInitiator) {
         this.pathsPerInitiator = pathsPerInitiator;
     }
+    
+    @XmlElement(name = "host_io_limit_bandwidth", required = false)
+    public Integer getHostIOLimitBandwidth() {
+        return hostIOLimitBandwidth;
+    }
+
+    public void setHostIOLimitBandwidth(Integer hostIOLimitBandwidth) {
+        this.hostIOLimitBandwidth = hostIOLimitBandwidth;
+    }
+
+    @XmlElement(name = "host_io_limit_iops", required = false)
+    public Integer getHostIOLimitIOPs() {
+        return hostIOLimitIOPs;
+    }
+
+    public void setHostIOLimitIOPs(Integer hostIOLimitIOPs) {
+        this.hostIOLimitIOPs = hostIOLimitIOPs;
+    }    
 }
 

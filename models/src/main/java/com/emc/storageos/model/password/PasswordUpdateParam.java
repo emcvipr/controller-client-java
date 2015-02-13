@@ -18,10 +18,20 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 @XmlRootElement(name = "password_update")
 public class PasswordUpdateParam {
-	
+
+    private String oldPassword;
 	private String password;
 	private String encpassword;
-	
+
+    @XmlElement(name = "old_password")
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
+    }
+
 	@XmlElement(name = "password")
 	public String getPassword() {
 		return password;

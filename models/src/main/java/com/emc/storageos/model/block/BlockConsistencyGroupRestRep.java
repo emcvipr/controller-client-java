@@ -2,7 +2,9 @@ package com.emc.storageos.model.block;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -12,6 +14,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.emc.storageos.model.DataObjectRestRep;
 import com.emc.storageos.model.RelatedResourceRep;
+import com.emc.storageos.model.adapters.StringSetMapAdapter;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 @XmlAccessorType(XmlAccessType.PROPERTY)
@@ -22,14 +26,16 @@ public class BlockConsistencyGroupRestRep extends DataObjectRestRep {
     private RelatedResourceRep storageController;
     private RelatedResourceRep project;
     private RelatedResourceRep virtualArray;
-    private String deviceName;
-    private String type;
+    private Set<String> types;
     private String linkStatus;
-    
+
     // RecoverPoint fields
     private URI rpProtectionSystem;
     private String rpConsistenyGroupId;
 
+    // VPlex fields
+    private List<StringSetMapAdapter.Entry> systemConsistencyGroups;
+    
     /**
      * Related storage controller
      *
@@ -90,35 +96,39 @@ public class BlockConsistencyGroupRestRep extends DataObjectRestRep {
     public void setVolumes(List<RelatedResourceRep> volumes) {
         this.volumes = volumes;
     }
-
+    
     /**
-     * The device name for the block consistency group
+     * The mapping of protection systems/storage systems to consistency groups that
+     * are mapped to by the BlockConsistencyGroup.
      *
      * @valid none
      */
-    @XmlElement(name = "device_name")
-    public String getDeviceName(){ 
-        return deviceName; 
+    @XmlElement(name = "system_consistency_groups")
+    public List<StringSetMapAdapter.Entry> getSystemConsistencyGroups(){ 
+        return systemConsistencyGroups; 
     }
     
-    public void setDeviceName(String deviceName) { 
-        this.deviceName = deviceName;
-    }
+    public void setSystemConsistencyGroups(List<StringSetMapAdapter.Entry> systemConsistencyGroups) { 
+        this.systemConsistencyGroups = systemConsistencyGroups;
+    }    
     
     /**
-     * The type of block consistency group
+     * The types of the block consistency group
      *
      * @valid none
      */
-    @XmlElement(name = "type")
-    public String getType(){ 
-        return type; 
+    @XmlElement(name = "types")
+    public Set<String> getTypes(){ 
+        if (types == null) {
+            types = new HashSet<String>();
+        }
+        return types;
     }
     
-    public void setType(String type) { 
-        this.type = type;
+    public void setTypes(Set<String> types) { 
+        this.types = types;
     }
-
+    
     /**
      * The RecoverPoint protection system.  Applies only to CGs of type RP.
      *
