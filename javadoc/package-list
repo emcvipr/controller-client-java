@@ -20,12 +20,14 @@ com.emc.storageos.model.project
 com.emc.storageos.model.property
 com.emc.storageos.model.protection
 com.emc.storageos.model.quota
+com.emc.storageos.model.rdfgroup
 com.emc.storageos.model.search
 com.emc.storageos.model.smis
 com.emc.storageos.model.systems
 com.emc.storageos.model.tasks
 com.emc.storageos.model.tenant
 com.emc.storageos.model.user
+com.emc.storageos.model.usergroup
 com.emc.storageos.model.valid
 com.emc.storageos.model.varray
 com.emc.storageos.model.vdc
@@ -47,5 +49,7 @@ com.emc.vipr.model.sys
 com.emc.vipr.model.sys.backup
 com.emc.vipr.model.sys.eventhandler
 com.emc.vipr.model.sys.healthmonitor
+com.emc.vipr.model.sys.ipreconfig
 com.emc.vipr.model.sys.licensing
 com.emc.vipr.model.sys.logging
+com.emc.vipr.model.sys.recovery
