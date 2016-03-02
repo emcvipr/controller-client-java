@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 /**
  *  Copyright (c) 2008-2011 EMC Corporation
  * All Rights Reserved
@@ -45,6 +49,9 @@ public enum ResourceOperationTypeEnum {
     DELETE_BLOCK_VOLUME     ("DELETE VOLUME",           "delete operation"),
     EXPAND_BLOCK_VOLUME     ("EXPAND VOLUME",           "expand volume operation"),
     IMPORT_BLOCK_VOLUME     ("IMPORT BLOCK VOLULME",    "import block volume"),
+    INGEST_VOLUMES          ("INGEST VOLUMES",  "ingest volumes"),
+    INGEST_EXPORTED_BLOCK_OBJECTS   ("INGEST EXPORTED BLOCK OBJECTS",  "ingest exported block objects"),
+    INGEST_EXPORT_MASKS   ("INGEST EXPORT MASKS",  "ingest export masks"),
     MIGRATE_BLOCK_VOLUME    ("MIGRATE VOLUME",          "migrate volume operation"),
     MIGRATE_EXPAND_BLOCK_VOLUME    ("MIGRATE EXPAND VOLUME",          "migrate volume for expansion"),
     COMMIT_VOLUME_MIGRATION            ("COMMIT VOLUME MIGRATION",        "commit volume migration"),
@@ -57,6 +64,9 @@ public enum ResourceOperationTypeEnum {
     CREATE_VOLUME_FULL_COPY ("CREATE VOLUME FULL COPY", "create a volume full copy"),
     ACTIVATE_VOLUME_FULL_COPY ("ACTIVATE VOLUME FULL COPY", "activate a volume full copy"),
     DETACH_VOLUME_FULL_COPY ("DETACH VOLUME FULL COPY", "detach a volume full copy"),
+    RESTORE_VOLUME_FULL_COPY ("RESTORE VOLUME FULL COPY", "restore a volume from a full copy"),
+    RESYNCHRONIZE_VOLUME_FULL_COPY ("RESYNCHRONIZE VOLUME FULL COPY", "resynchronize a full copy from its source"),
+    ESTABLISH_VOLUME_FULL_COPY ("ESTABLISH VOLUME FULL COPY GROUP", "establish group relation between volume group and full copy group"),
     CREATE_VOLUME_SNAPSHOT  ("CREATE VOLUME SNAPSHOT",  "create a volume snapshot"),
     ASSIGN_VOLUME_TAG       ("ASSIGN VOLUME TAG",       "tag a volume"),
     DELETE_VOLUME_SNAPSHOT  ("DELETE VOLUME SNAPSHOT",  "delete volume snapshot"),
@@ -83,6 +93,10 @@ public enum ResourceOperationTypeEnum {
     EXPAND_FILE_SYSTEM         ("EXPAND FILESYSTEM",     "expand filesystem operation"),
     CREATE_FILE_SYSTEM_SHARE   ("CREATE FILESHARE",      "create fileshare operation"),
     CREATE_FILE_SYSTEM_SNAPSHOT("SNAPSHOT FILESYSTEM",   "snapshot filesystem"),
+    UPDATE_FILE_SYSTEM_SHARE_ACL  ("UPDATE CIFS SHARE ACL",    "update filesystem share ACLs"),
+    UPDATE_FILE_SNAPSHOT_SHARE_ACL  ("UPDATE CIFS SHARE SNAPSHOT ACL", "update snapshot share ACLs"),
+    DELETE_FILE_SYSTEM_SHARE_ACL  ("DELETE FILESYSTEM SHARE ACL",    "delete filesystem share ACLs"),
+    DELETE_FILE_SNAPSHOT_SHARE_ACL  ("DELETE SNAPSHOT SHARE ACL", "delete snapshot share ACLs"),
     CREATE_FILE_SYSTEM_QUOTA_DIR   ("CREATE FILESYSTEM QUOTA DIR",   "create filesystem quota directory"),
     DELETE_FILE_SYSTEM_QUOTA_DIR  ("DELETE FILESYSTEM QUOTA DIR",   "delete filesystem quota directory"),
     UPDATE_FILE_SYSTEM_QUOTA_DIR   ("UPDATE FILESYSTEM QUOTA DIR",   "update filesystem quota directory"),
@@ -97,7 +111,7 @@ public enum ResourceOperationTypeEnum {
     ASSIGN_FILE_SNAPSHOT_TAG   ("TAG A FILESYSTEM SNAPSHOT",    "tag a fileshare snapshot"),
     UNEXPORT_FILE_SNAPSHOT     ("UNEXPORT FILESYSTEM SNAPSHOT", "unexport fileshare snapshot"),
     DELETE_FILE_SNAPSHOT_SHARE ("DELETE FILESHARE SNAPSHOT",    "delete fileshare snapshot"),
-    RESTORE_FILE_SNAPSHOT      ("RESTORE FILE SANPSHOT",        "restore fileshare snapshot"),
+    RESTORE_FILE_SNAPSHOT      ("RESTORE FILE SNAPSHOT",        "restore fileshare snapshot"),
     CREATE_KEYPOOL             ("CREATE KEYPOOL",     "create keypool operation"),
     DELETE_KEYPOOL             ("DELETE KEYPOOL",     "delete keypool operation"),
     UPDATE_KEYPOOL_ACCESSMODE  ("UPDATE KEYPOOL",     "update keypool operation"),
@@ -179,6 +193,7 @@ public enum ResourceOperationTypeEnum {
     PERFORM_PROTECTION_ACTION_PAUSE                ("PERFORM PROTECTION ACTION PAUSE",                "pause the replication link between source and target"),
     PERFORM_PROTECTION_ACTION_SUSPEND               ("PERFORM PROTECTION ACTION SUSPEND",               "suspend the replication link between source and target"),
     PERFORM_PROTECTION_ACTION_RESUME               ("PERFORM PROTECTION ACTION RESUME",               "resume the replication link between source and target"),
+    PERFORM_PROTECTION_ACTION_CHANGE_COPY_MODE     ("PERFORM PROTECTION ACTION CHANGE COPY MODE",     "change copy mode for the replication link between source and target"),
     CREATE_AUTHPROVIDER        ("CREATE AUTH PROVIDER",     "create an authentication provider"),
     UPDATE_AUTHPROVIDER        ("UPDATE AUTH PROVIDER",     "update an authentication provider"),
     DELETE_AUTHPROVIDER        ("DELETE AUTH PROVIDER",     "delete an authentication provider"),
@@ -199,6 +214,7 @@ public enum ResourceOperationTypeEnum {
     CHANGE_LOCAL_AUTHUSER_AUTHKEY   ("CHANGE LOCAL AUTHUSER AUTHKEY",   "change local authuser authkey"),
     FRACTURE_VOLUME_MIRROR          ("FRACTURE VOLUME MIRROR",          "fracture a volume mirror"),
     RESUME_VOLUME_MIRROR            ("RESUME VOLUME MIRROR",            "resume a volume mirror"),
+    ESTABLISH_VOLUME_MIRROR         ("ESTABLISH VOLUME MIRROR GROUP",   "establish group relation between volume group and mirror group"),
     DEACTIVATE_VOLUME_MIRROR        ("DEACTIVATE VOLUME MIRROR",        "deactivate a volume mirror"),
     DISCOVER_HOST                   ("DISCOVER HOST",                   "discover a compute host"),
 	CREATE_HOST                     ("CREATE HOST",                     "create a compute host"),

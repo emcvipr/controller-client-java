@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 /**
  *  Copyright (c) 2008-2013 EMC Corporation
  * All Rights Reserved
@@ -67,6 +71,11 @@ public class UnManagedVolumeRestRep extends DataObjectRestRep {
      * List of storage port URIs associated with this UnManagedVolume.
      */
     private List<String> storagePortUris;
+    
+    /**
+     * List of supported VPool URIs associated with this UnManagedVolume.
+     */
+    private List<String> supportedVPoolUris;
     
     /**
      * The storage system to which this volume belongs. 
@@ -183,6 +192,19 @@ public class UnManagedVolumeRestRep extends DataObjectRestRep {
 
     public void setStoragePortUris(List<String> storagePortUris) {
         this.storagePortUris = storagePortUris;
+    }
+
+    @XmlElementWrapper(name = "supported_virtual_pools")
+    @XmlElement(name = "virtual_pool")
+    public List<String> getSupportedVPoolUris() {
+        if (supportedVPoolUris == null) {
+            supportedVPoolUris = new ArrayList<String>();
+        }
+        return supportedVPoolUris;
+    }
+
+    public void setSupportedVPoolUris(List<String> supportedVPoolUris) {
+        this.supportedVPoolUris = supportedVPoolUris;
     }
 
 }

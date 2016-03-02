@@ -1,10 +1,20 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.storageos.model.vpool;
+
+import java.net.URI;
 
 import javax.xml.bind.annotation.XmlElement;
 
 public class ProtectionSourcePolicy {
     
     private String journalSize;
+    private URI journalVarray;
+    private URI journalVpool;
+    private URI standbyJournalVarray;
+    private URI standbyJournalVpool;
     private String remoteCopyMode;
     private Long rpoValue;
     private String rpoType;
@@ -31,6 +41,62 @@ public class ProtectionSourcePolicy {
     public void setJournalSize(String journalSize) {
         this.journalSize = journalSize;
     }
+    
+    /**
+     * The journal virtual array for a protection source/active source.
+     * 
+     * @valid none
+     */
+    @XmlElement(name = "journal_varray", required = false)
+    public URI getJournalVarray() {
+		return journalVarray;
+	}
+
+	public void setJournalVarray(URI journalVarray) {
+		this.journalVarray = journalVarray;
+	}
+
+	  /**
+     * The journal virtual pool for a protection source/active source.
+     * 
+     * @valid none
+     */
+	@XmlElement(name = "journal_vpool", required = false)
+	public URI getJournalVpool() {
+		return journalVpool;
+	}
+
+	public void setJournalVpool(URI journalVpool) {
+		this.journalVpool = journalVpool;
+	}
+
+	  /**
+     * The journal virtual array for stand-by source.
+     * 
+     * @valid none
+     */
+	@XmlElement(name = "standby_journal_varray", required = false)
+	public URI getStandbyJournalVarray() {
+		return standbyJournalVarray;
+	}
+
+	public void setStandbyJournalVarray(URI standbyJournalVarray) {
+		this.standbyJournalVarray = standbyJournalVarray;
+	}
+
+	  /**
+     * The journal virtual pool for stand-by source.
+     * 
+     * @valid none
+     */
+	@XmlElement(name = "standby_journal_vpool", required = false)
+	public URI getStandbyJournalVpool() {
+		return standbyJournalVpool;
+	}
+
+	public void setStandbyJournalVpool(URI standbyJournalVpool) {
+		this.standbyJournalVpool = standbyJournalVpool;
+	}
 
     /**
      * The remote copy mode, sync or async
@@ -82,6 +148,4 @@ public class ProtectionSourcePolicy {
 	public void setRpoType(String rpoType) {
 		this.rpoType = rpoType;
 	}
-
-    
 }

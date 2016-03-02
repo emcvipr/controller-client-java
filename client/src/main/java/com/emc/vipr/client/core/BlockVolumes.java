@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.vipr.client.core;
 
 import static com.emc.vipr.client.core.util.ResourceUtils.defaultList;
@@ -33,6 +37,7 @@ import com.emc.storageos.model.block.VolumeVirtualArrayChangeParam;
 import com.emc.storageos.model.block.VolumeVirtualPoolChangeParam;
 import com.emc.storageos.model.block.export.ExportBlockParam;
 import com.emc.storageos.model.block.export.ExportGroupRestRep;
+import com.emc.storageos.model.block.export.ITLBulkRep;
 import com.emc.storageos.model.block.export.ITLRestRep;
 import com.emc.storageos.model.block.export.ITLRestRepList;
 import com.emc.storageos.model.protection.ProtectionSetRestRep;
@@ -250,6 +255,20 @@ public class BlockVolumes extends ProjectResources<VolumeRestRep> implements Tas
     public List<ITLRestRep> getExports(URI id) {
         ITLRestRepList response = client.get(ITLRestRepList.class, getIdUrl() + "/exports", id);
         return defaultList(response.getExportList());
+    }
+    
+    /**
+     * Gets the exports for a list of volumes.
+     * <p>
+     * API Call: <tt>POST /block/volumes/exports/bulk</tt>
+     * 
+     * @param ids
+     *      the IDs of the block volumes.
+     *      
+     * @return the list of exports.
+     */
+    public ITLBulkRep getExports(BulkIdParam ids) {
+        return client.post(ITLBulkRep.class, ids, baseUrl + "/exports/bulk");
     }
 
     /**
@@ -510,6 +529,7 @@ public class BlockVolumes extends ProjectResources<VolumeRestRep> implements Tas
      *        the ID of the full copy to activate.
      * @return a task for monitoring the progress of the operation.
      */
+    @Deprecated
     public Task<VolumeRestRep> activateFullCopy(URI id, URI copyId) {
         return postTask(getFullCopyUrl() + "/{copyId}/activate", id, copyId);
     }
@@ -525,6 +545,7 @@ public class BlockVolumes extends ProjectResources<VolumeRestRep> implements Tas
      *        the ID of the full copy to detach.
      * @return a task for monitoring the progress of the operation.
      */
+    @Deprecated
     public Task<VolumeRestRep> detachFullCopy(URI id, URI copyId) {
         return postTask(getFullCopyUrl() + "/{copyId}/detach", id, copyId);
     }
@@ -543,6 +564,7 @@ public class BlockVolumes extends ProjectResources<VolumeRestRep> implements Tas
      * 
      * @see VolumeRestRep.FullCopyRestRep#getPercentSynced()
      */
+    @Deprecated
     public VolumeRestRep checkFullCopyProgress(URI id, URI copyId) {
         return client.post(VolumeRestRep.class, getFullCopyUrl() + "/{copyId}/check-progress", id, copyId);
     }
@@ -600,6 +622,40 @@ public class BlockVolumes extends ProjectResources<VolumeRestRep> implements Tas
     public Tasks<VolumeRestRep> failoverTestCancel(URI id, CopiesParam input) {
         return postTasks(input, getContinuousCopiesUrl() + "/failover-test-cancel", id);
     }
+    
+    /**
+     * Begins canceling a previously initiated failover for the given block volume.
+     * <p>
+     * API Call: <tt>POST /block/volumes/{id}/protection/continuous-copies/failover-cancel</tt>
+     * 
+     * @param id
+     *        the ID of the block volume.
+     * @param input
+     *        the input configuration.
+     * @return a task for monitoring the progress of the operation.
+     * 
+     * @see #failoverTest(URI, CopiesParam)
+     * 
+     */
+    public Tasks<VolumeRestRep> failoverCancel(URI id, CopiesParam input) {
+        return postTasks(input, getContinuousCopiesUrl() + "/failover-cancel", id);
+    }
+ 
+    /**
+     * Sync continuous copies.
+     * <p>
+     * API Call: <tt>POST /block/volumes/{id}/protection/continuous-copies/sync</tt>
+     * 
+     * @param id
+     *        the ID of the block volume.
+     * @param input
+     *        the input configuration.
+     * @return a task for monitoring the progress of the operation.
+     */
+    public Tasks<VolumeRestRep> syncContinuousCopies(URI id, CopiesParam input) {
+        return postTasks(input, getContinuousCopiesUrl() + "/sync", id);
+    }
+    
 
     /**
      * Gets a protection set for the given block volume.

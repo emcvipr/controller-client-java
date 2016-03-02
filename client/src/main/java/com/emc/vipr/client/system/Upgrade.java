@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.vipr.client.system;
 
 import static com.emc.vipr.client.impl.jersey.ClientUtils.addQueryParam;
@@ -113,13 +117,13 @@ public class Upgrade {
      * API Call: PUT /upgrade/target-version
      * 
      * @param version The new version number
-     * @param skipGeoPrecheck If true, skips all multi-VDC pre-checks.
+     * @param doGeoPrecheck If false, skips all multi-VDC pre-checks.
      * @return The cluster information
      */
-    public ClusterInfo setTargetVersion(String version, boolean skipGeoPrecheck) {
+    public ClusterInfo setTargetVersion(String version, boolean doGeoPrecheck) {
     	UriBuilder builder = client.uriBuilder(TARGET_VERSION_URL);
     	addQueryParam(builder, VERSION_PARAM, version);
-    	if (!skipGeoPrecheck) {
+    	if (!doGeoPrecheck) {
     	    addQueryParam(builder, FORCE_PARAM, FORCE);
     	}
     	return client.putURI(ClusterInfo.class, null, builder.build());	

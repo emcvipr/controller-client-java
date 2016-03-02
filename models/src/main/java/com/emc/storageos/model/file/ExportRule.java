@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.storageos.model.file;
 
 import java.io.Serializable;
@@ -29,6 +33,7 @@ public class ExportRule implements Serializable {
 	private Set<String> rootHosts;
     private String deviceExportId;
     private String mountPoint;
+    private String comments;
     
 	// Not a part of payload model attributes - for internal use only.
 	private boolean isToProceed = false;
@@ -154,6 +159,16 @@ public class ExportRule implements Serializable {
     public void setDeviceExportId(String deviceExportId){
             this.deviceExportId = deviceExportId;
     }
+   
+    
+    @XmlElement(name="comments" , required = false)
+    public String getComments() {
+		return comments;
+	}
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
 
     @Override
 	public String toString() {

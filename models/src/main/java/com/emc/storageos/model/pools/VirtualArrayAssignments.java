@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 /**
  *  Copyright (c) 2008-2013 EMC Corporation
  * All Rights Reserved
@@ -10,12 +14,12 @@
  */
 package com.emc.storageos.model.pools;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
 
-import java.util.HashSet;
-import java.util.Set;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * Class captures a list of URIs for the virtual arrays assigned to the

@@ -1,5 +1,10 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.vipr.client.core;
 
+import static com.emc.vipr.client.core.impl.SearchConstants.VALIDATE_CONNECTION_PARAM;
 import static com.emc.vipr.client.core.util.ResourceUtils.defaultList;
 
 import java.net.URI;
@@ -7,19 +12,25 @@ import java.util.List;
 
 import com.emc.storageos.model.BulkIdParam;
 import com.emc.storageos.model.NamedRelatedResourceRep;
+import com.emc.storageos.model.TaskResourceRep;
 import com.emc.storageos.model.auth.RoleAssignmentChanges;
 import com.emc.storageos.model.auth.RoleAssignmentEntry;
 import com.emc.storageos.model.auth.RoleAssignments;
+import com.emc.storageos.model.host.HostCreateParam;
+import com.emc.storageos.model.host.HostRestRep;
 import com.emc.storageos.model.quota.QuotaInfo;
 import com.emc.storageos.model.quota.QuotaUpdateParam;
 import com.emc.storageos.model.tenant.*;
 
 import static com.emc.vipr.client.core.impl.PathConstants.*;
 
+import com.emc.vipr.client.Task;
 import com.emc.vipr.client.ViPRCoreClient;
 import com.emc.vipr.client.core.filters.ResourceFilter;
 import com.emc.vipr.client.impl.RestClient;
 import com.emc.vipr.client.core.util.ResourceUtils;
+
+import javax.ws.rs.core.UriBuilder;
 
 /**
  * Tenants resources.
@@ -94,6 +105,30 @@ public class Tenants extends AbstractCoreBulkResources<TenantOrgRestRep> impleme
      */
     public TenantOrgRestRep create(URI parentTenantId, TenantCreateParam input) {
         return client.post(TenantOrgRestRep.class, input, SUBTENANTS_URL, parentTenantId);
+    }
+
+    /**
+     * Creates a host within the given tenant.
+     * <p>
+     * API Call: <tt>POST /tenants/{tenantId}/hosts</tt>
+     *
+     * @param tenantId
+     *        the ID of the tenant.
+     * @param input
+     *        the create configuration.
+     * @return a task for monitoring the progress of the operation.
+     */
+    public Task<HostRestRep> createHost(URI tenantId, HostCreateParam input) {
+        return createHost(tenantId, input, false);
+    }
+
+    public Task<HostRestRep> createHost(URI tenantId, HostCreateParam input, boolean validateConnection) {
+        UriBuilder uriBuilder = client.uriBuilder(HOST_BY_TENANT_URL);
+        if (validateConnection) {
+            uriBuilder.queryParam(VALIDATE_CONNECTION_PARAM, Boolean.TRUE);
+        }
+        TaskResourceRep task = client.postURI(TaskResourceRep.class, input, uriBuilder.build(tenantId));
+        return new Task<HostRestRep>(client, task, HostRestRep.class);
     }
 
     /**

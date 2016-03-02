@@ -1,23 +1,25 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.vipr.client.core;
-
-import static com.emc.vipr.client.core.util.ResourceUtils.defaultList;
-
-import java.net.URI;
-import java.util.List;
 
 import com.emc.storageos.model.NamedRelatedResourceRep;
 import com.emc.storageos.model.TaskResourceRep;
-import com.emc.storageos.model.vdc.VirtualDataCenterAddParam;
-import com.emc.storageos.model.vdc.VirtualDataCenterList;
-import com.emc.storageos.model.vdc.VirtualDataCenterModifyParam;
-import com.emc.storageos.model.vdc.VirtualDataCenterRestRep;
-import com.emc.storageos.model.vdc.VirtualDataCenterSecretKeyRestRep;
-import com.emc.vipr.client.Tasks;
+import com.emc.storageos.model.vdc.*;
 import com.emc.vipr.client.Task;
+import com.emc.vipr.client.Tasks;
 import com.emc.vipr.client.ViPRCoreClient;
 import com.emc.vipr.client.core.filters.ResourceFilter;
 import com.emc.vipr.client.core.impl.PathConstants;
 import com.emc.vipr.client.impl.RestClient;
+import com.sun.jersey.api.client.ClientResponse;
+
+import java.net.URI;
+import java.util.List;
+import java.util.Properties;
+
+import static com.emc.vipr.client.core.util.ResourceUtils.defaultList;
 
 /**
  * VDC resources.
@@ -25,6 +27,7 @@ import com.emc.vipr.client.impl.RestClient;
  * Base URL: <tt>/vdc</tt>
  */
 public class VirtualDataCenters extends AbstractCoreResources<VirtualDataCenterRestRep> implements TopLevelResources<VirtualDataCenterRestRep> {
+    private static final String EXPECTED_VERSION_QUERY_PARAM = "expect_version";
     public VirtualDataCenters(ViPRCoreClient parent, RestClient client) {
         super(parent, client, VirtualDataCenterRestRep.class, PathConstants.VDC_URL);
     }
@@ -151,5 +154,39 @@ public class VirtualDataCenters extends AbstractCoreResources<VirtualDataCenterR
     
     public Tasks<VirtualDataCenterRestRep> getTasks(URI id) {
         return doGetTasks(id);
+    }
+
+    /**
+     * A VDC compatibility check to see of all the VDCs in the federation are in the
+     * minimum expected version or not. This can be used in the UI to restrict a
+     * view of a feature.
+     * *
+     * API Call: <tt>GET /vdc/check-compatibility?expect_version={expectedVersion}
+     *
+     * @param expectedVersion minimum expected version of all the VDCs in the federation.
+     *
+     * @return true if the all the VDCs are in equal or higher version of the expectedVersion
+     * otherwise false.
+     */
+    public boolean isCompatibleVDCVersion (String expectedVersion) {
+        Properties queryParams = new Properties();
+        queryParams.put(EXPECTED_VERSION_QUERY_PARAM, expectedVersion);
+
+        ClientResponse resp = client.get(ClientResponse.class, PathConstants.CHECK_COMPATIBLE_VDC_URL, queryParams);
+        return Boolean.parseBoolean(resp.getEntity(String.class));
+    }
+    
+    /**
+     * A check to see if the setup is geo-distributed multi-vdc setup.
+     * This can be used in the UI to restrict a view of a feature.
+     * *
+     * API Call: <tt>GET /vdc/check-geo-distributed
+     *
+     * @return true if the setup is geo-distributed/multi-vdc setup
+     * otherwise false.
+     */
+    public boolean isGeoSetup () {
+        ClientResponse resp = client.get(ClientResponse.class, PathConstants.CHECK_IS_GEO_DISTRIBUTED_VDC_URL);
+        return Boolean.parseBoolean(resp.getEntity(String.class));
     }
 }

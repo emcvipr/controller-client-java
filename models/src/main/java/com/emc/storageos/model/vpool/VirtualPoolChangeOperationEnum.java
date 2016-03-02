@@ -1,5 +1,9 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 /**
- *  Copyright (c) 2008-2013 EMC Corporation
+ * Copyright (c) 2008-2013 EMC Corporation
  * All Rights Reserved
  *
  * This software contains the intellectual property of EMC Corporation
@@ -16,7 +20,7 @@ public enum VirtualPoolChangeOperationEnum {
     VPLEX_DATA_MIGRATION("Migrate data from one or more volumes to new virtual pool"), 
     NON_VPLEX_TO_VPLEX("Change one or more volumes from non-VPLEX to a local or distributed virtual pool"), 
     RP_PROTECTED("Change one or more volumes to include RecoverPoint protection"), 
-    SRDF_PROTECED("Change one or more volumes to include SRDF protection"), 
+    RP_PROTECTED_CHANGE("Change one or more volumes already protected by RecoverPoint to different RecoverPoint protection settings/setup"),    SRDF_PROTECED("Change one or more volumes to include SRDF protection"), 
     ADD_MIRRORS("Change one or more volumes to include continuous copies protection"), 
     EXPORT_PATH_PARAMS("Change one or more volumes' path paramters"),
     AUTO_TIERING_POLICY("Change one or more volumes' Auto-tiering policy");
@@ -31,5 +35,4 @@ public enum VirtualPoolChangeOperationEnum {
     public String toString() {
         return description;
     }
-
 }

@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.vipr.client.system.impl;
 
 public class PathConstants {
@@ -16,7 +20,8 @@ public class PathConstants {
     public static final String UPDATE_AUTH_KEY_URL = PASSWORD_URL + "/authorizedkey2";
     public static final String UPDATE_PASSWORD_URL = PASSWORD_URL + "/reset";
     public static final String VALIDATE_PASSWORD_URL = PASSWORD_URL + "/validate";
-    
+    public static final String VALIDATE_PASSWORD_UPDATE_URL = PASSWORD_URL + "/validate-update";
+
     public static final String LICENSE_URL = "/license";
 
     public static final String MONITOR_URL = "/monitor";
@@ -29,6 +34,11 @@ public class PathConstants {
     public static final String CONTROL_RESTART_URL = CONTROL_URL + "/service/restart";
     public static final String CONTROL_REBOOT_NODE_URL = CONTROL_URL + "/node/reboot";
     public static final String CONTROL_POWER_OFF_CLUSTER_URL = CONTROL_URL + "/cluster/poweroff";
+    public static final String CLUSTER_NODE_RECOVERY_URL = CONTROL_URL + "/cluster/recovery";
+    public static final String CLUSER_IP_INFO_URL = CONTROL_URL + "/cluster/ipinfo";
+    public static final String CLUSER_IP_RECONFIG_URL = CONTROL_URL + "/cluster/ipreconfig";
+    public static final String CLUSER_IP_RECONFIG_STATUS_URL = CONTROL_URL + "/cluster/ipreconfig_status";
+    public static final String CLUSTER_DB_HEALTH_STATUS_URL = CONTROL_URL + "/cluster/dbrepair-status";
     
     public static final String CONFIG_URL = "/config";
     public static final String CONFIG_PROPERTIES_URL = CONFIG_URL + "/properties";

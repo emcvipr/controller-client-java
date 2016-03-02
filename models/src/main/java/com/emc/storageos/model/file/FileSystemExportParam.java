@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.storageos.model.file;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -67,10 +71,10 @@ public class FileSystemExportParam {
 
     /**
      * Description of the operation
-     * @return
+     * @return The comments regarding the operation
      */
     
-    @XmlElement(name="comments")
+    @XmlElement(name="comments",required = false)
     public String getComments() {
 		return comments;
 	}

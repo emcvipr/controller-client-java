@@ -1,24 +1,30 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.vipr.client.core;
 
-import static com.emc.vipr.client.core.util.ResourceUtils.defaultList;
-
-import java.net.URI;
-import java.util.List;
-
+import java.util.Properties;
 import com.emc.storageos.model.BulkIdParam;
 import com.emc.storageos.model.NamedRelatedResourceRep;
 import com.emc.storageos.model.TaskResourceRep;
 import com.emc.storageos.model.compute.VcenterClusterParam;
-import com.emc.storageos.model.host.vcenter.VcenterDataCenterBulkRep;
-import com.emc.storageos.model.host.vcenter.VcenterDataCenterCreate;
-import com.emc.storageos.model.host.vcenter.VcenterDataCenterList;
-import com.emc.storageos.model.host.vcenter.VcenterDataCenterRestRep;
-import com.emc.storageos.model.host.vcenter.VcenterDataCenterUpdate;
+import com.emc.storageos.model.host.vcenter.*;
 import com.emc.vipr.client.Task;
 import com.emc.vipr.client.ViPRCoreClient;
 import com.emc.vipr.client.core.impl.PathConstants;
-import com.emc.vipr.client.impl.RestClient;
 import com.emc.vipr.client.core.util.ResourceUtils;
+import com.emc.vipr.client.impl.RestClient;
+import com.sun.jersey.api.client.ClientResponse;
+import org.codehaus.jackson.map.ser.std.StaticListSerializerBase;
+
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
+import java.util.List;
+import java.util.Properties;
+
+import static com.emc.vipr.client.core.util.ResourceUtils.defaultList;
 
 /**
  * Virtual Data Centers resources.
@@ -26,6 +32,8 @@ import com.emc.vipr.client.core.util.ResourceUtils;
  * Base URL: <tt>/compute/vcenter-data-centers</tt>
  */
 public class VcenterDataCenters extends AbstractCoreBulkResources<VcenterDataCenterRestRep> {
+    private static final String EXPECTED_VERSION_QUERY_PARAM = "expect_version";
+
     public VcenterDataCenters(ViPRCoreClient parent, RestClient client) {
         super(parent, client, VcenterDataCenterRestRep.class, PathConstants.DATACENTER_URL);
     }
@@ -177,5 +185,4 @@ public class VcenterDataCenters extends AbstractCoreBulkResources<VcenterDataCen
         TaskResourceRep response = client.post(TaskResourceRep.class, clusterParam, PathConstants.DATACENTER_UPDATE_CLUSTER_URL, dataCenterId);
         return new Task<VcenterDataCenterRestRep>(client, response, resourceClass);
     }
-    
 }

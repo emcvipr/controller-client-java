@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 /**
  *  Copyright (c) 2013 EMC Corporation
  * All Rights Reserved
@@ -11,16 +15,11 @@
 
 package com.emc.storageos.model.auth;
 
+import com.emc.storageos.model.DataObjectRestRep;
+
+import javax.xml.bind.annotation.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import com.emc.storageos.model.DataObjectRestRep;
 
 /**
  * Class that encapsulates the REST representation of a Authentication
@@ -44,6 +43,8 @@ public class AuthnProviderRestRep extends DataObjectRestRep {
     private Boolean disable;
     private String description;
     private Integer maxPageSize;
+    private Set<String> groupObjectClasses;
+    private Set<String> groupMemberAttributes;
 
     /**
      * Description of the provider
@@ -246,5 +247,39 @@ public class AuthnProviderRestRep extends DataObjectRestRep {
 
     public void setServerUrls(Set<String> serverUrls) {
         this.serverUrls = serverUrls;
+    }
+    
+    /**
+     * Attribute for group's objectClass search.  This is the attribute name that will be used to represent group's name.
+     * @valid Example: "group, groupOfNames, groupOfUniqueNames, posixGroup, organizationalRole."
+     */
+    @XmlElementWrapper(name = "group_object_classes")
+    @XmlElement(name = "group_object_class")
+    public Set<String> getGroupObjectClasses() {
+    	if(groupObjectClasses == null){
+    		groupObjectClasses = new LinkedHashSet<String>();
+    	}
+        return groupObjectClasses;
+    }
+
+    public void setGroupObjectClasses(Set<String> groupObjectClasses) {
+        this.groupObjectClasses = groupObjectClasses;
+    }
+    
+    /**
+     * Attribute for group's member search.  This is the attribute name that will be used to represent group members.
+     * @valid Example: "member, memberUid, uniqueMember, roleOccupant."
+     */
+    @XmlElementWrapper(name = "group_member_attributes")
+    @XmlElement(name = "group_member_attribute")
+    public Set<String> getGroupMemberAttributes() {
+    	if(groupMemberAttributes == null){
+    		groupMemberAttributes = new LinkedHashSet<String>();
+    	}
+        return groupMemberAttributes;
+    }
+
+    public void setGroupMemberAttributes(Set<String> groupMemberAttributes) {
+        this.groupMemberAttributes = groupMemberAttributes;
     }
 }

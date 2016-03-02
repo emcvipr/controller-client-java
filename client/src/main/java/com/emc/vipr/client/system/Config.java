@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.vipr.client.system;
 
 import static com.emc.vipr.client.impl.jersey.ClientUtils.addQueryParam;

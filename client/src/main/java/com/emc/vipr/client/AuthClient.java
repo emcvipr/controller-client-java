@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.vipr.client;
 
 import com.emc.storageos.model.password.PasswordChangeParam;
@@ -16,7 +20,7 @@ import static com.emc.vipr.client.system.impl.PathConstants.CONTROL_POWER_OFF_CL
 public class AuthClient {
     protected RestClient client;
 
-    AuthClient(RestClient client) {
+    public AuthClient(RestClient client) {
         this.client = client;
     }
 
@@ -42,6 +46,10 @@ public class AuthClient {
     public AuthClient(ClientConfig config) {
         this(config.newClient());
     }
+    
+    public RestClient getClient() {
+        return this.client;
+    }
 
     /**
      * Performs a login operation. The token is automatically associated with this client
@@ -56,6 +64,7 @@ public class AuthClient {
         resource.addFilter(new HTTPBasicAuthFilter(username, password));
         ClientResponse response = resource.get(ClientResponse.class);
         response.close();
+        client.setLoginTime(System.currentTimeMillis());
         return client.getAuthToken();
     }
 
@@ -105,6 +114,16 @@ public class AuthClient {
         passwordChangeParam.setOldPassword(oldPassword);
         passwordChangeParam.setPassword(password);
         ClientResponse response = resource.put(ClientResponse.class, passwordChangeParam);
+        response.close();
+    }
+
+    public void validatePasswordChange(String username, String oldPassword, String password) {
+        WebResource resource = client.getClient().resource(client.uriBuilder("/validate-password-change").build());
+        PasswordChangeParam passwordChangeParam = new PasswordChangeParam();
+        passwordChangeParam.setUsername(username);
+        passwordChangeParam.setOldPassword(oldPassword);
+        passwordChangeParam.setPassword(password);
+        ClientResponse response = resource.post(ClientResponse.class, passwordChangeParam);
         response.close();
     }
 }

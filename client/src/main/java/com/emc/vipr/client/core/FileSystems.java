@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.vipr.client.core;
 
 import static com.emc.vipr.client.core.util.ResourceUtils.defaultList;
@@ -15,7 +19,7 @@ import javax.ws.rs.core.UriBuilder;
 import com.emc.storageos.model.BulkIdParam;
 import com.emc.storageos.model.file.ExportRule;
 import com.emc.storageos.model.file.ExportRules;
-import com.emc.storageos.model.TaskResourceRep;
+import com.emc.storageos.model.file.FileCifsShareACLUpdateParams;
 import com.emc.storageos.model.file.FileExportUpdateParam;
 import com.emc.storageos.model.file.FileShareBulkRep;
 import com.emc.storageos.model.file.FileShareExportUpdateParams;
@@ -29,6 +33,8 @@ import com.emc.storageos.model.file.FileSystemShareList;
 import com.emc.storageos.model.file.FileSystemShareParam;
 import com.emc.storageos.model.file.QuotaDirectoryCreateParam;
 import com.emc.storageos.model.file.QuotaDirectoryRestRep;
+import com.emc.storageos.model.file.ShareACL;
+import com.emc.storageos.model.file.ShareACLs;
 import com.emc.storageos.model.file.SmbShareResponse;
 import com.emc.vipr.client.Task;
 import com.emc.vipr.client.Tasks;
@@ -86,6 +92,15 @@ public class FileSystems extends ProjectResources<FileShareRestRep> implements T
      */
     protected String getSharesUrl() {
         return getIdUrl() + "/shares";
+    }
+    
+    /**
+     * Gets the base URL for shares for a single snapshot: <tt>/file/filesystems/{id}/shares</tt>
+     *
+     * @return the shares URL.
+     */
+    protected String getShareACLsUrl() {
+        return getIdUrl() + "/shares/{shareName}/acl";
     }
 
     @Override
@@ -371,5 +386,55 @@ public class FileSystems extends ProjectResources<FileShareRestRep> implements T
     public Task<FileShareRestRep> deleteAllExport(URI id, Boolean allDir) {
         URI targetUri = client.uriBuilder(getExportUrl()).queryParam(ALLDIR_PARAM, allDir).build(id);
         return deleteTaskURI(targetUri);
+    }
+    
+    /**
+     * Gets the share ACLs for the given file system by ID.
+     * <p>
+     * API Call: <tt>GET /file/filesystems/{id}/shares/{shareName}/acl</tt>
+     *
+     * @param id
+     *        the ID of the file system.
+     * @param shareName
+     *        the shareName to get list of ACLS associated.
+     * @return the list of share ACLs for the given file system.
+     */
+    public List<ShareACL> getShareACLs(URI id, String shareName) {
+    	ShareACLs response = client.get(ShareACLs.class, getShareACLsUrl(), id, shareName);
+		return defaultList(response.getShareACLs());   	
+    }
+    
+    /**
+     * Update file system share ACL
+     *
+     * API Call: <tt>PUT /file/filesystems/{id}/shares/{shareName}/acl</tt>
+     *
+     * @param id
+     *        the ID of the filesystem.
+     * @param shareName
+     *        the shareName to update associated ACLs
+     * @param param
+     *        the update/create configuration 
+     * @return a task for monitoring the progress of the operation.
+     */
+    public Task<FileShareRestRep> updateShareACL(URI id, String shareName, FileCifsShareACLUpdateParams param) {
+        UriBuilder builder = client.uriBuilder(getShareACLsUrl());
+        URI targetUri = builder.build(id,shareName);
+        return putTaskURI(param, targetUri);
+    }
+    
+    /**
+     * Begins removing a share ACL from the given file system by ID.
+     * <p>
+     * API Call: <tt>Delete /file/filesystems/{id}/shares/{shareName}/acl</tt>
+     *
+     * @param id
+     *        the ID of the file system.
+     * @param shareName
+     *        the name of the share to remove associated ACLs.
+     * @return a task for monitoring the progress of the operation.
+     */
+    public Task<FileShareRestRep> deleteShareACL(URI id, String shareName) {
+        return deleteTask(getShareACLsUrl(), id, shareName);
     }
 }

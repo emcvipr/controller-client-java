@@ -1,6 +1,11 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.storageos.model.host;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 
 import com.emc.storageos.model.DiscoveredSystemObjectRestRep;
 import com.emc.storageos.model.RelatedResourceRep;
@@ -9,6 +14,7 @@ import com.emc.storageos.model.RelatedResourceRep;
  * Common class to all tenant resource types
  * @author elalih
  */
+@XmlType(name="abstractComputeSystemRestRep")
 public abstract class ComputeSystemRestRep extends DiscoveredSystemObjectRestRep {
     private RelatedResourceRep tenant;
 

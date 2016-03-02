@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.vipr.model.catalog;
 
 import java.util.ArrayList;
@@ -20,7 +24,7 @@ public class CatalogServiceBulkRep extends BulkRestRep {
     /**
      * List of catalog services
      * @valid none
-     * @return
+     * @return Catalog services list
      */
     @XmlElement(name = "catalog_service")
     public List<CatalogServiceRestRep> getCatalogServices() {

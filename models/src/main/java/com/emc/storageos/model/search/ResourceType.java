@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.storageos.model.search;
 
 /* TODO: This enum should be replaced by ResourceTypeEnum */

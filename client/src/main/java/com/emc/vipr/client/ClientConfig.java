@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.vipr.client;
 
 import com.emc.vipr.client.exceptions.ViPRException;
@@ -20,7 +24,12 @@ public class ClientConfig {
     public static final int DEFAULT_API_PORT = 4443;
     public static final int DEFAULT_PORTAL_PORT = 443;
     public static final int DEFAULT_BULK_SIZE = 500;
+    public static final int DEFAULT_MAX_CONCURRENT_TASK_REQUESTS = 50;
+    public static final int DEFAULT_TASKS_EXECUTION_TIMEOUT_SECONDS = 30;
+    public static final int SESSION_KEY_RENEW_TIMEOUT = 1000 * 60 * 60 * 7; // 7 hours
 
+    private int maxConcurrentTaskRequests = DEFAULT_MAX_CONCURRENT_TASK_REQUESTS;
+	private int tasksExecutionTimeoutSeconds = DEFAULT_TASKS_EXECUTION_TIMEOUT_SECONDS;
     private String mediaType = MediaType.APPLICATION_XML;
     private boolean requestLoggingEnabled = true;
     private int loggingEntityLength = DEFAULT_LOGGING_ENTITY_LENGTH;
@@ -33,10 +42,11 @@ public class ClientConfig {
     private int port = DEFAULT_API_PORT;
     private int portalPort = DEFAULT_PORTAL_PORT;
     private int bulkSize = DEFAULT_BULK_SIZE;
+    private int sessionKeyRenewTimeout = SESSION_KEY_RENEW_TIMEOUT;
     private String host;
     private SSLSocketFactory socketFactory;
     private HostnameVerifier hostnameVerifier;
-
+    
     public boolean isRequestLoggingEnabled() {
         return requestLoggingEnabled;
     }
@@ -263,6 +273,83 @@ public class ClientConfig {
     public void setHostnameVerifier(HostnameVerifier hostnameVerifier) {
         this.hostnameVerifier = hostnameVerifier;
     }
+    
+    /**
+     * Returns the maximum concurrent task threads that this client can
+     * spawn
+     * 
+     * @return Maximum concurrent task threads
+     */
+    public int getMaxConcurrentTaskRequests() {
+		return maxConcurrentTaskRequests;
+	}
+
+	/**
+	 * Sets the Maximum concurrent task threads that this client can spawn
+	 * 
+	 * @param maxConcurrentTaskRequests
+	 */
+	public void setMaxConcurrentTaskRequests(int maxConcurrentTaskRequests) {
+		this.maxConcurrentTaskRequests = maxConcurrentTaskRequests;
+	}
+	
+	/**
+	 * Adds maximum concurrent task request thread count
+	 * 
+	 * @param maxConcurrentTaskRequests
+	 * @return this Config
+	 */
+	public ClientConfig withMaxConcurrentTaskRequests(int maxConcurrentTaskRequests) {
+		this.setMaxConcurrentTaskRequests(maxConcurrentTaskRequests);
+		return this;
+	}
+
+	/**
+	 * Returns task execution timeout in seconds
+	 * 
+	 * @return
+	 */
+	public int getTasksExecutionTimeoutSeconds() {
+		return tasksExecutionTimeoutSeconds;
+	}
+
+	/**
+	 * Sets the total task execution timeout in seconds
+	 * 
+	 * @param tasksExecutionTimeoutSeconds
+	 */
+	public void setTasksExecutionTimeoutSeconds(int tasksExecutionTimeoutSeconds) {
+		this.tasksExecutionTimeoutSeconds = tasksExecutionTimeoutSeconds;
+	}
+	
+	/**
+     * Returns session key renew timeout
+     * 
+     * @return
+     */
+    public int getSessionKeyRenewTimeout() {
+        return sessionKeyRenewTimeout;
+    }
+
+    /**
+     * Sets the session key renew timeout
+     * 
+     * @param tasksExecutionTimeoutSeconds
+     */
+    public void setSessionKeyRenewTimeout(int sessionKeyRenewTimeout) {
+        this.sessionKeyRenewTimeout = sessionKeyRenewTimeout;
+    }
+	
+	/**
+	 * Adds the total tasks execution timeout in seconds
+	 * 
+	 * @param tasksExecutionTimeoutSeconds
+	 * @return This configuration
+	 */
+	public ClientConfig withTasksExecutionTimeoutSeconds(int tasksExecutionTimeoutSeconds) {
+		this.setTasksExecutionTimeoutSeconds(tasksExecutionTimeoutSeconds);
+		return this;
+	}
 
     /**
      * Sets the SSLSocketFactory and HostnameVerifier to ignore all SSL certificates. This is suitable for a default
@@ -479,6 +566,17 @@ public class ClientConfig {
      */
     public ClientConfig withIgnoringCertificates(boolean ignoringCertificates) {
         setIgnoreCertificates(ignoringCertificates);
+        return this;
+    }
+    
+    /**
+     * Sets the session key renew timeout.
+     *
+     * @see #setSessionKeyRenewTimeout(int)
+     * @return the updated ClientConfig object
+     */
+    public ClientConfig withSessionKeyRenewTimeout(int sessionKeyRenewTimeout) {
+        setSessionKeyRenewTimeout(sessionKeyRenewTimeout);
         return this;
     }
 

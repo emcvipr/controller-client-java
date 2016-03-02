@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 /**
  *  Copyright (c) 2008-2013 EMC Corporation
  * All Rights Reserved
@@ -11,9 +15,9 @@
 
 package com.emc.storageos.model;
 
+import javax.xml.bind.annotation.XmlElement;
 import java.util.HashMap;
 import java.util.Map;
-import javax.xml.bind.annotation.XmlElement;
 
 public enum ResourceTypeEnum {
     /*                  type              service            */
@@ -30,6 +34,7 @@ public enum ResourceTypeEnum {
     STORAGE_POOL      ("storage_pool",  "/vdc/storage-systems/%1$s/storage-pools"),
     STORAGE_TIER      ("storage_tier",  "/vdc/storage-tiers"),
     STORAGE_PORT      ("storage_port",  "/vdc/storage-systems/%1$s/storage-ports"),
+    RDF_GROUP         ("rdf_group",  "/vdc/storage-systems/%1$s/rdf-groups"),
     PROTECTION_SYSTEM ("protection_system","/vdc/protection-systems"),
     PROTECTION_SET    ("protection_set","/block/volumes/%1$s/protection/protection-sets"),
     FILE_SNAPSHOT     ("snapshot",      "/file/snapshots"),
@@ -73,7 +78,8 @@ public enum ResourceTypeEnum {
     QUOTA_DIR         ("quota_dir", "/file/quotadirectories"),
     CUSTOM_CONFIG     ("controller_config", "/config/controller"),
     CONFIG_TYPE   ("config_type", "/config/controller/types"),
-    SYS_EVENT   ("sysevent", "");
+    SYS_EVENT   ("sysevent", ""),
+    USER_GROUP("user_group", "/vdc/admin/user-groups");
 
     private final String type;
     private final String service;

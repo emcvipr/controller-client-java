@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.storageos.model.auth;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -22,6 +26,8 @@ public class AuthnUpdateParam extends AuthnProviderBaseParam {
     private ServerUrlChanges serverUrlChanges;
     private DomainChanges domainChanges;
     private GroupWhitelistValueChanges groupWhitelistValueChanges;
+    private GroupObjectClassChanges groupObjectClassChanges;
+    private GroupMemberAttributeChanges groupMemberAttributeChanges;
 
     @XmlElement(name = "server_url_changes")
     public ServerUrlChanges getServerUrlChanges() {
@@ -58,6 +64,32 @@ public class AuthnUpdateParam extends AuthnProviderBaseParam {
     public void setGroupWhitelistValueChanges(
             GroupWhitelistValueChanges groupWhitelistValueChanges) {
         this.groupWhitelistValueChanges = groupWhitelistValueChanges;
+    }
+
+    @XmlElement(name = "group_objclass_changes")
+    public GroupObjectClassChanges getGroupObjectClassChanges() {
+       if (groupObjectClassChanges == null) {
+           groupObjectClassChanges = new GroupObjectClassChanges();
+       }
+       return groupObjectClassChanges;
+    }
+
+    public void setGroupObjectClassChanges(
+            GroupObjectClassChanges groupGroupObjectClassChanges) {
+        this.groupObjectClassChanges = groupGroupObjectClassChanges;
+    }
+
+    @XmlElement(name = "group_memberattr_changes")
+    public GroupMemberAttributeChanges getGroupMemberAttributeChanges() {
+        if (groupMemberAttributeChanges == null) {
+            groupMemberAttributeChanges = new GroupMemberAttributeChanges();
+        }
+        return groupMemberAttributeChanges;
+    }
+
+    public void setGroupMemberAttributeChanges(
+            GroupMemberAttributeChanges groupGroupMemberAttributeChanges) {
+        this.groupMemberAttributeChanges = groupGroupMemberAttributeChanges;
     }
 
     public static class ServerUrlChanges {
@@ -202,6 +234,106 @@ public class AuthnUpdateParam extends AuthnProviderBaseParam {
             if (remove == null) {
                 remove = new LinkedHashSet<String>();
             }            
+            return remove;
+        }
+
+        public void setRemove(Set<String> remove) {
+            this.remove = remove;
+        }
+    }
+
+    public static class GroupObjectClassChanges {
+        private Set<String> add;
+        private Set<String> remove;
+
+        /**
+         * List of group object classes to add.
+         * @valid none
+         */
+        @XmlElementWrapper(name = "add")
+        /**
+         * Group object classes to be included when querying LDAP
+         * for searching the group.
+         * @valid Valid LDAP schema objectClasses.
+         * @valid When empty, search for groups in LDAP will fail.
+         * @valid Example: groupOfNames.
+         */
+        @XmlElement(name = "group_object_class")
+        public Set<String> getAdd() {
+            if (add == null) {
+                add = new LinkedHashSet<String>();
+            }
+            return add;
+        }
+
+        public void setAdd(Set<String> add) {
+            this.add = add;
+        }
+
+        /**
+         * List of group object classes to remove.
+         * @valid none
+         */
+        @XmlElementWrapper(name = "remove")
+        /**
+         * group object classes to remove.
+         * @valid Example: groupOfNames.
+         */
+        @XmlElement(name = "group_object_class")
+        public Set<String> getRemove() {
+            if (remove == null) {
+                remove = new LinkedHashSet<String>();
+            }
+            return remove;
+        }
+
+        public void setRemove(Set<String> remove) {
+            this.remove = remove;
+        }
+    }
+
+    public static class GroupMemberAttributeChanges {
+        private Set<String> add;
+        private Set<String> remove;
+
+        /**
+         * List of group member attributes to add.
+         * @valid none
+         */
+        @XmlElementWrapper(name = "add")
+        /**
+         * Group member attributes to be included when querying LDAP
+         * for searching the user and group membership.
+         * @valid Valid LDAP schema attributes.
+         * @valid When empty, search for user's membership in LDAP will fail.
+         * @valid Example: member.
+         */
+        @XmlElement(name = "group_member_attribute")
+        public Set<String> getAdd() {
+            if (add == null) {
+                add = new LinkedHashSet<String>();
+            }
+            return add;
+        }
+
+        public void setAdd(Set<String> add) {
+            this.add = add;
+        }
+
+        /**
+         * List of group member attribute type names to remove.
+         * @valid none
+         */
+        @XmlElementWrapper(name = "remove")
+        /**
+         * List of group member attributes to remove.
+         * @valid Example: member.
+         */
+        @XmlElement(name = "group_member_attribute")
+        public Set<String> getRemove() {
+            if (remove == null) {
+                remove = new LinkedHashSet<String>();
+            }
             return remove;
         }
 

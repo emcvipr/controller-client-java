@@ -1,10 +1,13 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.storageos.model.auth;
 
-import javax.xml.bind.annotation.XmlElement;
-
+import com.emc.storageos.model.valid.Length;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import com.emc.storageos.model.valid.Length;
+import javax.xml.bind.annotation.XmlElement;
 
 /**
  * Authentication provider configuration base object
@@ -102,8 +105,8 @@ public abstract class AuthnProviderBaseParam {
      * @valid false
      */
     private Boolean validateCertificates;
-
-    public AuthnProviderBaseParam() {}
+    
+	public AuthnProviderBaseParam() {}
 
     public AuthnProviderBaseParam(String mode, String label,
             String description, Boolean disable, String serverCert,
@@ -231,7 +234,7 @@ public abstract class AuthnProviderBaseParam {
     public void setMaxPageSize(Integer maxPageSize) {
         this.maxPageSize = maxPageSize;
     }
-
+    
     @Deprecated
     @XmlElement(name = "validate_certificates", required = false, defaultValue = "false")
     @JsonProperty("validate_certificates")

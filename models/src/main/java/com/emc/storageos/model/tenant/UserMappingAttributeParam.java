@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 /**
  * Copyright (c) 2013 EMC Corporation
  * All Rights Reserved
@@ -10,10 +14,9 @@
  */
 package com.emc.storageos.model.tenant;
 
-import javax.xml.bind.annotation.XmlElement;
-
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import javax.xml.bind.annotation.XmlElement;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -87,14 +90,22 @@ public class UserMappingAttributeParam {
             if(this == obj){
                 isEqual = true;
             }
-            else if (!key.equals(((UserMappingAttributeParam) obj).key)){
+            else if (key != null &&
+                    ((UserMappingAttributeParam) obj).key != null &&
+                    !key.equals(((UserMappingAttributeParam) obj).key)){
                 isEqual = false;
             }
-            else if (values.size() != ((UserMappingAttributeParam) obj).values.size()){
+            else if (values != null &&
+                    ((UserMappingAttributeParam) obj).values != null &&
+                    values.size() != ((UserMappingAttributeParam) obj).values.size()){
                 isEqual = false;
             }
             else{
-                isEqual = values.equals(((UserMappingAttributeParam) obj).values);
+                if (values != null && ((UserMappingAttributeParam) obj).values != null) {
+                    isEqual = values.equals(((UserMappingAttributeParam) obj).values);
+                } else {
+                    isEqual = false;
+                }
             }
         }
 
@@ -114,10 +125,17 @@ public class UserMappingAttributeParam {
      * @valid none
      */
     public int hashCode(){
-        int hash = key.hashCode();
+        int hash = 0;
+        if (key != null)
+            hash = key.hashCode();
 
-        for(String value : values){
-            hash = hash + value.hashCode();
+        if (values == null)
+            return hash;
+
+        if (values != null) {
+            for (String value : values) {
+                hash = hash + value.hashCode();
+            }
         }
 
         return hash;

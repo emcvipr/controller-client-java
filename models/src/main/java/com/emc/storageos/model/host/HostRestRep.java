@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 /**
  *  Copyright (c) 2013 EMC Corporation
  * All Rights Reserved
@@ -190,7 +194,7 @@ public class HostRestRep extends ComputeSystemRestRep {
     /**
      * The id of boot volume.
      * 
-     * @return
+     * @return The bootVolume
      */
     @XmlElement(name = "boot_volume")
     public RelatedResourceRep getBootVolume() {
@@ -206,7 +210,7 @@ public class HostRestRep extends ComputeSystemRestRep {
      * : IN_PROGRESS / COMPLETE / ERROR. These statuses correspond to the task
      * status, which can be pending,ready or error.
      * 
-     * @return
+     * @return Provisioning Job Status
      */
     @XmlElement(name = "provisioning_job_status")
     public String getProvisioningJobStatus() {

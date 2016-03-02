@@ -1,7 +1,8 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.vipr.client.core;
-
-import java.net.URI;
-import java.util.List;
 
 import com.emc.storageos.model.NamedRelatedResourceRep;
 import com.emc.storageos.model.auth.AuthnCreateParam;
@@ -11,8 +12,11 @@ import com.emc.storageos.model.auth.AuthnUpdateParam;
 import com.emc.vipr.client.ViPRCoreClient;
 import com.emc.vipr.client.core.filters.ResourceFilter;
 import com.emc.vipr.client.core.impl.PathConstants;
-import com.emc.vipr.client.impl.RestClient;
 import com.emc.vipr.client.core.util.ResourceUtils;
+import com.emc.vipr.client.impl.RestClient;
+
+import java.net.URI;
+import java.util.List;
 
 /**
  * Authentication Providers resources.
@@ -87,6 +91,22 @@ public class AuthnProviders extends AbstractCoreResources<AuthnProviderRestRep> 
      */
     public AuthnProviderRestRep update(URI id, AuthnUpdateParam input) {
         return client.put(AuthnProviderRestRep.class, input, getIdUrl(), id);
+    }
+
+    /**
+     * Updates an authentication provider with allow_group_attr_change set to true.
+     * <p>
+     * API Call: <tt>PUT /vdc/admin/authnproviders/{id}?allow_group_attr_change=true</tt>
+     *
+     * @param id
+     *        the authentication provider ID.
+     * @param input
+     *        the update configuration.
+     * @return the updated authentication provider.
+     */
+    public AuthnProviderRestRep forceUpdate(URI id, AuthnUpdateParam input) {
+        URI forceUpdateUri = client.uriBuilder(getIdUrl()).queryParam("allow_group_attr_change", true).build(id);
+        return client.putURI(AuthnProviderRestRep.class, input, forceUpdateUri);
     }
 
     /**

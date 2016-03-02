@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 /**
  * Copyright (c) 2013 EMC Corporation All Rights Reserved This software contains
  * the intellectual property of EMC Corporation or is licensed to EMC

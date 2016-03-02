@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.storageos.model.project;
 
 import com.emc.storageos.model.NamedRelatedResourceRep;
@@ -20,7 +24,7 @@ public class ProjectList {
     /**
      * List of projects
      * @valid none
-     * @return
+     * @return Projects list
      */
     @XmlElement(name = "project")
     public List<NamedRelatedResourceRep> getProjects() {

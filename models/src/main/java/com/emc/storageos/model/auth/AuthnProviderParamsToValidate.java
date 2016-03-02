@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 /**
  *  Copyright (c) 2013 EMC Corporation
  * All Rights Reserved
@@ -10,12 +14,11 @@
  */
 package com.emc.storageos.model.auth;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 
 /**
  * Container class to store parameters to validate an authnprovider.
@@ -30,6 +33,8 @@ public class AuthnProviderParamsToValidate {
     private String searchBase;
     private String mode;
     private String groupAttr;
+    private List<String> groupObjectClasses;
+    private List<String> groupMemberAttributes;
 
     public AuthnProviderParamsToValidate() {}
     
@@ -104,4 +109,30 @@ public class AuthnProviderParamsToValidate {
     public void setGroupAttr(String groupAttr) {
         this.groupAttr = groupAttr;
     }
+    
+    @XmlElementWrapper(name = "group_object_classes_validate")
+    @XmlElement(name = "group_object_class_validate")
+	public List<String> getGroupObjectClasses() {
+    	if (groupObjectClasses == null) {
+    		groupObjectClasses = new ArrayList<String>();
+        }
+		return groupObjectClasses;
+	}
+
+	public void setGroupObjectClasses(List<String> groupObjectClasses) {
+		this.groupObjectClasses = groupObjectClasses;
+	}
+
+	@XmlElementWrapper(name = "group_member_attributes_validate")
+    @XmlElement(name = "group_member_attribute_validate")
+	public List<String> getGroupMemberAttributes() {
+		if (groupMemberAttributes == null) {
+			groupMemberAttributes = new ArrayList<String>();
+        }
+		return groupMemberAttributes;
+	}
+
+	public void setGroupMemberAttributes(List<String> groupMemberAttributes) {
+		this.groupMemberAttributes = groupMemberAttributes;
+	}
 }

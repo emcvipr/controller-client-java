@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.storageos.model.tasks;
 
 import com.emc.storageos.model.NamedRelatedResourceRep;
@@ -21,7 +25,7 @@ public class TasksList {
     /**
      * List of projects
      * @valid none
-     * @return
+     * @return List of tasks
      */
     @XmlElement(name = "task")
     public List<NamedRelatedResourceRep> getTasks() {

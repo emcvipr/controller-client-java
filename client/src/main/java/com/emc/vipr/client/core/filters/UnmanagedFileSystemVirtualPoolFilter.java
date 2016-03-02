@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.vipr.client.core.filters;
 
 import static com.emc.vipr.client.core.util.UnmanagedHelper.getVpoolsForUnmanaged;
@@ -20,7 +24,8 @@ public class UnmanagedFileSystemVirtualPoolFilter extends DefaultResourceFilter<
             return false;
         }
 
-        Set<URI> vpools = getVpoolsForUnmanaged(item.getFileSystemInformation(), item.getFileSystemCharacteristics());
+        Set<URI> vpools = getVpoolsForUnmanaged(item.getFileSystemCharacteristics(),
+                item.getSupportedVPoolUris());
         return vpools.contains(virtualPoolId);
     }
 }

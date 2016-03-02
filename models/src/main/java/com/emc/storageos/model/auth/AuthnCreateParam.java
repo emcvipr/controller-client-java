@@ -1,4 +1,10 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.storageos.model.auth;
+
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlElement;
@@ -43,6 +49,22 @@ public class AuthnCreateParam extends AuthnProviderBaseParam {
      */
     private Set<String> groupWhitelistValues;
 
+    /**
+     * Attribute for group search.  This is the group's objectClass attribute that will be used to represent group.
+     * Once set during creation of the provider, the value for this parameter cannot be changed.
+     * @valid Example: "group, groupOfNames, groupOfUniqueNames, posixGroup, organizationalRole"
+     */
+    private Set<String> groupObjectClasses;
+
+    /**
+     * Attribute for group search.  This is the group's member(like) attribute that will be used to represent group's members.
+     * Once set during creation of the provider, the value for this parameter cannot be changed.
+     * This applies only for the LDAP, for AD, usually user has the group information where as
+     * in LDAP, group has the member information.
+     * @valid Example: "member, memberUid, uniqueMember, roleOccupant".
+     */
+    private Set<String> groupMemberAttributes;
+
     public AuthnCreateParam() {}
 
     @XmlElementWrapper(name = "server_urls")
@@ -84,6 +106,34 @@ public class AuthnCreateParam extends AuthnProviderBaseParam {
         this.groupWhitelistValues = groupWhitelistValues;
     }
 
+    @XmlElementWrapper(name = "group_object_classes")
+    @XmlElement(name = "group_object_class")
+    @JsonProperty("group_object_class")
+    public Set<String> getGroupObjectClasses() {
+        if (groupObjectClasses == null) {
+            groupObjectClasses = new LinkedHashSet<String>();
+        }
+        return groupObjectClasses;
+    }
+
+    public void setGroupObjectClasses(Set<String> groupObjectClasses) {
+        this.groupObjectClasses = groupObjectClasses;
+    }
+
+    @XmlElementWrapper(name = "group_member_attributes")
+    @XmlElement(name = "group_member_attribute")
+    @JsonProperty("group_member_attribute")
+    public Set<String> getGroupMemberAttributes() {
+        if (groupMemberAttributes == null) {
+            groupMemberAttributes = new LinkedHashSet<String>();
+        }
+        return groupMemberAttributes;
+    }
+
+    public void setGroupMemberAttributes(Set<String> groupMemberAttributes) {
+        this.groupMemberAttributes = groupMemberAttributes;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("AuthnCreateParam [");
@@ -108,6 +158,24 @@ public class AuthnCreateParam extends AuthnProviderBaseParam {
         sb.append(", groupWhitelistValues=");
         if (groupWhitelistValues != null) {
             for (String s : groupWhitelistValues) {
+                sb.append(s).append(",");
+            }
+        } else {
+            sb.append("null");
+        }
+
+        sb.append(", groupObjectClasses=");
+        if (groupObjectClasses != null) {
+            for (String s : groupObjectClasses) {
+                sb.append(s).append(",");
+            }
+        } else {
+            sb.append("null");
+        }
+
+        sb.append(", groupMemberAttributes=");
+        if (groupMemberAttributes != null) {
+            for (String s : groupMemberAttributes) {
                 sb.append(s).append(",");
             }
         } else {

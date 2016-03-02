@@ -1,12 +1,15 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.vipr.client;
-
-import java.net.URI;
 
 import com.emc.storageos.model.tenant.TenantResponse;
 import com.emc.storageos.model.user.UserInfo;
 import com.emc.vipr.client.core.*;
-import com.emc.vipr.client.core.TasksResources;
 import com.emc.vipr.client.impl.RestClient;
+
+import java.net.URI;
 
 public class ViPRCoreClient {
     protected RestClient client;
@@ -146,6 +149,10 @@ public class ViPRCoreClient {
 
     public BlockVolumes blockVolumes() {
         return new BlockVolumes(this, client);
+    }
+    
+    public BlockFullCopies blockFullCopies() {
+        return new BlockFullCopies(this, client);
     }
 
     public BlockExports blockExports() {
@@ -300,4 +307,6 @@ public class ViPRCoreClient {
     public CustomConfigs customConfigs() {
         return new CustomConfigs(client);
     }
+
+    public UserGroup getUserGroup() { return new UserGroup(this, client); }
 }

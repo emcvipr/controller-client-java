@@ -1,13 +1,25 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.vipr.client;
 
-import com.emc.storageos.model.TaskResourceRep;
-import com.emc.vipr.client.exceptions.ViPRException;
-import com.emc.vipr.client.impl.RestClient;
-import com.emc.vipr.client.core.impl.TaskUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.emc.storageos.model.TaskResourceRep;
+import com.emc.vipr.client.core.impl.TaskUtil;
+import com.emc.vipr.client.exceptions.ViPRException;
+import com.emc.vipr.client.impl.RestClient;
 
 /**
  * Representation of multiple asynchronous tasks returned from an operation.
@@ -15,6 +27,13 @@ import java.util.List;
  * @param <R> Type of the underlying resource running the operation.
  */
 public class Tasks<R> {
+	
+	private final static Logger log = LoggerFactory.getLogger(Tasks.class);
+	
+	private final int TASKS_EXECUTION_TERMINATION_SECONDS;
+	
+	private ExecutorService taskExecutor;
+	
     private List<Task<R>> tasks;
 
     public Tasks(RestClient client, List<TaskResourceRep> tasks, Class<? extends R> resourceClass) {
@@ -24,6 +43,8 @@ public class Tasks<R> {
                 this.tasks.add(new Task<>(client, task, resourceClass));
             }
         }
+        taskExecutor = Executors.newFixedThreadPool(client.getConfig().getMaxConcurrentTaskRequests());
+        TASKS_EXECUTION_TERMINATION_SECONDS = client.getConfig().getTasksExecutionTimeoutSeconds();
     }
 
     /**
@@ -83,15 +104,33 @@ public class Tasks<R> {
      * @throws ViPRException Thrown if any task is in an error state.
      * @return This tasks.
      */
-    public Tasks<R> waitFor(long timeoutMillis) throws ViPRException {
-        List<TaskResourceRep> taskImpls = new ArrayList<>();
-        for (Task<R> task : tasks) {
-            task.doTaskWait(timeoutMillis);
-            taskImpls.add(task.getTaskResource());
+    public Tasks<R> waitFor(final long timeoutMillis) throws ViPRException {
+        
+    	final CountDownLatch countdown = new CountDownLatch(tasks.size());
+        final List<TaskResourceRep> taskImpls = new ArrayList<>();
+        for (final Task<R> task : tasks) {
+            taskExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                	try{
+                		task.doTaskWait(timeoutMillis);
+                		taskImpls.add(task.getTaskResource());
+                	}finally{
+                		countdown.countDown();
+                	}
+                }
+            });
+        }
+        
+        try {
+        	countdown.await();
+        	taskExecutor.shutdown();
+        } catch (InterruptedException e) {
+            log.error(e.getMessage(), e);
         }
         TaskUtil.checkForErrors(taskImpls);
         return this;
-    }
+    }    
 
     /**
      * Waits for tasks to complete (go into a pending or error state). If an error occurs

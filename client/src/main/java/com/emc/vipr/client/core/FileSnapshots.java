@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.vipr.client.core;
 
 import static com.emc.vipr.client.core.util.ResourceUtils.defaultList;
@@ -12,6 +16,7 @@ import com.emc.storageos.model.NamedRelatedResourceRep;
 import com.emc.storageos.model.SnapshotList;
 import com.emc.storageos.model.file.ExportRule;
 import com.emc.storageos.model.file.ExportRules;
+import com.emc.storageos.model.file.FileCifsShareACLUpdateParams;
 import com.emc.storageos.model.file.FileSnapshotBulkRep;
 import com.emc.storageos.model.file.FileSnapshotRestRep;
 import com.emc.storageos.model.file.FileSystemExportList;
@@ -19,7 +24,10 @@ import com.emc.storageos.model.file.FileSystemExportParam;
 import com.emc.storageos.model.file.FileSystemShareList;
 import com.emc.storageos.model.file.FileSystemShareParam;
 import com.emc.storageos.model.file.FileSystemSnapshotParam;
+import com.emc.storageos.model.file.ShareACL;
+import com.emc.storageos.model.file.ShareACLs;
 import com.emc.storageos.model.file.SmbShareResponse;
+import com.emc.storageos.model.file.SnapshotCifsShareACLUpdateParams;
 import com.emc.storageos.model.file.SnapshotExportUpdateParams;
 import com.emc.vipr.client.Task;
 import com.emc.vipr.client.Tasks;
@@ -77,6 +85,15 @@ public class FileSnapshots extends ProjectResources<FileSnapshotRestRep> impleme
      */
     protected String getSharesUrl() {
         return getIdUrl() + "/shares";
+    }
+    
+    /**
+     * Gets the base URL for shares for a single snapshot: <tt>/file/snapshots/{id}/shares/{shareName}/acl</tt>
+     *
+     * @return the shares URL.
+     */
+    protected String getShareACLsUrl() {
+        return getIdUrl() + "/shares/{shareName}/acl";
     }
 
     @Override
@@ -356,5 +373,55 @@ public class FileSnapshots extends ProjectResources<FileSnapshotRestRep> impleme
     public Task<FileSnapshotRestRep> deleteAllExport(URI id, Boolean allDir) {
         URI targetUri = client.uriBuilder(getExportUrl()).queryParam(ALLDIR_PARAM, allDir).build(id);
         return deleteTaskURI(targetUri);
+    }
+
+    /**
+     * Gets the share ACLs for the given snapshot by ID.
+     * <p>
+     * API Call: <tt>GET /file/snapshots/{id}/shares/{shareName}/acl</tt>
+     *
+     * @param id
+     *        the ID of the snapshot.
+     * @param shareName
+     *        the shareName to get list of ACLS associated.
+     * @return the list of share ACLs for the given file system.
+     */
+    public List<ShareACL> getShareACLs(URI id, String shareName) {
+    	ShareACLs response = client.get(ShareACLs.class, getShareACLsUrl(), id, shareName);
+		return defaultList(response.getShareACLs());   	
+    }
+    
+    /**
+     * Update snapshot share ACL
+     *
+     * API Call: <tt>PUT /file/snapshots/{id}/shares/{shareName}/acl</tt>
+     *
+     * @param id
+     *        the ID of the snapshot.
+     * @param shareName
+     *        the shareName to update associated ACLs
+     * @param param
+     *        the update/create configuration
+     * @return a task for monitoring the progress of the operation.
+     */
+    public Task<FileSnapshotRestRep> updateShareACL(URI id, String shareName, SnapshotCifsShareACLUpdateParams param) {
+        UriBuilder builder = client.uriBuilder(getShareACLsUrl());
+        URI targetUri = builder.build(id, shareName);
+        return putTaskURI(param, targetUri);
+    }
+    
+    /**
+     * Begins removing a share ACL from the given snapshot by ID.
+     * <p>
+     * API Call: <tt>Delete /file/snapshots/{id}/shares/{shareName}/acl</tt>
+     *
+     * @param id
+     *        the ID of the snapshot.
+     * @param shareName
+     *        the name of the share to remove associated ACLs.
+     * @return a task for monitoring the progress of the operation.
+     */
+    public Task<FileSnapshotRestRep> deleteShareACL(URI id, String shareName) {
+        return deleteTask(getShareACLsUrl(), id, shareName);
     }
 }

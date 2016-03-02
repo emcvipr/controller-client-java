@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.storageos.model.file;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -15,17 +19,19 @@ public class FileSystemShareBase {
     private String description;
     private String maxUsers = "unlimited";  // default --- unlimited
     private String permissionType = "allow"; //FileSMBShare.PermissionType.allow.name();
-    private String permission = "change"; //FileSMBShare.Permission.change.name();
+    private String permission; //FileSMBShare.Permission.change.name();
+    private String subDirectory;
 
     public FileSystemShareBase() {}
     
     public FileSystemShareBase(String shareName, String description,
-            String maxUsers, String permissionType, String permission) {
+            String maxUsers, String permissionType, String permission, String subDirectory) {
         this.shareName = shareName;
         this.description = description;
         this.maxUsers = maxUsers;
         this.permissionType = permissionType;
         this.permission = permission;
+        this.subDirectory = subDirectory;
     }
 
     /**
@@ -97,6 +103,15 @@ public class FileSystemShareBase {
 
     public void setPermission(String permission) {
         this.permission = permission;
+    }
+
+    @XmlElement(name = "subDirectory")
+    public String getSubDirectory() {
+        return subDirectory;
+    }
+
+    public void setSubDirectory(String subDirectory) {
+        this.subDirectory = subDirectory;
     }
     
 }

@@ -1,7 +1,15 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.storageos.model.workflow;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.emc.storageos.model.DataObjectRestRep;
@@ -22,6 +30,7 @@ public class WorkflowStepRestRep extends DataObjectRestRep {
     private RelatedResourceRep workflow;
     private Date startTime;
     private Date endTime;
+    private List<RelatedResourceRep> childWorkflows;
  
     public WorkflowStepRestRep() {}
 
@@ -202,5 +211,18 @@ public class WorkflowStepRestRep extends DataObjectRestRep {
 
     public void setWorkflow(RelatedResourceRep workflow) {
         this.workflow = workflow;
+    }
+    
+    @XmlElementWrapper(name = "child_workflows")
+    @XmlElement(name = "child_workflow")
+    public List<RelatedResourceRep> getChildWorkflows() {
+        if (childWorkflows == null) {
+            childWorkflows = new ArrayList<RelatedResourceRep>();
+        }
+        return childWorkflows;
+    }
+
+    public void setChildWorkflows(List<RelatedResourceRep> childWorkflows) {
+        this.childWorkflows = childWorkflows;
     }
 }

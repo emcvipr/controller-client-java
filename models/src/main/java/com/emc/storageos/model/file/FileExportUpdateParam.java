@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.storageos.model.file;
 
 import java.util.ArrayList;
@@ -60,7 +64,6 @@ public class FileExportUpdateParam {
         this.remove = remove;
     }
     
-    @XmlElementWrapper(required=false)
     @XmlElement(name="comments")
     public String getComments() {
 		return comments;

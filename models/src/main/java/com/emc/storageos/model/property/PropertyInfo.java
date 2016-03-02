@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 /**
  *  Copyright (c) 2008-2013 EMC Corporation
  * All Rights Reserved
@@ -29,8 +33,9 @@ public class PropertyInfo {
     	                              OVF, 
     	                              MUTATED,
                                       SECRETS,
-    	                              OBSOLETE 
-    }   
+    	                              OBSOLETE,
+                                      REDEPLOY
+    }
 
     /**
      * Default constructor

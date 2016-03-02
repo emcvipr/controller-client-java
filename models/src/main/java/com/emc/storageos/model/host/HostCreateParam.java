@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.storageos.model.host;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -23,6 +27,7 @@ public class HostCreateParam extends HostParam {
      * @valid HPUX
      * @valid Linux
      * @valid Esx
+     * @valid SUNVCS
      * @valid Other
      */
     @Override

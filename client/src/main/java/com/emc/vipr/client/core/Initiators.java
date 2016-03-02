@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.vipr.client.core;
 
 import static com.emc.vipr.client.core.util.ResourceUtils.defaultList;
@@ -14,6 +18,7 @@ import com.emc.storageos.model.host.InitiatorCreateParam;
 import com.emc.storageos.model.host.InitiatorList;
 import com.emc.storageos.model.host.InitiatorRestRep;
 import com.emc.storageos.model.host.InitiatorUpdateParam;
+import com.emc.vipr.client.Task;
 import com.emc.vipr.client.ViPRCoreClient;
 import com.emc.vipr.client.core.filters.ResourceFilter;
 import com.emc.vipr.client.core.impl.PathConstants;
@@ -71,10 +76,10 @@ public class Initiators extends AbstractCoreBulkResources<InitiatorRestRep> {
      *        the ID of the host.
      * @param input
      *        the initiator configuration.
-     * @return the created initiator.
+     * @return a task for monitoring the progress of the initiator creation.
      */
-    public InitiatorRestRep create(URI hostId, InitiatorCreateParam input) {
-        return client.post(InitiatorRestRep.class, input, PathConstants.INITIATOR_BY_HOST_URL, hostId);
+    public Task<InitiatorRestRep> create(URI hostId, InitiatorCreateParam input) {
+        return postTask(input, PathConstants.INITIATOR_BY_HOST_URL, hostId);
     }
 
     /**
@@ -99,9 +104,10 @@ public class Initiators extends AbstractCoreBulkResources<InitiatorRestRep> {
      * 
      * @param id
      *        the ID of the initiator.
+     * @return a task for monitoring the progress of the initiator de-activation.
      */
-    public void deactivate(URI id) {
-        doDeactivate(id);
+    public Task<InitiatorRestRep> deactivate(URI id) {
+        return doDeactivateWithTask(id);
     }
 
     /**

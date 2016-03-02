@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 /**
  *  Copyright (c) 2008-2013 EMC Corporation
  * All Rights Reserved
@@ -11,6 +15,7 @@
 package com.emc.storageos.model.file;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.net.URI;
 
@@ -28,14 +33,16 @@ public class FileSystemParam {
     private String size;
     private URI vpool;
     private URI varray;
+    private String fsId;
 
     public FileSystemParam() {}
     
-    public FileSystemParam(String label, String size, URI vpool, URI varray) {
+    public FileSystemParam(String label, String size, URI vpool, URI varray, String fsId) {
         this.label = label;
         this.size = size;
         this.vpool = vpool;
         this.varray = varray;
+        this.fsId = fsId;
     }
 
     /** 
@@ -89,6 +96,19 @@ public class FileSystemParam {
 
     public void setVarray(URI varray) {
         this.varray = varray;
+    }
+
+    /**
+     * User provided id for the file system
+     * @valid none
+     */
+    @XmlElement(name="fs_id", required = false)
+    public String getFsId() {
+        return fsId;
+    }
+
+    public void setFsId(String fsId) {
+        this.fsId = fsId;
     }
     
 }

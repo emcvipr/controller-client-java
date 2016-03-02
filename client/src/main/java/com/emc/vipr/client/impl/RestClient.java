@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.vipr.client.impl;
 
 import com.emc.vipr.client.ClientConfig;
@@ -25,8 +29,14 @@ public class RestClient {
 
     // Proxy token for proxy authentication
     private String proxyToken;
+    
+    private String username;
+    
+    private String password;
 
     private Client client;
+    
+    private long loginTime;
 
     public RestClient(URI baseUri, ClientConfig config) {
         this.apiBaseUri = baseUri;
@@ -105,6 +115,30 @@ public class RestClient {
 
     public void setProxyToken(String proxyToken) {
         this.proxyToken = proxyToken;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
+    public long getLoginTime() {
+        return loginTime;
+    }
+
+    public void setLoginTime(long loginTime) {
+        this.loginTime = loginTime;
     }
 
     public UriBuilder uriBuilder() {

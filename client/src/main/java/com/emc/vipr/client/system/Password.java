@@ -1,15 +1,19 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.vipr.client.system;
 
 import static com.emc.vipr.client.system.impl.PathConstants.PASSWORD_URL;
 import static com.emc.vipr.client.system.impl.PathConstants.UPDATE_AUTH_KEY_URL;
 import static com.emc.vipr.client.system.impl.PathConstants.UPDATE_PASSWORD_URL;
 import static com.emc.vipr.client.system.impl.PathConstants.VALIDATE_PASSWORD_URL;
+import static com.emc.vipr.client.system.impl.PathConstants.VALIDATE_PASSWORD_UPDATE_URL;
 
 import com.emc.storageos.model.password.PasswordResetParam;
 import com.emc.storageos.model.password.PasswordUpdateParam;
 import com.emc.storageos.model.password.PasswordValidateParam;
 import com.emc.storageos.model.password.SSHKeyUpdateParam;
-import com.emc.vipr.client.exceptions.ServiceErrorException;
 import com.emc.vipr.client.impl.RestClient;
 
 public class Password {
@@ -124,5 +128,20 @@ public class Password {
         PasswordValidateParam input = new PasswordValidateParam();
         input.setPassword(password);
         client.post(input, VALIDATE_PASSWORD_URL);
-	}	
+	}
+
+    /**
+     * an authenticated local user validates its proposed password change.
+     *   If validation passes, it will return an http 204 status code (no content).
+     *   If validation fails, it will throw a ServiceErrorException with an http 400 status code (bad parameters).
+     *
+     * <p>
+     * API Call: POST /password/validate-update
+     */
+    public void validateUpdate(String oldPassword, String password) throws Exception {
+        PasswordUpdateParam input = new PasswordUpdateParam();
+        input.setOldPassword(oldPassword);
+        input.setPassword(password);
+        client.post(input, VALIDATE_PASSWORD_UPDATE_URL);
+    }
 }

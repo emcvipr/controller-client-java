@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.storageos.model.project;
 
 import com.emc.storageos.model.BulkRestRep;
@@ -14,7 +18,7 @@ public class ProjectBulkRep extends BulkRestRep {
     /**
      * List of projects
      * @valid none
-     * @return
+     * @return Projects
      */
     @XmlElement(name = "project")
     public List<ProjectRestRep> getProjects() {

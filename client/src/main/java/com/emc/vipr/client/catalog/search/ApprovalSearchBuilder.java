@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.vipr.client.catalog.search;
 
 import static com.emc.vipr.client.catalog.impl.SearchConstants.APPROVAL_STATUS_PARAM;

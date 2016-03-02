@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 package com.emc.vipr.client.core.impl;
 
 public class PathConstants {
@@ -22,6 +26,7 @@ public class PathConstants {
     public static final String METERING_STATS_URL = "/metering/stats";
 
     public static final String BLOCK_VOLUMES_URL = "/block/volumes";
+    public static final String BLOCK_FULL_COPIES_URL = "/block/full-copies";
     public static final String PROTECTION_SET_BY_VOLUME_URL = BLOCK_VOLUMES_URL
             + "/{volumeId}/protection/protection-sets";
     public static final String BLOCK_MIRROR_BY_VOLUME_URL = BLOCK_VOLUMES_URL
@@ -117,6 +122,8 @@ public class PathConstants {
         + "/{hostId}/unmanaged-volumes";
     public static final String UNMANAGED_VOLUME_BY_CLUSTER_URL = CLUSTER_URL
         + "/{clusterId}/unmanaged-volumes";
+    public static final String UNMANAGED_VOLUME_BY_STORAGE_SYSTEM_AND_VIRTUAL_POOL_URL = STORAGE_SYSTEM_URL
+        + "/{storageSystemId}/unmanaged/{virtualPool}/volumes";
 
     public static final String UNMANAGED_EXPORTS_URL = "/vdc/unmanaged/export-masks";
     public static final String UNMANAGED_EXPORTS_BY_HOST_URL = HOST_URL
@@ -126,9 +133,14 @@ public class PathConstants {
 
     public static final String UNMANAGED_FILESYSTEMS_URL = "/vdc/unmanaged/filesystems";
     public static final String UNMANAGED_FILESYSTEM_BY_STORAGE_SYSTEM_URL = STORAGE_SYSTEM_URL
-        + "/{storageSystemId}/unmanaged/filesystems";
+            + "/{storageSystemId}/unmanaged/filesystems";
+    public static final String UNMANAGED_FILESYSTEM_BY_STORAGE_SYSTEM_VIRTUAL_POOL_URL = STORAGE_SYSTEM_URL
+            + "/{storageSystemId}/unmanaged/{virtualPool}/filesystems";
 
     public static final String CUSTOM_CONFIG_URL = "/config/controller";
     public static final String CUSTOM_CONFIG_TYPE_URL = CUSTOM_CONFIG_URL + "/types";
     public static final String CUSTOM_CONFIG_PREVIEW_URL = CUSTOM_CONFIG_URL + "/preview";
+    public static final String USER_GROUP_URL = "/vdc/admin/user-groups";
+    public static final String CHECK_COMPATIBLE_VDC_URL = "/vdc/check-compatibility";
+    public static final String CHECK_IS_GEO_DISTRIBUTED_VDC_URL = "/vdc/check-geo-distributed";
 }

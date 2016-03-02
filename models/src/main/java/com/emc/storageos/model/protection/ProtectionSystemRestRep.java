@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 /**
  *  Copyright (c) 2008-2011 EMC Corporation
  * All Rights Reserved
@@ -11,7 +15,12 @@
 
 package com.emc.storageos.model.protection;
 
-import javax.xml.bind.annotation.*;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.emc.storageos.model.DiscoveredSystemObjectRestRep;
 
@@ -23,11 +32,11 @@ public class ProtectionSystemRestRep extends DiscoveredSystemObjectRestRep {
     private String majorVersion;
     private String minorVersion;
     private String ipAddress;
-    private String secondaryIP;
     private Integer portNumber;
     private Boolean reachableStatus;
     private String username;
-
+    private List<ProtectionSystemRPClusterRestRep> rpClusters;
+    
     public ProtectionSystemRestRep() {}
     
     /**
@@ -112,20 +121,6 @@ public class ProtectionSystemRestRep extends DiscoveredSystemObjectRestRep {
         this.reachableStatus = reachableStatus;
     }
 
-    /**
-     * Secondary IP Address of the mirrored Protection System device
-     * @valid IPv4 only  
-     * @valid example: 10.27.100.98
-     */
-    @XmlElement(name = "secondary_ip")
-    public String getSecondaryIP() {
-        return secondaryIP;
-    }
-
-    public void setSecondaryIP(String secondaryIP) {
-        this.secondaryIP = secondaryIP;
-    }
-
     @XmlElement(name = "user_name")
     public String getUsername() {
         return username;
@@ -138,4 +133,13 @@ public class ProtectionSystemRestRep extends DiscoveredSystemObjectRestRep {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    @XmlElement(name = "clusters")
+    public List<ProtectionSystemRPClusterRestRep> getRpClusters() {
+		return rpClusters;
+	}
+
+	public void setRpClusters(List<ProtectionSystemRPClusterRestRep> rpClusters) {
+		this.rpClusters = rpClusters;
+	}
 }

@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 /**
  *  Copyright (c) 2008-2013 EMC Corporation
  * All Rights Reserved
@@ -47,8 +51,24 @@ public class StoragePortRestRep extends VirtualArrayResourceRestRep {
     private Long volumeLoad;
     private Boolean allocationDisqualified;
     private String discoveryStatus;
+    private String adapterName;
 
     public StoragePortRestRep() {}
+    
+    
+    /**
+     * The adapter name of the Storage Port
+     * @return Adapter name of Storage Port
+     */
+    @XmlElement(name = "adapter_name")
+    public String getAdapterName() {
+		return adapterName;
+	}
+
+	public void setAdapterName(String adapterName) {
+		this.adapterName = adapterName;
+	}
+
     
     /**
      * The average bandwidth through the port (Gbps)

@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 /**
  *  Copyright (c) 2008-2013 EMC Corporation
  * All Rights Reserved
@@ -78,7 +82,7 @@ public class VirtualPoolChangeRep extends NamedRelatedVirtualPoolRep {
 
     /**
      * Get list of allowed change operations
-     * @return
+     * @return List of allowed change operations
      */
     @XmlElement(name = "allowed_change_operation")
     public List<StringHashMapEntry> getAllowedChangeOperations() {

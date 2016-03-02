@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 EMC Corporation
+ * All Rights Reserved
+ */
 /**
  *  Copyright (c) 2013 EMC Corporation
  * All Rights Reserved
@@ -20,6 +24,7 @@ public class VirtualPoolHighAvailabilityParam {
     private String type;
     private VirtualArrayVirtualPoolMapEntry haVirtualArrayVirtualPool; 
     private Boolean metroPoint;
+    private Boolean autoCrossConnectExport;
     
     public VirtualPoolHighAvailabilityParam() {}
     
@@ -149,5 +154,20 @@ public class VirtualPoolHighAvailabilityParam {
 		public void setActiveProtectionAtHASite(Boolean activeProtectionAtHASite) {
 			this.activeProtectionAtHASite = activeProtectionAtHASite;
 		}        
+    }
+
+    /**
+     * Flag to specify whether to automatically export both VPlex Clusters to 
+     * cross-connected hosts.
+     * @valid true
+     * @valid false
+     */
+    @XmlElement(name = "autoCrossConnectExport", required = false)
+    public Boolean getAutoCrossConnectExport() {
+        return autoCrossConnectExport;
+    }
+
+    public void setAutoCrossConnectExport(Boolean autoCrossConnectExport) {
+        this.autoCrossConnectExport = autoCrossConnectExport;
     }
 }
