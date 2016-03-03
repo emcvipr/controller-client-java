@@ -1,8 +1,11 @@
 /*
- * Copyright 2015 EMC Corporation
+ * Copyright (c) 2015 EMC Corporation
  * All Rights Reserved
  */
 package com.emc.vipr.client.core.impl;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import com.emc.storageos.model.RestLinkRep;
 import com.emc.storageos.model.TaskResourceRep;
@@ -13,9 +16,6 @@ import com.emc.vipr.client.exceptions.ServiceErrorsException;
 import com.emc.vipr.client.exceptions.TimeoutException;
 import com.emc.vipr.client.exceptions.ViPRException;
 import com.emc.vipr.client.impl.RestClient;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TaskUtil {
 
@@ -39,8 +39,7 @@ public class TaskUtil {
             }
             try {
                 Thread.sleep(client.getConfig().getTaskPollingInterval());
-            }
-            catch (InterruptedException e) {
+            } catch (InterruptedException e) {
                 throw new ViPRException(e);
             }
             refreshSession(client);
@@ -51,7 +50,7 @@ public class TaskUtil {
 
     public static List<TaskResourceRep> waitForTasks(RestClient client, List<TaskResourceRep> tasks, long timeoutMillis) {
         List<TaskResourceRep> newTasks = new ArrayList<TaskResourceRep>();
-        for (TaskResourceRep task: tasks) {
+        for (TaskResourceRep task : tasks) {
             newTasks.add(waitForTask(client, task, timeoutMillis));
         }
         return newTasks;
@@ -71,13 +70,13 @@ public class TaskUtil {
     }
 
     public static boolean isError(TaskResourceRep task) {
-        return task.getState() == null || State.error.name().equalsIgnoreCase(task.getState());
+        return task == null || task.getState() == null || State.error.name().equalsIgnoreCase(task.getState());
     }
 
     /**
      * Checks a task state to see if it is in error. If it is, throws an
      * exception.
-     *
+     * 
      * @param task Task to check for errors on
      */
     public static void checkForError(TaskResourceRep task) {
@@ -88,8 +87,8 @@ public class TaskUtil {
 
     public static void checkForErrors(List<TaskResourceRep> tasks) {
         List<ServiceErrorRestRep> errors = new ArrayList<ServiceErrorRestRep>();
-        for (TaskResourceRep task: tasks) {
-            if (isError(task)) {
+        for (TaskResourceRep task : tasks) {
+            if (task != null && isError(task)) {
                 errors.add(taskToError(task));
             }
         }
@@ -115,9 +114,9 @@ public class TaskUtil {
         }
         return serviceError;
     }
-    
+
     private synchronized static void refreshSession(RestClient client) {
-        if (client.getLoginTime() > 0 
+        if (client.getLoginTime() > 0
                 && (System.currentTimeMillis() - client.getLoginTime()) > client.getConfig().getSessionKeyRenewTimeout()
                 && client.getUsername() != null && client.getPassword() != null) {
             AuthClient authClient = new AuthClient(client);

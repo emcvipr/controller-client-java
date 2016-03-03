@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 EMC Corporation
+ * Copyright (c) 2015 EMC Corporation
  * All Rights Reserved
  */
 package com.emc.vipr.client.core;
@@ -60,10 +60,10 @@ public class UnManagedVolumes extends AbstractCoreBulkResources<UnManagedVolumeR
      *            the ID of the storage system.
      * @return the list of unmanaged volume references.
      */
-    public List<NamedRelatedResourceRep> listByStorageSystem(URI storageSystemId) {
+    public List<RelatedResourceRep> listByStorageSystem(URI storageSystemId) {
         UnManagedVolumeList response = client.get(UnManagedVolumeList.class,
                 PathConstants.UNMANAGED_VOLUME_BY_STORAGE_SYSTEM_URL, storageSystemId);
-        return ResourceUtils.defaultList(response.getNamedUnManagedVolumes());
+        return ResourceUtils.defaultList(response.getUnManagedVolumes());
     }
 
     /**
@@ -139,7 +139,7 @@ public class UnManagedVolumes extends AbstractCoreBulkResources<UnManagedVolumeR
      */
     public List<UnManagedVolumeRestRep> getByStorageSystem(URI storageSystemId,
             ResourceFilter<UnManagedVolumeRestRep> filter) {
-        List<NamedRelatedResourceRep> refs = listByStorageSystem(storageSystemId);
+        List<RelatedResourceRep> refs = listByStorageSystem(storageSystemId);
         return getByRefs(refs, filter);
     }
 
@@ -147,7 +147,7 @@ public class UnManagedVolumes extends AbstractCoreBulkResources<UnManagedVolumeR
      * Gets the list of unmanaged volumes for the given host by ID.
      * <p>
      * API Call: <tt>GET /compute/hosts/{hostId}/unmanaged-volumes</tt>
-     *
+     * 
      * @param hostId
      *            the ID of the host.
      * @return the list of unmanaged volume references.
@@ -160,7 +160,7 @@ public class UnManagedVolumes extends AbstractCoreBulkResources<UnManagedVolumeR
 
     /**
      * Gets the list of unmanaged volumes for the given host by ID. This is a convenience method for: <tt>getByRefs(listByHost(hostId))</tt>
-     *
+     * 
      * @param hostId
      *            the ID of the host.
      * @return the list of unmanaged volumes.
@@ -172,7 +172,7 @@ public class UnManagedVolumes extends AbstractCoreBulkResources<UnManagedVolumeR
     /**
      * Gets the list of unmanaged volumes for the given host by ID. This is a convenience method for:
      * <tt>getByRefs(listByHost(hostId), filter)</tt>
-     *
+     * 
      * @param hostId
      *            the ID of the host.
      * @param filter
@@ -188,7 +188,7 @@ public class UnManagedVolumes extends AbstractCoreBulkResources<UnManagedVolumeR
      * Gets the list of unmanaged volumes for the given cluster by ID.
      * <p>
      * API Call: <tt>GET /compute/clusters/{clusterId}/unmanaged-volumes</tt>
-     *
+     * 
      * @param clusterId
      *            the ID of the cluster.
      * @return the list of unmanaged volume references.
@@ -202,7 +202,7 @@ public class UnManagedVolumes extends AbstractCoreBulkResources<UnManagedVolumeR
     /**
      * Gets the list of unmanaged volumes for the given cluster by ID. This is a convenience method for:
      * <tt>getByRefs(listByCluster(clusterId))</tt>
-     *
+     * 
      * @param clusterId
      *            the ID of the cluster.
      * @return the list of unmanaged volumes.
@@ -214,7 +214,7 @@ public class UnManagedVolumes extends AbstractCoreBulkResources<UnManagedVolumeR
     /**
      * Gets the list of unmanaged volumes for the given cluster by ID. This is a convenience method for:
      * <tt>getByRefs(listByCluster(hostId), filter)</tt>
-     *
+     * 
      * @param clusterId
      *            the ID of the cluster.
      * @param filter
@@ -244,7 +244,7 @@ public class UnManagedVolumes extends AbstractCoreBulkResources<UnManagedVolumeR
      * Ingests unmanaged volumes.
      * <p>
      * API Call: <tt>POST /vdc/unmanaged/volumes/ingest-exported</tt>
-     *
+     * 
      * @param input
      *            the ingest configuration.
      * @return the list of ingested volumes.
