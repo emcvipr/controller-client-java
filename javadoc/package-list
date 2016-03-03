@@ -13,6 +13,7 @@ com.emc.storageos.model.host
 com.emc.storageos.model.host.cluster
 com.emc.storageos.model.host.vcenter
 com.emc.storageos.model.network
+com.emc.storageos.model.object
 com.emc.storageos.model.password
 com.emc.storageos.model.pools
 com.emc.storageos.model.ports
@@ -31,6 +32,7 @@ com.emc.storageos.model.usergroup
 com.emc.storageos.model.valid
 com.emc.storageos.model.varray
 com.emc.storageos.model.vdc
+com.emc.storageos.model.vnas
 com.emc.storageos.model.vpool
 com.emc.storageos.model.workflow
 com.emc.vipr.client
