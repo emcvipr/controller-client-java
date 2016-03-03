@@ -6,6 +6,7 @@ com.emc.storageos.model.block.export
 com.emc.storageos.model.block.tier
 com.emc.storageos.model.compute
 com.emc.storageos.model.customconfig
+com.emc.storageos.model.db
 com.emc.storageos.model.errorhandling
 com.emc.storageos.model.event
 com.emc.storageos.model.file
