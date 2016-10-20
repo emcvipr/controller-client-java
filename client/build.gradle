@@ -3,7 +3,8 @@ apply plugin: 'github-pages'
 archivesBaseName = 'vipr-controller-client'
 
 dependencies {
-    compile project(":models")
+    compile project(":models"),
+    "com.sun.jersey.contribs:jersey-multipart:1.12"
 }
 
 task docs(type: Javadoc, dependsOn: ":models:compileJava") {
