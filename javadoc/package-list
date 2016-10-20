@@ -16,6 +16,7 @@ com.emc.storageos.model.host
 com.emc.storageos.model.host.cluster
 com.emc.storageos.model.host.vcenter
 com.emc.storageos.model.ipsec
+com.emc.storageos.model.keystone
 com.emc.storageos.model.network
 com.emc.storageos.model.object
 com.emc.storageos.model.password
@@ -29,6 +30,7 @@ com.emc.storageos.model.rdfgroup
 com.emc.storageos.model.schedulepolicy
 com.emc.storageos.model.search
 com.emc.storageos.model.smis
+com.emc.storageos.model.storagesystem.type
 com.emc.storageos.model.systems
 com.emc.storageos.model.tasks
 com.emc.storageos.model.tenant
